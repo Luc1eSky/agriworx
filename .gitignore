@@ -41,3 +41,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+/lib/features/fertilizer/domain/amount.g.dart
+/lib/features/fertilizer/domain/fertilizer.freezed.dart
+/lib/features/fertilizer/domain/fertilizer.g.dart
+/lib/features/fertilizer/domain/fertilizer_data.freezed.dart
+/lib/features/fertilizer/domain/fertilizer_data.g.dart
+/lib/features/fertilizer/domain/fertilizer_selection.freezed.dart
+/lib/features/fertilizer/domain/fertilizer_selection.g.dart
+/lib/features/fertilizer/domain/unit.freezed.dart
+/lib/features/fertilizer/domain/unit.g.dart
+/lib/features/fertilizer/domain/amount.freezed.dart
