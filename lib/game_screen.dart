@@ -1,3 +1,4 @@
+import 'package:agriworx/features/soil/data/soil_repository.dart';
 import 'package:agriworx/style/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,9 +31,12 @@ class GameScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final fertilizerData = ref.watch(fertilizerDataRepositoryProvider);
     final listOfSelectedFertilizers = fertilizerData.listOfSelectedFertilizers;
+
+    final selectedSoil = ref.watch(soilRepositoryProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agriworks Test Version'),
+        title: Text('Agriworks Test Version / soil: ${selectedSoil?.name}'),
       ),
       body: Container(
         color: ColorPalette().background,
