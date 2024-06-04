@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:agriworx/constants/unit_options.dart';
 import 'package:agriworx/features/fertilizer/data/fertilizer_data_repository.dart';
 import 'package:agriworx/features/fertilizer/domain/fertilizer_selection.dart';
 import 'package:agriworx/features/fertilizer/presentation/fertilizer_widget.dart';
@@ -61,7 +60,7 @@ class _SelectAmountDialogState extends State<SelectAmountDialog> {
 
   /// create unit widget list
   List<Widget> createUnitWidgets() {
-    return availableUnits.map((u) {
+    return Unit.values.map((u) {
       return GestureDetector(
           onTap: () {
             selectNewUnit(u);
@@ -84,7 +83,7 @@ class _SelectAmountDialogState extends State<SelectAmountDialog> {
         final maxHeight = constraints.maxHeight;
         final availableWidth = min(maxWidth, dialogMaxWidth + 2 * dialogContentPadding);
         final crossAxisCount =
-            min((availableWidth / fertilizerWidgetMaxWidth).round(), availableUnits.length);
+            min((availableWidth / fertilizerWidgetMaxWidth).round(), Unit.values.length);
         final itemWidth = (availableWidth -
                 2 * dialogContentPadding -
                 (crossAxisCount - 1) * fertilizerWidgetSpacing) /

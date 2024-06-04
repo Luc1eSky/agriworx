@@ -24,3 +24,6 @@ const double fertilizerWidgetMaxWidth = 170;
 const double fertilizerWidgetSpacing = 10;
 
 const maximumQuantity = 5;
+
+// fertilizer values
+const double maxValueAllFertilizers = 10;

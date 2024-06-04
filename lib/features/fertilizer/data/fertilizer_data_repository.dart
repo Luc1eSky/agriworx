@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/constants.dart';
 import '../domain/fertilizer_data.dart';
+import '../domain/nutrient.dart';
 
 List<List<FertilizerSelection>> listOfEmptyLists = List<List<FertilizerSelection>>.filled(10, []);
 
@@ -52,6 +53,17 @@ class FertilizerDataRepository extends Notifier<FertilizerData> {
     copiedList[weekNumber] = weekList;
     print(copiedList);
     state = state.copyWith(listOfSelectedFertilizers: copiedList);
+  }
+
+  // returns a specific nutrient of a weekly selection in grams
+  double getNutrientInGrams({required Nutrient nutrient, required int weekNumber}) {
+    final weeklySelection = state.listOfSelectedFertilizers[weekNumber];
+
+    double nutrientInGrams = 0;
+    for (var selection in weeklySelection) {
+      nutrientInGrams += selection.getNutrientInGrams(nutrient);
+    }
+    return nutrientInGrams;
   }
 }
 

@@ -9,6 +9,12 @@ part 'fertilizer.g.dart';
 class Fertilizer with _$Fertilizer {
   const factory Fertilizer({
     required String name,
+    required double nitrogenPercentage,
+    required double phosphorusPercentage,
+    required double potassiumPercentage,
+    required double weightTampecoInGrams,
+    required double weightBlueCapInGrams,
+    required double weightGlassCapInGrams,
     @JsonKey(fromJson: _colorFromJson, toJson: _colorToJson) required Color color,
     String? imagePath,
   }) = _Fertilizer;

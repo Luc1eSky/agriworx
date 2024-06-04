@@ -2,6 +2,7 @@ import 'package:agriworx/features/fertilizer/presentation/select_fertilizer_dial
 import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
+import '../../../utils/utils.dart';
 import '../domain/fertilizer_selection.dart';
 import 'amount_widget.dart';
 import 'fertilizer_widget.dart';
@@ -22,8 +23,11 @@ class FertilizerSelectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemWidth = maxWidth /
-        (maxNumberOfFertilizersPerWeek + (maxNumberOfFertilizersPerWeek + 1) * horizontalGapRatio);
+    final itemWidth = getItemWidth(maxWidth);
+
+    //
+    // maxWidth /
+    // (maxNumberOfFertilizersPerWeek + (maxNumberOfFertilizersPerWeek + 1) * horizontalGapRatio);
 
     final aspectRatio = itemWidth /
         (itemWidth / fertilizerWidgetAspectRatio +
