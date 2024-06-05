@@ -58,27 +58,29 @@ class GameScreen extends ConsumerWidget {
                       return Card(
                         color: ColorPalette.card,
                         child: ListTile(
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: cardContentPadding),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: cardContentPadding),
                           minVerticalPadding: cardContentPadding,
                           subtitle: LayoutBuilder(
                             builder: (context, constraints) {
                               final maxWidth = constraints.maxWidth;
-                              final fertilizerMaxWidth = maxWidth - leadingWidgetWidth;
+                              final fertilizerMaxWidth =
+                                  maxWidth - leadingWidgetWidth;
 
-                              final verticalGapHeight =
-                                  verticalGapRatio * getItemWidth(fertilizerMaxWidth);
+                              final verticalGapHeight = verticalGapRatio *
+                                  getItemWidth(fertilizerMaxWidth);
 
                               final itemList =
-                                  List.generate(maxNumberOfFertilizersPerWeek, (fertilizerIndex) {
+                                  List.generate(maxNumberOfFertilizersPerWeek,
+                                      (fertilizerIndex) {
                                 return FertilizerSelectionWidget(
                                   maxWidth: fertilizerMaxWidth,
                                   weekIndex: weekIndex,
                                   fertilizerIndex: fertilizerIndex,
-                                  fertilizerSelection:
-                                      weekList.isNotEmpty && fertilizerIndex < weekList.length
-                                          ? weekList[fertilizerIndex]
-                                          : null,
+                                  fertilizerSelection: weekList.isNotEmpty &&
+                                          fertilizerIndex < weekList.length
+                                      ? weekList[fertilizerIndex]
+                                      : null,
                                 );
                               });
                               return Column(
@@ -87,12 +89,10 @@ class GameScreen extends ConsumerWidget {
                                     children: [
                                       leadingWidgets[weekIndex],
                                       Expanded(
-                                        child: Container(
-                                          //color: Colors.orange,
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: itemList,
-                                          ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: itemList,
                                         ),
                                       ),
                                     ],
@@ -113,7 +113,8 @@ class GameScreen extends ConsumerWidget {
                                         Expanded(
                                           child: NutrientBar(
                                             nutrient: Nutrient.phosphorus,
-                                            barColor: ColorPalette.phosphorusBar,
+                                            barColor:
+                                                ColorPalette.phosphorusBar,
                                             weekIndex: weekIndex,
                                           ),
                                         ),

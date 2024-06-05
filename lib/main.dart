@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'game_screen.dart';
+import 'features/soil/presentation/soil_selection_screen.dart';
 
 void main() {
   runApp(
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const GameScreen(), //const SoilSelectionScreen(),
+      home: const SoilSelectionScreen(),
     );
   }
 }

@@ -47,7 +47,7 @@ class AmountWidget extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(

@@ -10,5 +10,5 @@ class ColorPalette {
   static Color get nitrogenBar => const Color.fromRGBO(47, 138, 228, 1.0);
   static Color get phosphorusBar => const Color.fromRGBO(159, 109, 217, 1.0);
   static Color get potassiumBar => const Color.fromRGBO(223, 194, 93, 1.0);
-  static Color get barBackground => const Color.fromRGBO(49, 49, 49, 1.0);
+  static Color get barBackground => const Color.fromRGBO(119, 119, 119, 1.0);
 }

@@ -7,7 +7,7 @@ part 'amount.g.dart';
 @freezed
 class Amount with _$Amount {
   const factory Amount({
-    required int count,
+    required double count,
     required Unit unit,
   }) = _Amount;
 

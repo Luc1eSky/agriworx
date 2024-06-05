@@ -34,7 +34,7 @@ class SelectAmountDialog extends StatefulWidget {
 
 class _SelectAmountDialogState extends State<SelectAmountDialog> {
   Unit? _selectedUnit;
-  int _selectedQuantity = 0;
+  double _selectedQuantity = 0.0;
 
   void selectNewUnit(Unit newUnit) {
     setState(() {
@@ -45,7 +45,7 @@ class _SelectAmountDialogState extends State<SelectAmountDialog> {
   void increaseQuantity() {
     if (_selectedQuantity < maximumQuantity) {
       setState(() {
-        _selectedQuantity++;
+        _selectedQuantity += 0.5;
       });
     }
   }
@@ -86,18 +86,21 @@ class _SelectAmountDialogState extends State<SelectAmountDialog> {
       child: LayoutBuilder(builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
         final maxHeight = constraints.maxHeight;
-        final availableWidth = min(maxWidth, dialogMaxWidth + 2 * dialogContentPadding);
-        final crossAxisCount =
-            min((availableWidth / fertilizerWidgetMaxWidth).round(), Unit.values.length);
+        final availableWidth =
+            min(maxWidth, dialogMaxWidth + 2 * dialogContentPadding);
+        final crossAxisCount = min(
+            (availableWidth / fertilizerWidgetMaxWidth).round(),
+            Unit.values.length);
         final itemWidth = (availableWidth -
                 2 * dialogContentPadding -
                 (crossAxisCount - 1) * fertilizerWidgetSpacing) /
             crossAxisCount;
 
         final rowCount = (unitWidgets.length / crossAxisCount).ceil();
-        final areaHeight = rowCount * (itemWidth / fertilizerWidgetAspectRatio) +
-            (rowCount - 1) * fertilizerWidgetSpacing +
-            2 * dialogContentPadding;
+        final areaHeight =
+            rowCount * (itemWidth / fertilizerWidgetAspectRatio) +
+                (rowCount - 1) * fertilizerWidgetSpacing +
+                2 * dialogContentPadding;
         final availableHeight = min(maxHeight, areaHeight);
 
         return SimpleDialog(
@@ -131,7 +134,8 @@ class _SelectAmountDialogState extends State<SelectAmountDialog> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 child: FittedBox(
                                   child: Text(
                                     _selectedQuantity.toString(),
@@ -220,12 +224,14 @@ class _SelectAmountDialogState extends State<SelectAmountDialog> {
                       builder: (context, ref, child) {
                         return IconButton(
                           color: Colors.green,
-                          onPressed: _selectedUnit == null || _selectedQuantity == 0
+                          onPressed: _selectedUnit == null ||
+                                  _selectedQuantity == 0.0
                               ? null
                               : () {
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
-                                  final newFertilizerSelection = FertilizerSelection(
+                                  final newFertilizerSelection =
+                                      FertilizerSelection(
                                     fertilizer: widget.fertilizer,
                                     amount: Amount(
                                       unit: _selectedUnit!,
@@ -234,17 +240,21 @@ class _SelectAmountDialogState extends State<SelectAmountDialog> {
                                   );
                                   widget.isNew
                                       ? ref
-                                          .read(fertilizerDataRepositoryProvider.notifier)
+                                          .read(fertilizerDataRepositoryProvider
+                                              .notifier)
                                           .addFertilizerSelection(
                                             weekNumber: widget.weekNumber,
-                                            fertilizerSelection: newFertilizerSelection,
+                                            fertilizerSelection:
+                                                newFertilizerSelection,
                                           )
                                       : ref
-                                          .read(fertilizerDataRepositoryProvider.notifier)
+                                          .read(fertilizerDataRepositoryProvider
+                                              .notifier)
                                           .changeFertilizerSelection(
                                             weekNumber: widget.weekNumber,
                                             index: widget.index,
-                                            fertilizerSelection: newFertilizerSelection,
+                                            fertilizerSelection:
+                                                newFertilizerSelection,
                                           );
                                 },
                           icon: const Icon(

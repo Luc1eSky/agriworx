@@ -63,7 +63,7 @@ class NutrientBar extends ConsumerWidget {
                   curve: Curves.easeInOut,
                   width: constraints.maxWidth * currentPercentageLimited,
                   decoration: BoxDecoration(
-                    color: barColor,
+                    color: nutrientExceedsLimit ? Colors.red : barColor,
                     borderRadius: BorderRadius.circular(20),
                   ),
                 );

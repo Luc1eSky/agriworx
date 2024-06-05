@@ -1,7 +1,7 @@
 // general structure
 const int numberOfWeeks = 10;
 const int maxNumberOfFertilizersPerWeek = 3;
-const double screenMaxWidth = 600.0;
+const double screenMaxWidth = 800.0;
 const double cardsVerticalScreenRatio = 0.9;
 const double cardsTopPadding = 20;
 
@@ -23,7 +23,7 @@ const double dialogContentPadding = 20;
 const double fertilizerWidgetMaxWidth = 170;
 const double fertilizerWidgetSpacing = 10;
 
-const maximumQuantity = 5;
+const maximumQuantity = 5.0;
 
 // fertilizer values
 const double maxValueAllFertilizers = 10;
