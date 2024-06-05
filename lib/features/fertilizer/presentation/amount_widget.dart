@@ -20,7 +20,7 @@ class AmountWidget extends StatelessWidget {
     return a == null
         ? Container(
             height: amountWidgetHeightRatio * itemWidth,
-            color: ColorPalette().emptySpace,
+            color: ColorPalette.emptySpace,
           )
         : Container(
             height: amountWidgetHeightRatio * itemWidth,

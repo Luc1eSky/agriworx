@@ -59,20 +59,25 @@ class _SelectAmountDialogState extends State<SelectAmountDialog> {
   }
 
   /// create unit widget list
-  List<Widget> createUnitWidgets() {
-    return Unit.values.map((u) {
+  List<Widget> createUnitWidgets(Fertilizer fertilizer) {
+    List<Widget?> listOfWidgetsOrNull = Unit.values.map((u) {
+      if (fertilizer.name != 'MANURE' && u == Unit.tampeco) {
+        return null;
+      }
       return GestureDetector(
           onTap: () {
             selectNewUnit(u);
           },
           child: UnitWidget(unit: u));
     }).toList();
+
+    return listOfWidgetsOrNull.whereType<Widget>().toList();
   }
 
   @override
   Widget build(BuildContext context) {
     // create fertilizer widget list
-    final unitWidgets = createUnitWidgets();
+    final unitWidgets = createUnitWidgets(widget.fertilizer);
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: dialogHorizontalPadding,

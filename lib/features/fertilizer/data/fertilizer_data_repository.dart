@@ -2,8 +2,8 @@ import 'package:agriworx/features/fertilizer/domain/fertilizer_selection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/constants.dart';
+import '../../nutrient/domain/nutrient.dart';
 import '../domain/fertilizer_data.dart';
-import '../domain/nutrient.dart';
 
 List<List<FertilizerSelection>> listOfEmptyLists = List<List<FertilizerSelection>>.filled(10, []);
 

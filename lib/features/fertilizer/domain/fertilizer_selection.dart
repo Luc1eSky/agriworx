@@ -1,9 +1,9 @@
 import 'package:agriworx/features/fertilizer/domain/unit.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../nutrient/domain/nutrient.dart';
 import 'amount.dart';
 import 'fertilizer.dart';
-import 'nutrient.dart';
 
 part 'fertilizer_selection.freezed.dart';
 part 'fertilizer_selection.g.dart';

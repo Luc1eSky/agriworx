@@ -21,7 +21,7 @@ class FertilizerWidget extends StatelessWidget {
       aspectRatio: fertilizerWidgetAspectRatio,
       child: f == null
           ? Container(
-              color: ColorPalette().emptySpace,
+              color: ColorPalette.emptySpace,
               child: FractionallySizedBox(
                 widthFactor: 0.5,
                 heightFactor: 0.5,
@@ -29,7 +29,7 @@ class FertilizerWidget extends StatelessWidget {
                   child: Icon(
                     Icons.add_box_outlined,
                     size: 100,
-                    color: ColorPalette().addSymbol,
+                    color: ColorPalette.addSymbol,
                   ),
                 ),
               ),
@@ -39,7 +39,7 @@ class FertilizerWidget extends StatelessWidget {
                   color: f.color,
                   border: isCurrentlySelected
                       ? Border.all(
-                          color: ColorPalette().selectedFertilizer,
+                          color: ColorPalette.selectedFertilizer,
                           width: 5,
                         )
                       : null),
