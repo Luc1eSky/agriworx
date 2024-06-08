@@ -1,3 +1,4 @@
+import 'package:agriworx/features/nutrient/data/fold_out_provider.dart';
 import 'package:agriworx/features/nutrient/domain/nutrient.dart';
 import 'package:agriworx/features/soil/data/soil_repository.dart';
 import 'package:agriworx/style/color_palette.dart';
@@ -6,81 +7,99 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'constants/constants.dart';
+import 'constants/week_names.dart';
 import 'features/fertilizer/data/fertilizer_data_repository.dart';
 import 'features/fertilizer/presentation/fertilizer_selection_widget.dart';
+import 'features/nutrient/presentation/animated_app_bar.dart';
 import 'features/nutrient/presentation/nutrient_bar.dart';
 
-List<Widget> leadingWidgets = List.generate(numberOfWeeks, (index) {
+List<Widget> leadingWidgets = weekNames.map((name) {
   return SizedBox(
     width: leadingWidgetWidth,
     child: Text(
-      index == 0
-          ? 'PRE'
-          : index == 1
-              ? 'TRANS'
-              : 'WEEK ${(index - 1).toString()}',
+      name.toUpperCase(),
       style: const TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
     ),
   );
-});
+}).toList();
 
-class GameScreen extends ConsumerWidget {
+class GameScreen extends ConsumerStatefulWidget {
   const GameScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends ConsumerState<GameScreen> {
+  late final ScrollController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = ScrollController();
+    controller.addListener(() {
+      ref.read(foldOutProvider.notifier).minimizeChart();
+      print('Scrolling');
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final fertilizerData = ref.watch(fertilizerDataRepositoryProvider);
     final listOfSelectedFertilizers = fertilizerData.listOfSelectedFertilizers;
 
     final selectedSoil = ref.watch(soilRepositoryProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Agriworks Test Version / soil: ${selectedSoil?.name}'),
-      ),
+      appBar: const AnimatedAppBar(),
       body: Container(
         color: ColorPalette.background,
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(top: cardsTopPadding),
+            padding: EdgeInsets.zero, //const EdgeInsets.only(top: cardsTopPadding),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: screenMaxWidth),
               child: FractionallySizedBox(
                 widthFactor: cardsVerticalScreenRatio,
                 child: Center(
                   child: ListView.builder(
+                    controller: controller,
                     itemCount: numberOfWeeks,
                     itemBuilder: (context, weekIndex) {
                       final weekList = listOfSelectedFertilizers[weekIndex];
                       return Card(
                         color: ColorPalette.card,
                         child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: cardContentPadding),
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: cardContentPadding),
                           minVerticalPadding: cardContentPadding,
                           subtitle: LayoutBuilder(
                             builder: (context, constraints) {
                               final maxWidth = constraints.maxWidth;
-                              final fertilizerMaxWidth =
-                                  maxWidth - leadingWidgetWidth;
+                              final fertilizerMaxWidth = maxWidth - leadingWidgetWidth;
 
-                              final verticalGapHeight = verticalGapRatio *
-                                  getItemWidth(fertilizerMaxWidth);
+                              final verticalGapHeight =
+                                  verticalGapRatio * getItemWidth(fertilizerMaxWidth);
 
                               final itemList =
-                                  List.generate(maxNumberOfFertilizersPerWeek,
-                                      (fertilizerIndex) {
+                                  List.generate(maxNumberOfFertilizersPerWeek, (fertilizerIndex) {
                                 return FertilizerSelectionWidget(
                                   maxWidth: fertilizerMaxWidth,
                                   weekIndex: weekIndex,
                                   fertilizerIndex: fertilizerIndex,
-                                  fertilizerSelection: weekList.isNotEmpty &&
-                                          fertilizerIndex < weekList.length
-                                      ? weekList[fertilizerIndex]
-                                      : null,
+                                  fertilizerSelection:
+                                      weekList.isNotEmpty && fertilizerIndex < weekList.length
+                                          ? weekList[fertilizerIndex]
+                                          : null,
                                 );
                               });
                               return Column(
@@ -90,8 +109,7 @@ class GameScreen extends ConsumerWidget {
                                       leadingWidgets[weekIndex],
                                       Expanded(
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: itemList,
                                         ),
                                       ),
@@ -113,8 +131,7 @@ class GameScreen extends ConsumerWidget {
                                         Expanded(
                                           child: NutrientBar(
                                             nutrient: Nutrient.phosphorus,
-                                            barColor:
-                                                ColorPalette.phosphorusBar,
+                                            barColor: ColorPalette.phosphorusBar,
                                             weekIndex: weekIndex,
                                           ),
                                         ),
