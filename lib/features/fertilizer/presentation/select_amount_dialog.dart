@@ -183,7 +183,7 @@ class _SelectAmountDialogState extends State<SelectAmountDialog> {
                       child: Center(
                         child: FractionallySizedBox(
                           widthFactor: 0.7,
-                          heightFactor: 0.7,
+                          heightFactor: 0.9,
                           child: FertilizerWidget(
                             fertilizer: widget.fertilizer,
                           ),

@@ -10,7 +10,7 @@ const double cardContentPadding = 10;
 const double leadingWidgetWidth = 75;
 
 // layout of fertilizer widgets on cards
-const double fertilizerWidgetAspectRatio = 1.0;
+const double fertilizerWidgetAspectRatio = 0.8;
 const double horizontalGapRatio = 0.1;
 const double verticalGapRatio = 0.1;
 const double amountWidgetHeightRatio = 0.5;

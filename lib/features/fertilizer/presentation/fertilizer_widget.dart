@@ -43,8 +43,22 @@ class FertilizerWidget extends StatelessWidget {
                           width: 5,
                         )
                       : null),
-              child: Center(
-                child: Text(f.name),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: f.color, // border color
+                    width: 2.0, // border width
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Image.asset(
+                      f.imagePath!,
+                      fit: BoxFit.scaleDown,
+                    ),
+                    Text(f.name),
+                  ],
+                ),
               ),
             ),
     );

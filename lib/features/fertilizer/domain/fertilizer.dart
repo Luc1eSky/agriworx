@@ -15,11 +15,13 @@ class Fertilizer with _$Fertilizer {
     required double weightTampecoInGrams,
     required double weightBlueCapInGrams,
     required double weightGlassCapInGrams,
-    @JsonKey(fromJson: _colorFromJson, toJson: _colorToJson) required Color color,
+    @JsonKey(fromJson: _colorFromJson, toJson: _colorToJson)
+    required Color color,
     String? imagePath,
   }) = _Fertilizer;
 
-  factory Fertilizer.fromJson(Map<String, Object?> json) => _$FertilizerFromJson(json);
+  factory Fertilizer.fromJson(Map<String, Object?> json) =>
+      _$FertilizerFromJson(json);
 }
 
 Color _colorFromJson(dynamic colorValue) {

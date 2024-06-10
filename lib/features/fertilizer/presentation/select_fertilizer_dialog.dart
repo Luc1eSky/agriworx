@@ -40,18 +40,21 @@ class SelectFertilizerDialog extends StatelessWidget {
       child: LayoutBuilder(builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
         final maxHeight = constraints.maxHeight;
-        final availableWidth = min(maxWidth, dialogMaxWidth + 2 * dialogContentPadding);
-        final crossAxisCount = (availableWidth / fertilizerWidgetMaxWidth).round();
+        final availableWidth =
+            min(maxWidth, dialogMaxWidth + 2 * dialogContentPadding);
+        final crossAxisCount =
+            (availableWidth / fertilizerWidgetMaxWidth).round();
         final itemWidth = (availableWidth -
                 2 * dialogContentPadding -
                 (crossAxisCount - 1) * fertilizerWidgetSpacing) /
             crossAxisCount;
 
         final rowCount = (fertilizerWidgets.length / crossAxisCount).ceil();
-        final areaHeight = rowCount * (itemWidth / fertilizerWidgetAspectRatio) +
-            (rowCount - 1) * fertilizerWidgetSpacing +
-            2 * dialogContentPadding;
-        final availableHeight = min(maxHeight, areaHeight);
+        final areaHeight =
+            rowCount * (itemWidth / fertilizerWidgetAspectRatio) +
+                (rowCount - 1) * fertilizerWidgetSpacing +
+                2 * dialogContentPadding;
+        final availableHeight = min(maxHeight, areaHeight * 1.2);
 
         return SimpleDialog(
           title: const Text('Choose Fertilizer'),

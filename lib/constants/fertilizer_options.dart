@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 const availableFertilizers = [
   Fertilizer(
     name: 'CAN',
+    imagePath: "assets/pictures/can.png",
     color: Colors.red,
     nitrogenPercentage: 0.27,
     phosphorusPercentage: 0,
@@ -14,6 +15,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'DAP',
+    imagePath: "assets/pictures/dap.png",
     color: Colors.blue,
     nitrogenPercentage: 0.18,
     phosphorusPercentage: 0.46,
@@ -24,6 +26,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'MANURE',
+    imagePath: "assets/pictures/manure.png",
     color: Colors.brown,
     nitrogenPercentage: 0.014,
     phosphorusPercentage: 0.006,
@@ -34,6 +37,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'MOP',
+    imagePath: "assets/pictures/mop.png",
     color: Colors.green,
     nitrogenPercentage: 0,
     phosphorusPercentage: 0,
@@ -44,6 +48,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'NPK 17-17-17',
+    imagePath: "assets/pictures/npk17-17-17.png",
     color: Colors.orange,
     nitrogenPercentage: 0.17,
     phosphorusPercentage: 0.17,
@@ -54,6 +59,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'NPK 25-5-5',
+    imagePath: "assets/pictures/npk25-5-5.png",
     color: Colors.purple,
     nitrogenPercentage: 0.25,
     phosphorusPercentage: 0.05,
@@ -64,6 +70,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'UREA',
+    imagePath: "assets/pictures/urea.png",
     color: Colors.yellow,
     nitrogenPercentage: 0.46,
     phosphorusPercentage: 0,
