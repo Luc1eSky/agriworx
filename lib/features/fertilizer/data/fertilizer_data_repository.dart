@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/constants.dart';
 import '../../nutrient/domain/nutrient.dart';
+import '../domain/fertilizer.dart';
 import '../domain/fertilizer_data.dart';
 
-List<List<FertilizerSelection>> listOfEmptyLists = List<List<FertilizerSelection>>.filled(10, []);
+List<List<FertilizerSelection>> listOfEmptyLists =
+    List<List<FertilizerSelection>>.filled(numberOfWeeks, []);
 
 class FertilizerDataRepository extends Notifier<FertilizerData> {
   //late final SharedPreferences _prefs;
@@ -23,6 +25,17 @@ class FertilizerDataRepository extends Notifier<FertilizerData> {
   /// deleting all data
   void deleteAllData() {
     state = state.copyWith(listOfSelectedFertilizers: listOfEmptyLists);
+  }
+
+  /// return all currently selected fertilizers of a specific week
+  List<Fertilizer> getSelectedFertilizers(int weekNumber) {
+    // get list of fertilizer selection of specific week
+    final fertilizerSelections = state.listOfSelectedFertilizers[weekNumber];
+    // get only list of fertilizers (no amount)
+    final fertilizers = fertilizerSelections.map((f) {
+      return f.fertilizer;
+    }).toList();
+    return fertilizers;
   }
 
   /// add a new fertilizer selection to a specific week

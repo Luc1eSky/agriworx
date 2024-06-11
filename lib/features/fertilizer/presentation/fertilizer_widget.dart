@@ -8,10 +8,12 @@ class FertilizerWidget extends StatelessWidget {
   const FertilizerWidget({
     super.key,
     required this.fertilizer,
+    this.isAlreadyInWeek = false,
     this.isCurrentlySelected = false,
   });
 
   final Fertilizer? fertilizer;
+  final bool isAlreadyInWeek;
   final bool isCurrentlySelected;
 
   @override
@@ -36,29 +38,27 @@ class FertilizerWidget extends StatelessWidget {
             )
           : Container(
               decoration: BoxDecoration(
-                  color: f.color,
-                  border: isCurrentlySelected
-                      ? Border.all(
-                          color: ColorPalette.selectedFertilizer,
-                          width: 5,
-                        )
-                      : null),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: f.color, // border color
-                    width: 2.0, // border width
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Image.asset(
-                      f.imagePath!,
+                color: isAlreadyInWeek ? Colors.grey : f.color,
+                border: isCurrentlySelected
+                    ? Border.all(
+                        color: ColorPalette.selectedFertilizer,
+                        width: 5,
+                      )
+                    : null,
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Image.asset(
+                      color: isAlreadyInWeek ? Colors.grey : Colors.transparent,
+                      colorBlendMode: BlendMode.saturation,
+                      f.imagePath,
                       fit: BoxFit.scaleDown,
                     ),
-                    Text(f.name),
-                  ],
-                ),
+                  ),
+                  Text(f.name),
+                ],
               ),
             ),
     );

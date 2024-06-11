@@ -110,7 +110,7 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                             position: LegendPosition.right,
                           ),
                           series: [
-                            StackedColumnSeries<ChartData, String>(
+                            ColumnSeries<ChartData, String>(
                               name: 'N',
                               animationDuration: 100,
                               dataSource: chartData,
@@ -118,7 +118,7 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                               yValueMapper: (ChartData data, _) => data.y1,
                               color: ColorPalette.nitrogenBar,
                             ),
-                            StackedColumnSeries<ChartData, String>(
+                            ColumnSeries<ChartData, String>(
                               name: 'P',
                               animationDuration: 100,
                               dataSource: chartData,
@@ -126,7 +126,8 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                               yValueMapper: (ChartData data, _) => data.y2,
                               color: ColorPalette.phosphorusBar,
                             ),
-                            StackedColumnSeries<ChartData, String>(
+
+                            ColumnSeries<ChartData, String>(
                               name: 'K',
                               animationDuration: 100,
                               dataSource: chartData,
@@ -134,6 +135,30 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                               yValueMapper: (ChartData data, _) => data.y3,
                               color: ColorPalette.potassiumBar,
                             ),
+                            // StackedColumnSeries<ChartData, String>(
+                            //   name: 'N',
+                            //   animationDuration: 100,
+                            //   dataSource: chartData,
+                            //   xValueMapper: (ChartData data, _) => data.x,
+                            //   yValueMapper: (ChartData data, _) => data.y1,
+                            //   color: ColorPalette.nitrogenBar,
+                            // ),
+                            // StackedColumnSeries<ChartData, String>(
+                            //   name: 'P',
+                            //   animationDuration: 100,
+                            //   dataSource: chartData,
+                            //   xValueMapper: (ChartData data, _) => data.x,
+                            //   yValueMapper: (ChartData data, _) => data.y2,
+                            //   color: ColorPalette.phosphorusBar,
+                            // ),
+                            // StackedColumnSeries<ChartData, String>(
+                            //   name: 'K',
+                            //   animationDuration: 100,
+                            //   dataSource: chartData,
+                            //   xValueMapper: (ChartData data, _) => data.x,
+                            //   yValueMapper: (ChartData data, _) => data.y3,
+                            //   color: ColorPalette.potassiumBar,
+                            // ),
                           ],
                         ),
                       ),

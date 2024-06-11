@@ -1,16 +1,18 @@
 import 'dart:math';
 
+import 'package:agriworx/features/fertilizer/data/fertilizer_data_repository.dart';
 import 'package:agriworx/features/fertilizer/domain/fertilizer_selection.dart';
 import 'package:agriworx/features/fertilizer/presentation/fertilizer_widget.dart';
 import 'package:agriworx/features/fertilizer/presentation/select_amount_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/constants.dart';
 import '../../../constants/fertilizer_options.dart';
 import '../domain/amount.dart';
 import '../domain/fertilizer.dart';
 
-class SelectFertilizerDialog extends StatelessWidget {
+class SelectFertilizerDialog extends ConsumerWidget {
   const SelectFertilizerDialog({
     super.key,
     required this.weekNumber,
@@ -23,7 +25,9 @@ class SelectFertilizerDialog extends StatelessWidget {
   final FertilizerSelection? fertilizerSelection;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    print('selected fertilizers: ');
+
     // create fertilizer widget list
     final fertilizerWidgets = createFertilizerWidgets(
       weekNumber: weekNumber,
@@ -31,6 +35,8 @@ class SelectFertilizerDialog extends StatelessWidget {
       selectedFertilizer: fertilizerSelection?.fertilizer,
       selectedAmount: fertilizerSelection?.amount,
       context: context,
+      fertilizersInWeek:
+          ref.read(fertilizerDataRepositoryProvider.notifier).getSelectedFertilizers(weekNumber),
     );
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -40,20 +46,17 @@ class SelectFertilizerDialog extends StatelessWidget {
       child: LayoutBuilder(builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
         final maxHeight = constraints.maxHeight;
-        final availableWidth =
-            min(maxWidth, dialogMaxWidth + 2 * dialogContentPadding);
-        final crossAxisCount =
-            (availableWidth / fertilizerWidgetMaxWidth).round();
+        final availableWidth = min(maxWidth, dialogMaxWidth + 2 * dialogContentPadding);
+        final crossAxisCount = (availableWidth / fertilizerWidgetMaxWidth).round();
         final itemWidth = (availableWidth -
                 2 * dialogContentPadding -
                 (crossAxisCount - 1) * fertilizerWidgetSpacing) /
             crossAxisCount;
 
         final rowCount = (fertilizerWidgets.length / crossAxisCount).ceil();
-        final areaHeight =
-            rowCount * (itemWidth / fertilizerWidgetAspectRatio) +
-                (rowCount - 1) * fertilizerWidgetSpacing +
-                2 * dialogContentPadding;
+        final areaHeight = rowCount * (itemWidth / fertilizerWidgetAspectRatio) +
+            (rowCount - 1) * fertilizerWidgetSpacing +
+            2 * dialogContentPadding;
         final availableHeight = min(maxHeight, areaHeight * 1.2);
 
         return SimpleDialog(
@@ -64,12 +67,14 @@ class SelectFertilizerDialog extends StatelessWidget {
             SizedBox(
               width: availableWidth,
               height: availableHeight,
-              child: GridView.count(
+              child: GridView(
                 padding: const EdgeInsets.all(dialogContentPadding),
-                childAspectRatio: fertilizerWidgetAspectRatio,
-                crossAxisCount: crossAxisCount,
-                mainAxisSpacing: fertilizerWidgetSpacing,
-                crossAxisSpacing: fertilizerWidgetSpacing,
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 180,
+                  childAspectRatio: 0.8,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                ),
                 children: fertilizerWidgets,
               ),
             ),
@@ -87,34 +92,35 @@ List<Widget> createFertilizerWidgets({
   required Fertilizer? selectedFertilizer,
   required Amount? selectedAmount,
   required BuildContext context,
+  required List<Fertilizer> fertilizersInWeek,
 }) {
   return availableFertilizers.map((f) {
+    final isClickedFertilizer = f == selectedFertilizer;
+    final isAlreadyInWeek = !isClickedFertilizer && fertilizersInWeek.contains(f);
+
     final isNew = selectedFertilizer == null;
+
     final rememberedAmount = isNew ? null : selectedAmount;
     return GestureDetector(
-      onTap: () {
-        print('-----');
-        print('new fertilizer: $f');
-        print('rememberedAmount: $rememberedAmount');
-        print('week: $weekNumber');
-        print('index: $index');
-        print('isNew: $isNew');
-        print('-----');
-        showDialog(
-            context: context,
-            builder: (context) {
-              return SelectAmountDialog(
-                weekNumber: weekNumber,
-                index: index,
-                fertilizer: f,
-                amount: rememberedAmount,
-                isNew: isNew,
-              );
-            });
-      },
+      onTap: isAlreadyInWeek
+          ? null
+          : () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return SelectAmountDialog(
+                      weekNumber: weekNumber,
+                      index: index,
+                      fertilizer: f,
+                      amount: rememberedAmount,
+                      isNew: isNew,
+                    );
+                  });
+            },
       child: FertilizerWidget(
         fertilizer: f,
-        isCurrentlySelected: f == selectedFertilizer,
+        isCurrentlySelected: isClickedFertilizer,
+        isAlreadyInWeek: isAlreadyInWeek,
       ),
     );
   }).toList();
