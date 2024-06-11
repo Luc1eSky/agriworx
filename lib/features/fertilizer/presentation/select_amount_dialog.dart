@@ -199,11 +199,11 @@ class _SelectAmountDialogState extends State<SelectAmountDialog> {
               height: availableHeight,
               color: Colors.red,
               child: Align(
-                alignment: Alignment.center,
+                alignment: Alignment.topCenter,
                 child: GridView.count(
                   shrinkWrap: true,
                   padding: const EdgeInsets.all(dialogContentPadding),
-                  childAspectRatio: fertilizerWidgetAspectRatio,
+                  childAspectRatio: 1,
                   crossAxisCount: crossAxisCount,
                   mainAxisSpacing: fertilizerWidgetSpacing,
                   crossAxisSpacing: fertilizerWidgetSpacing,
