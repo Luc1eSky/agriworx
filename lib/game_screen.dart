@@ -140,7 +140,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                             currentNutrientValue: ref
                                                 .watch(fertilizerDataRepositoryProvider.notifier)
                                                 .getNutrientInGrams(
-                                                  nutrient: Nutrient.nitrogen,
+                                                  nutrient: Nutrient.phosphorus,
                                                   weekNumber: weekIndex,
                                                 ),
                                           ),
@@ -153,7 +153,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                             currentNutrientValue: ref
                                                 .watch(fertilizerDataRepositoryProvider.notifier)
                                                 .getNutrientInGrams(
-                                                  nutrient: Nutrient.nitrogen,
+                                                  nutrient: Nutrient.potassium,
                                                   weekNumber: weekIndex,
                                                 ),
                                           ),
