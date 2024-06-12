@@ -25,11 +25,11 @@ extension UnitExtension on Unit {
   String get imageName {
     switch (this) {
       case Unit.tampeco:
-        return 'tampeco.jpg';
+        return 'assets/pictures/units/tampeco.png';
       case Unit.blueBottlecap:
-        return 'blueBottlecap.jpg';
+        return 'assets/pictures/units/blue_bottle_cap.png';
       case Unit.glassBottlecap:
-        return 'glassBottlecap.jpg';
+        return 'assets/pictures/units/glass_bottle_cap.png';
     }
   }
 

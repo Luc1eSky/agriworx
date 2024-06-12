@@ -68,6 +68,30 @@ class FertilizerDataRepository extends Notifier<FertilizerData> {
     state = state.copyWith(listOfSelectedFertilizers: copiedList);
   }
 
+  /// change an existing fertilizer selection (specific week and index)
+  void changeOrAddFertilizerSelection({
+    required int weekNumber,
+    required int index,
+    required FertilizerSelection fertilizerSelection,
+  }) {
+    final copiedList = [...state.listOfSelectedFertilizers];
+    final weekList = [...copiedList[weekNumber]];
+
+    if (weekList.length >= index + 1) {
+      // change existing entry
+      weekList[index] = fertilizerSelection;
+      copiedList[weekNumber] = weekList;
+      state = state.copyWith(listOfSelectedFertilizers: copiedList);
+    } else {
+      // add new entry
+      if (weekList.length < maxNumberOfFertilizersPerWeek) {
+        weekList.add(fertilizerSelection);
+        copiedList[weekNumber] = weekList;
+        state = state.copyWith(listOfSelectedFertilizers: copiedList);
+      }
+    }
+  }
+
   // returns a specific nutrient of a weekly selection in grams
   double getNutrientInGrams({required Nutrient nutrient, required int weekNumber}) {
     final weeklySelection = state.listOfSelectedFertilizers[weekNumber];

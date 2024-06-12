@@ -2,15 +2,15 @@ import 'dart:math';
 
 import 'package:agriworx/features/fertilizer/data/fertilizer_data_repository.dart';
 import 'package:agriworx/features/fertilizer/domain/fertilizer_selection.dart';
-import 'package:agriworx/features/fertilizer/presentation/fertilizer_widget.dart';
 import 'package:agriworx/features/fertilizer/presentation/select_amount_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/constants.dart';
-import '../../../constants/fertilizer_options.dart';
+import '../data/fertilizer_options.dart';
 import '../domain/amount.dart';
 import '../domain/fertilizer.dart';
+import 'fertilizer_widget.dart';
 
 class SelectFertilizerDialog extends ConsumerWidget {
   const SelectFertilizerDialog({
@@ -40,7 +40,7 @@ class SelectFertilizerDialog extends ConsumerWidget {
     );
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: dialogHorizontalPadding,
+        horizontal: dialogPadding,
         vertical: dialogVerticalPadding,
       ),
       child: LayoutBuilder(builder: (context, constraints) {
@@ -109,12 +109,18 @@ List<Widget> createFertilizerWidgets({
                   context: context,
                   builder: (context) {
                     return SelectAmountDialog(
+                      fertilizer: f,
                       weekNumber: weekNumber,
                       index: index,
-                      fertilizer: f,
-                      amount: rememberedAmount,
-                      isNew: isNew,
                     );
+
+                    //   SelectAmountDialog(
+                    //   weekNumber: weekNumber,
+                    //   index: index,
+                    //   fertilizer: f,
+                    //   amount: rememberedAmount,
+                    //   isNew: isNew,
+                    // );
                   });
             },
       child: FertilizerWidget(

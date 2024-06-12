@@ -1,44 +1,56 @@
-import 'dart:math';
-
+import 'package:agriworx/common_widgets/default_dialog.dart';
 import 'package:agriworx/features/fertilizer/data/fertilizer_data_repository.dart';
 import 'package:agriworx/features/fertilizer/domain/fertilizer_selection.dart';
 import 'package:agriworx/features/fertilizer/presentation/fertilizer_widget.dart';
 import 'package:agriworx/features/fertilizer/presentation/unit_widget.dart';
+import 'package:agriworx/features/nutrient/presentation/nutrient_bar.dart';
+import 'package:agriworx/style/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/constants.dart';
+import '../../nutrient/domain/nutrient.dart';
 import '../domain/amount.dart';
 import '../domain/fertilizer.dart';
 import '../domain/unit.dart';
 
-class SelectAmountDialog extends StatefulWidget {
+class SelectAmountDialog extends ConsumerStatefulWidget {
   const SelectAmountDialog({
     super.key,
+    required this.fertilizer,
     required this.weekNumber,
     required this.index,
-    required this.fertilizer,
-    this.amount,
-    required this.isNew,
   });
 
+  final Fertilizer fertilizer;
   final int weekNumber;
   final int index;
-  final Fertilizer fertilizer;
-  final Amount? amount;
-  final bool isNew;
 
   @override
-  State<SelectAmountDialog> createState() => _SelectAmountDialogState();
+  ConsumerState<SelectAmountDialog> createState() => _SelectAmountDialog2State();
 }
 
-class _SelectAmountDialogState extends State<SelectAmountDialog> {
+class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
   Unit? _selectedUnit;
   double _selectedQuantity = 0.0;
+  FertilizerSelection? _currentFertilizerSelection;
+
+  void _updateFertilizerSelection() {
+    if (_selectedUnit != null) {
+      _currentFertilizerSelection = FertilizerSelection(
+        fertilizer: widget.fertilizer,
+        amount: Amount(
+          count: _selectedQuantity,
+          unit: _selectedUnit!,
+        ),
+      );
+    }
+  }
 
   void selectNewUnit(Unit newUnit) {
     setState(() {
       _selectedUnit = newUnit;
+      _updateFertilizerSelection();
     });
   }
 
@@ -46,221 +58,229 @@ class _SelectAmountDialogState extends State<SelectAmountDialog> {
     if (_selectedQuantity < maximumQuantity) {
       setState(() {
         _selectedQuantity += 0.5;
+        _updateFertilizerSelection();
       });
     }
   }
 
   void decreaseQuantity() {
-    if (_selectedQuantity > 1) {
+    if (_selectedQuantity >= 0.5) {
       setState(() {
-        _selectedQuantity--;
+        _selectedQuantity -= 0.5;
+        _updateFertilizerSelection();
       });
     }
   }
 
-  /// create unit widget list
-  List<Widget> createUnitWidgets(Fertilizer fertilizer) {
-    List<Widget?> listOfWidgetsOrNull = Unit.values.map((u) {
-      if (fertilizer.name != 'MANURE' && u == Unit.tampeco) {
-        return null;
-      }
-      return GestureDetector(
-          onTap: () {
-            selectNewUnit(u);
-          },
-          child: UnitWidget(unit: u));
-    }).toList();
-
-    return listOfWidgetsOrNull.whereType<Widget>().toList();
-  }
-
   @override
   Widget build(BuildContext context) {
-    // create fertilizer widget list
-    final unitWidgets = createUnitWidgets(widget.fertilizer);
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: dialogHorizontalPadding,
-        vertical: dialogVerticalPadding,
-      ),
+    return DefaultDialog(
+      title: 'Choose Amount',
       child: LayoutBuilder(builder: (context, constraints) {
-        final maxWidth = constraints.maxWidth;
-        final maxHeight = constraints.maxHeight;
-        final availableWidth = min(maxWidth, dialogMaxWidth + 2 * dialogContentPadding);
-        final crossAxisCount =
-            min((availableWidth / fertilizerWidgetMaxWidth).round(), Unit.values.length);
-        final itemWidth = (availableWidth -
-                2 * dialogContentPadding -
-                (crossAxisCount - 1) * fertilizerWidgetSpacing) /
-            crossAxisCount;
+        final contentWidth = constraints.maxWidth;
 
-        final rowCount = (unitWidgets.length / crossAxisCount).ceil();
-        final areaHeight = rowCount * (itemWidth / fertilizerWidgetAspectRatio) +
-            (rowCount - 1) * fertilizerWidgetSpacing +
-            2 * dialogContentPadding;
-        final availableHeight = min(maxHeight, areaHeight);
-
-        return SimpleDialog(
-          title: const Text('Choose Amount'),
-          contentPadding: EdgeInsets.zero,
-          insetPadding: EdgeInsets.zero,
+        return Column(
           children: [
             SizedBox(
-              height: availableWidth / 3,
-              width: availableWidth,
+              height: contentWidth / 3,
+              width: contentWidth,
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      //color: Colors.blue,
-                      child: Center(
-                        child: FractionallySizedBox(
-                          //widthFactor: 0.3,
-                          heightFactor: 0.3,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
-                                child: IconButton(
-                                  //color: Colors.white,
-                                  onPressed: () {
-                                    decreaseQuantity();
-                                  },
-                                  icon: const Icon(Icons.remove),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                child: FittedBox(
-                                  child: Text(
-                                    _selectedQuantity.toString(),
-                                    style: const TextStyle(fontSize: 100),
-                                  ),
-                                ),
-                              ),
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
-                                child: IconButton(
-                                  //color: Colors.white,
-                                  onPressed: () {
-                                    increaseQuantity();
-                                  },
-                                  icon: const Icon(Icons.add),
-                                ),
-                              ),
-                            ],
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: AmountButtonWidget(
+                              iconData: Icons.add,
+                              onTapFunction: increaseQuantity,
+                            ),
                           ),
-                        ),
+                          Expanded(
+                            child: FittedBox(
+                              child: Text(
+                                _selectedQuantity.toStringAsFixed(1),
+                                style: const TextStyle(fontSize: 100),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: AmountButtonWidget(
+                              iconData: Icons.remove,
+                              onTapFunction: decreaseQuantity,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      color: Colors.yellow,
-                      child: Center(
-                        child: FractionallySizedBox(
-                          widthFactor: 0.7,
-                          heightFactor: 0.7,
-                          child: _selectedUnit == null
-                              ? Container(
-                                  color: Colors.grey,
-                                )
-                              : UnitWidget(
-                                  unit: _selectedUnit!,
+                  const SizedBox(width: 12),
+                  AspectRatio(
+                    aspectRatio: amountWidgetAspectRatio,
+                    child: _selectedUnit == null
+                        ? Center(
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.grey,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(12.0),
+                                child: Icon(
+                                  Icons.question_mark,
+                                  size: 42,
                                 ),
-                        ),
-                      ),
+                              ),
+                            ),
+                          )
+                        : UnitWidget(unit: _selectedUnit!),
+                  ),
+                  const SizedBox(width: 12),
+                  FertilizerWidget(fertilizer: widget.fertilizer),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              height: 70,
+              width: contentWidth,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: NutrientBar(
+                      nutrient: Nutrient.nitrogen,
+                      barColor: ColorPalette.nitrogenBar,
+                      currentNutrientValue:
+                          _currentFertilizerSelection?.getNutrientInGrams(Nutrient.nitrogen) ?? 0,
                     ),
                   ),
+                  const SizedBox(height: 4),
                   Expanded(
-                    child: Container(
-                      color: Colors.orange,
-                      child: Center(
-                        child: FractionallySizedBox(
-                          widthFactor: 0.7,
-                          heightFactor: 0.9,
-                          child: FertilizerWidget(
-                            fertilizer: widget.fertilizer,
-                          ),
-                        ),
-                      ),
+                    child: NutrientBar(
+                      nutrient: Nutrient.phosphorus,
+                      barColor: ColorPalette.phosphorusBar,
+                      currentNutrientValue:
+                          _currentFertilizerSelection?.getNutrientInGrams(Nutrient.phosphorus) ?? 0,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Expanded(
+                    child: NutrientBar(
+                      nutrient: Nutrient.potassium,
+                      barColor: ColorPalette.potassiumBar,
+                      currentNutrientValue:
+                          _currentFertilizerSelection?.getNutrientInGrams(Nutrient.potassium) ?? 0,
                     ),
                   ),
                 ],
               ),
             ),
-            Container(
-              width: availableWidth,
-              height: availableHeight,
-              color: Colors.red,
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: GridView.count(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(dialogContentPadding),
-                  childAspectRatio: 1,
-                  crossAxisCount: crossAxisCount,
-                  mainAxisSpacing: fertilizerWidgetSpacing,
-                  crossAxisSpacing: fertilizerWidgetSpacing,
-                  children: unitWidgets,
-                ),
-              ),
-            ),
+            const SizedBox(height: 20),
             SizedBox(
-              height: 120,
-              width: availableWidth,
-              child: FractionallySizedBox(
-                heightFactor: 0.9,
-                widthFactor: 0.9,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: FittedBox(
-                    child: Consumer(
-                      builder: (context, ref, child) {
-                        return IconButton(
-                          color: Colors.green,
-                          onPressed: _selectedUnit == null || _selectedQuantity == 0.0
-                              ? null
-                              : () {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                  final newFertilizerSelection = FertilizerSelection(
-                                    fertilizer: widget.fertilizer,
-                                    amount: Amount(
-                                      unit: _selectedUnit!,
-                                      count: _selectedQuantity,
-                                    ),
-                                  );
-                                  widget.isNew
-                                      ? ref
-                                          .read(fertilizerDataRepositoryProvider.notifier)
-                                          .addFertilizerSelection(
-                                            weekNumber: widget.weekNumber,
-                                            fertilizerSelection: newFertilizerSelection,
-                                          )
-                                      : ref
-                                          .read(fertilizerDataRepositoryProvider.notifier)
-                                          .changeFertilizerSelection(
-                                            weekNumber: widget.weekNumber,
-                                            index: widget.index,
-                                            fertilizerSelection: newFertilizerSelection,
-                                          );
-                                },
-                          icon: const Icon(
-                            Icons.check_circle_rounded,
-                            size: 100,
-                          ),
-                        );
-                      },
+              height: contentWidth / 3,
+              width: contentWidth,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SelectableUnitWidget(
+                      unit: Unit.glassBottlecap,
+                      onTapFunction: selectNewUnit,
                     ),
                   ),
+                  Expanded(
+                    child: SelectableUnitWidget(
+                      unit: Unit.blueBottlecap,
+                      onTapFunction: selectNewUnit,
+                    ),
+                  ),
+                  Expanded(
+                    child: widget.fertilizer.name == 'MANURE'
+                        ? SelectableUnitWidget(
+                            unit: Unit.tampeco,
+                            onTapFunction: selectNewUnit,
+                          )
+                        : Container(),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                icon: Icon(
+                  Icons.check_circle,
+                  size: 56,
+                  color:
+                      _selectedQuantity == 0 || _selectedUnit == null ? Colors.grey : Colors.green,
                 ),
+                onPressed: _selectedQuantity == 0 || _selectedUnit == null
+                    ? null
+                    : () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        ref
+                            .read(fertilizerDataRepositoryProvider.notifier)
+                            .changeOrAddFertilizerSelection(
+                              weekNumber: widget.weekNumber,
+                              index: widget.index,
+                              fertilizerSelection: _currentFertilizerSelection!,
+                            );
+                      },
               ),
             ),
           ],
         );
       }),
+    );
+  }
+}
+
+class AmountButtonWidget extends StatelessWidget {
+  const AmountButtonWidget({
+    super.key,
+    required this.iconData,
+    required this.onTapFunction,
+  });
+
+  final IconData iconData;
+  final Function onTapFunction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: ColorPalette.amountButtonBackground,
+        shape: BoxShape.circle,
+      ),
+      child: IconButton(
+        icon: Icon(iconData),
+        onPressed: () {
+          onTapFunction();
+        },
+      ),
+    );
+  }
+}
+
+class SelectableUnitWidget extends StatelessWidget {
+  const SelectableUnitWidget({
+    super.key,
+    required this.unit,
+    required this.onTapFunction,
+  });
+
+  final Unit unit;
+  final Function onTapFunction;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        onTapFunction(unit);
+      },
+      child: UnitWidget(unit: unit),
     );
   }
 }

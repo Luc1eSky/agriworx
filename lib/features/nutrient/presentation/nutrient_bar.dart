@@ -1,35 +1,29 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/constants.dart';
 import '../../../style/color_palette.dart';
-import '../../fertilizer/data/fertilizer_data_repository.dart';
 import '../domain/nutrient.dart';
 
-class NutrientBar extends ConsumerWidget {
+class NutrientBar extends StatelessWidget {
   const NutrientBar({
     required this.nutrient,
     required this.barColor,
-    required this.weekIndex,
+    required this.currentNutrientValue,
     this.maxValue = maxValueAllFertilizers,
     super.key,
   });
 
   final Nutrient nutrient;
   final Color barColor;
-  final int weekIndex;
+  final double currentNutrientValue;
   final double maxValue;
 
   //final double idealValue;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final currentNutrientValue = ref
-        .watch(fertilizerDataRepositoryProvider.notifier)
-        .getNutrientInGrams(nutrient: nutrient, weekNumber: weekIndex);
-
+  Widget build(BuildContext context) {
     // return % nutrient value of max limited to max
     final currentPercentage = currentNutrientValue / maxValue;
     final nutrientExceedsLimit = currentPercentage > 1;

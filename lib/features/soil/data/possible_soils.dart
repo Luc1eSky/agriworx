@@ -7,7 +7,7 @@ const List<Soil> possibleSoils = [
   Soil(
     name: 'grey soil',
     colorDescription: 'grey to orange',
-    imageString: "assets/pictures/grey_soil.png",
+    imageString: "assets/pictures/soil/grey_soil.png",
     fertility: 'low to moderate',
     waterAbsorbance: 'absorbs water quickly and dries quickly',
     characteristics: 'sandy but holds water',
@@ -15,7 +15,7 @@ const List<Soil> possibleSoils = [
   Soil(
     name: 'brown soil',
     colorDescription: 'reddish to deep brown',
-    imageString: 'assets/pictures/brown_soil.png',
+    imageString: 'assets/pictures/soil/brown_soil.png',
     fertility: 'fertile to very fertile',
     waterAbsorbance: 'absorbs water quickly and holds it for long',
     characteristics: 'friable, easy to work with, clay loam',
@@ -23,7 +23,7 @@ const List<Soil> possibleSoils = [
   Soil(
     name: 'black soil',
     colorDescription: 'black',
-    imageString: 'assets/pictures/black_soil.png',
+    imageString: 'assets/pictures/soil/black_soil.png',
     fertility: 'very fertile',
     waterAbsorbance: 'absorbs water slowly but holds it for long',
     characteristics: 'very sticky when wet, cracking clays',

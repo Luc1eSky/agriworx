@@ -9,11 +9,9 @@ class UnitWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey,
-      child: Center(
-        child: Text(unit.name),
-      ),
+    return Image.asset(
+      unit.imageName,
+      fit: BoxFit.cover,
     );
   }
 }

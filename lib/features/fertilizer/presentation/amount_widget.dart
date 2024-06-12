@@ -1,3 +1,4 @@
+import 'package:agriworx/features/fertilizer/presentation/unit_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
@@ -24,17 +25,14 @@ class AmountWidget extends StatelessWidget {
           )
         : Container(
             height: amountWidgetHeightRatio * itemWidth,
-            color: Colors.green,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+            ),
             child: Row(
               children: [
                 Expanded(
                   flex: 2,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      a.count.toString(),
-                    ),
-                  ),
+                  child: Center(child: Text(a.count.toString())),
                 ),
                 const Expanded(
                   child: Center(
@@ -48,12 +46,7 @@ class AmountWidget extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 4,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      a.unit.name,
-                    ),
-                  ),
+                  child: UnitWidget(unit: a.unit),
                 ),
               ],
             ),
