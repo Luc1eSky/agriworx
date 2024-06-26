@@ -53,18 +53,39 @@ class FertilizerDataRepository extends Notifier<FertilizerData> {
     }
   }
 
+  // /// change an existing fertilizer selection (specific week and index)
+  // void changeFertilizerSelection(
+  //     {required int weekNumber,
+  //     required int index,
+  //     required FertilizerSelection fertilizerSelection}) {
+  //   print('change fertilizer in week $weekNumber with index $index');
+  //   final copiedList = [...state.listOfSelectedFertilizers];
+  //   final weekList = [...copiedList[weekNumber]];
+  //
+  //   weekList[index] = fertilizerSelection;
+  //   copiedList[weekNumber] = weekList;
+  //   print(copiedList);
+  //   state = state.copyWith(listOfSelectedFertilizers: copiedList);
+  // }
+
   /// change an existing fertilizer selection (specific week and index)
-  void changeFertilizerSelection(
-      {required int weekNumber,
-      required int index,
-      required FertilizerSelection fertilizerSelection}) {
-    print('change fertilizer in week $weekNumber with index $index');
+  void removeFertilizerSelection({
+    required int weekNumber,
+    required int index,
+  }) {
     final copiedList = [...state.listOfSelectedFertilizers];
     final weekList = [...copiedList[weekNumber]];
 
-    weekList[index] = fertilizerSelection;
+    if (index >= weekList.length) {
+      print('Index outside of range!');
+      return;
+    }
+
+    // remove entry at specified location
+    weekList.removeAt(index);
+    // update copied list with modified week list
     copiedList[weekNumber] = weekList;
-    print(copiedList);
+    // update state
     state = state.copyWith(listOfSelectedFertilizers: copiedList);
   }
 

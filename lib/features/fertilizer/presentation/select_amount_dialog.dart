@@ -7,12 +7,19 @@ import 'package:agriworx/features/nutrient/presentation/nutrient_bar.dart';
 import 'package:agriworx/style/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../constants/constants.dart';
 import '../../nutrient/domain/nutrient.dart';
 import '../domain/amount.dart';
 import '../domain/fertilizer.dart';
 import '../domain/unit.dart';
+
+String convertNumber(double number) {
+  String formattedNumber = NumberFormat('0.0').format(number);
+  int spacesNeeded = 3 - formattedNumber.split('.')[0].length;
+  return spacesNeeded > 0 ? ' ' * spacesNeeded + formattedNumber : formattedNumber;
+}
 
 class SelectAmountDialog extends ConsumerStatefulWidget {
   const SelectAmountDialog({
@@ -138,6 +145,24 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
                   ),
                   const SizedBox(width: 12),
                   FertilizerWidget(fertilizer: widget.fertilizer),
+                  const SizedBox(width: 12),
+                  Expanded(
+                      child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      child: _currentFertilizerSelection == null
+                          ? null
+                          : FittedBox(
+                              child: Text(
+                                '${convertNumber(_currentFertilizerSelection!.getFertilizerInGrams())}g',
+                                //style: const TextStyle(fontSize: 50),
+                                style: const TextStyle(
+                                  fontSize: 50,
+                                ), // Ensures consistent width for digits
+                              ),
+                            ),
+                    ),
+                  )),
                 ],
               ),
             ),

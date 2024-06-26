@@ -24,7 +24,7 @@ class AnimatedAppBar extends ConsumerStatefulWidget implements PreferredSizeWidg
   ConsumerState<AnimatedAppBar> createState() => _AnimatedAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(200.0);
+  Size get preferredSize => const Size.fromHeight(500.0);
 }
 
 class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
@@ -69,7 +69,7 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
             onEnd: () => setState(() {}),
             height: hasSelectedFertilizer
                 ? isFoldedOut
-                    ? 220
+                    ? 360
                     : 140
                 : 50,
             child: Column(
@@ -87,7 +87,7 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                 if (hasSelectedFertilizer)
                   Expanded(
                     child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: screenMaxWidth),
+                      constraints: const BoxConstraints(maxWidth: screenMaxWidth * 1.5),
                       child: FractionallySizedBox(
                         widthFactor: cardsVerticalScreenRatio,
                         child: SfCartesianChart(
@@ -108,6 +108,28 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                           legend: Legend(
                             isVisible: isFoldedOut,
                             position: LegendPosition.right,
+                            textStyle: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            legendItemBuilder: (name, chartSeries, __, ___) => SizedBox(
+                              width: 60,
+                              height: 30,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      color: chartSeries?.color ?? Colors.transparent,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: FittedBox(
+                                      child: Text('$name'),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                           series: [
                             ColumnSeries<ChartData, String>(

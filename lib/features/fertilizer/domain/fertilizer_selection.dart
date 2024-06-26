@@ -20,22 +20,24 @@ class FertilizerSelection with _$FertilizerSelection {
   factory FertilizerSelection.fromJson(Map<String, Object?> json) =>
       _$FertilizerSelectionFromJson(json);
 
-  double getNutrientInGrams(Nutrient nutrient) {
-    final selectedUnit = amount.unit;
-
-    final specificWeightInGrams = switch (selectedUnit) {
+  double getFertilizerInGrams() {
+    final specifWeightInGrams = switch (amount.unit) {
       Unit.tampeco => fertilizer.weightTampecoInGrams,
       Unit.blueBottlecap => fertilizer.weightBlueCapInGrams,
       Unit.glassBottlecap => fertilizer.weightGlassCapInGrams,
     };
+    final fertilizerInGrams = amount.count * specifWeightInGrams;
+    return fertilizerInGrams;
+  }
 
+  double getNutrientInGrams(Nutrient nutrient) {
     final nutrientPercentage = switch (nutrient) {
       Nutrient.nitrogen => fertilizer.nitrogenPercentage,
       Nutrient.phosphorus => fertilizer.phosphorusPercentage,
       Nutrient.potassium => fertilizer.potassiumPercentage,
     };
 
-    final nutrientInGrams = amount.count * specificWeightInGrams * nutrientPercentage;
+    final nutrientInGrams = getFertilizerInGrams() * nutrientPercentage;
     // * nutrient.scalingFactor;
 
     return nutrientInGrams;

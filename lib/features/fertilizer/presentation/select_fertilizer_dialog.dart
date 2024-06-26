@@ -38,6 +38,7 @@ class SelectFertilizerDialog extends ConsumerWidget {
       fertilizersInWeek:
           ref.read(fertilizerDataRepositoryProvider.notifier).getSelectedFertilizers(weekNumber),
     );
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: dialogPadding,
@@ -66,7 +67,7 @@ class SelectFertilizerDialog extends ConsumerWidget {
           children: [
             SizedBox(
               width: availableWidth,
-              height: availableHeight,
+              height: availableHeight - 80,
               child: GridView(
                 padding: const EdgeInsets.all(dialogContentPadding),
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -78,6 +79,32 @@ class SelectFertilizerDialog extends ConsumerWidget {
                 children: fertilizerWidgets,
               ),
             ),
+            if (fertilizerSelection != null)
+              SizedBox(
+                height: 80,
+                child: Center(
+                  child: SizedBox(
+                    width: 160,
+                    height: 50,
+                    child: IconButton(
+                      style: IconButton.styleFrom(backgroundColor: Colors.orangeAccent),
+                      hoverColor: Colors.orange,
+                      highlightColor: Colors.deepOrange,
+                      onPressed: () {
+                        print('remove currently selected fertilizer');
+                        ref
+                            .read(fertilizerDataRepositoryProvider.notifier)
+                            .removeFertilizerSelection(
+                              weekNumber: weekNumber,
+                              index: index,
+                            );
+                        Navigator.of(context).pop();
+                      },
+                      icon: const Icon(Icons.delete),
+                    ),
+                  ),
+                ),
+              ),
           ],
         );
       }),
@@ -106,22 +133,15 @@ List<Widget> createFertilizerWidgets({
           ? null
           : () {
               showDialog(
-                  context: context,
-                  builder: (context) {
-                    return SelectAmountDialog(
-                      fertilizer: f,
-                      weekNumber: weekNumber,
-                      index: index,
-                    );
-
-                    //   SelectAmountDialog(
-                    //   weekNumber: weekNumber,
-                    //   index: index,
-                    //   fertilizer: f,
-                    //   amount: rememberedAmount,
-                    //   isNew: isNew,
-                    // );
-                  });
+                context: context,
+                builder: (context) {
+                  return SelectAmountDialog(
+                    fertilizer: f,
+                    weekNumber: weekNumber,
+                    index: index,
+                  );
+                },
+              );
             },
       child: FertilizerWidget(
         fertilizer: f,
