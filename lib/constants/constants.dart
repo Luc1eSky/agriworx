@@ -1,3 +1,6 @@
+// debugging
+const bool useEmulators = true;
+
 // general structure
 const int numberOfWeeks = 10;
 const int maxNumberOfFertilizersPerWeek = 3;

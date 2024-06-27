@@ -1,30 +1,65 @@
+import 'dart:convert';
+
 import 'package:agriworx/features/fertilizer/domain/fertilizer_selection.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../constants/constants.dart';
+import '../../../local_storage/data/local_storage_repository.dart';
 import '../../nutrient/domain/nutrient.dart';
 import '../domain/fertilizer.dart';
 import '../domain/fertilizer_data.dart';
 
+part 'fertilizer_data_repository.g.dart';
+
 List<List<FertilizerSelection>> listOfEmptyLists =
     List<List<FertilizerSelection>>.filled(numberOfWeeks, []);
 
-class FertilizerDataRepository extends Notifier<FertilizerData> {
-  //late final SharedPreferences _prefs;
-  //static const _startingLevelDataString = 'startingLevelData'; // key for storing data
+@riverpod
+class FertilizerDataRepository extends _$FertilizerDataRepository {
+  late final LocalStorageRepository _localStorage;
+  static const _currentFertilizerDataKey = 'currentFertilizerData'; // key for storing data
 
   @override
   FertilizerData build() {
-    // Important: shared prefs need to be initialized
-    // before any function is called (done in main before app starts)
-    //_prefs = ref.watch(sharedPreferencesProvider);
-    // this will be overridden once loadDataFromMemory() is called
-    return FertilizerData(listOfSelectedFertilizers: listOfEmptyLists);
+    // reference to local storage repository
+    _localStorage = ref.watch(localStorageRepositoryProvider);
+    // start with loaded values from memory
+    return loadFertilizerDataFromMemory();
+  }
+
+  /// save FertilizerData in local memory
+  void _saveCurrentStateLocally() {
+    print('save to memory');
+    _localStorage.setString(
+      key: _currentFertilizerDataKey,
+      value: jsonEncode(state.toJson()),
+    );
+  }
+
+  FertilizerData loadFertilizerDataFromMemory() {
+    // look for JSON data (map) in local memory
+    final loadedFertilizerDataMap = _localStorage.getMap(key: _currentFertilizerDataKey);
+    try {
+      // create FertilizerData object
+      final fertilizerData = FertilizerData.fromJson(loadedFertilizerDataMap!);
+      return fertilizerData;
+    } catch (error, stack) {
+      print('Could not load data from memory!');
+      _localStorage.deleteValueFromMemory(key: _currentFertilizerDataKey);
+      return FertilizerData(listOfSelectedFertilizers: listOfEmptyLists);
+    }
+  }
+
+  /// for testing only
+  Future<void> deleteMemory() async {
+    print('DELETE');
+    await _localStorage.deleteValueFromMemory(key: _currentFertilizerDataKey);
   }
 
   /// deleting all data
   void deleteAllData() {
     state = state.copyWith(listOfSelectedFertilizers: listOfEmptyLists);
+    _saveCurrentStateLocally();
   }
 
   /// return all currently selected fertilizers of a specific week
@@ -37,36 +72,6 @@ class FertilizerDataRepository extends Notifier<FertilizerData> {
     }).toList();
     return fertilizers;
   }
-
-  /// add a new fertilizer selection to a specific week
-  void addFertilizerSelection({
-    required int weekNumber,
-    required FertilizerSelection fertilizerSelection,
-  }) {
-    final copiedList = [...state.listOfSelectedFertilizers];
-    final weekList = [...copiedList[weekNumber]];
-    if (weekList.length < maxNumberOfFertilizersPerWeek) {
-      weekList.add(fertilizerSelection);
-      copiedList[weekNumber] = weekList;
-      print(copiedList);
-      state = state.copyWith(listOfSelectedFertilizers: copiedList);
-    }
-  }
-
-  // /// change an existing fertilizer selection (specific week and index)
-  // void changeFertilizerSelection(
-  //     {required int weekNumber,
-  //     required int index,
-  //     required FertilizerSelection fertilizerSelection}) {
-  //   print('change fertilizer in week $weekNumber with index $index');
-  //   final copiedList = [...state.listOfSelectedFertilizers];
-  //   final weekList = [...copiedList[weekNumber]];
-  //
-  //   weekList[index] = fertilizerSelection;
-  //   copiedList[weekNumber] = weekList;
-  //   print(copiedList);
-  //   state = state.copyWith(listOfSelectedFertilizers: copiedList);
-  // }
 
   /// change an existing fertilizer selection (specific week and index)
   void removeFertilizerSelection({
@@ -87,6 +92,7 @@ class FertilizerDataRepository extends Notifier<FertilizerData> {
     copiedList[weekNumber] = weekList;
     // update state
     state = state.copyWith(listOfSelectedFertilizers: copiedList);
+    _saveCurrentStateLocally();
   }
 
   /// change an existing fertilizer selection (specific week and index)
@@ -111,6 +117,7 @@ class FertilizerDataRepository extends Notifier<FertilizerData> {
         state = state.copyWith(listOfSelectedFertilizers: copiedList);
       }
     }
+    _saveCurrentStateLocally();
   }
 
   // returns a specific nutrient of a weekly selection in grams
@@ -124,8 +131,3 @@ class FertilizerDataRepository extends Notifier<FertilizerData> {
     return nutrientInGrams;
   }
 }
-
-final fertilizerDataRepositoryProvider =
-    NotifierProvider<FertilizerDataRepository, FertilizerData>(() {
-  return FertilizerDataRepository();
-});

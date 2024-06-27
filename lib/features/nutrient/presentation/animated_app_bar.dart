@@ -74,13 +74,23 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                 : 50,
             child: Column(
               children: [
-                const SizedBox(
+                SizedBox(
                   height: 40,
-                  child: FittedBox(
-                    child: Text(
-                      'Agriworks Test Version',
-                      style: TextStyle(fontSize: 100),
-                    ),
+                  child: Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          ref.read(fertilizerDataRepositoryProvider.notifier).deleteMemory();
+                        },
+                        child: const Text('DEL'),
+                      ),
+                      const FittedBox(
+                        child: Text(
+                          'Agriworks Test Version',
+                          style: TextStyle(fontSize: 100),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 //const SizedBox(height: 10),
