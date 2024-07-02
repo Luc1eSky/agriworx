@@ -1,1 +1,56 @@
-{"hosting":{"public":"build/web","ignore":["firebase.json","**/.*","**/node_modules/**"],"rewrites":[{"source":"**","destination":"/index.html"}]},"flutter":{"platforms":{"android":{"default":{"projectId":"agriworks-70402","appId":"1:481764329868:android:863979b06ec23017816ea9","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"agriworks-70402","configurations":{"android":"1:481764329868:android:863979b06ec23017816ea9","ios":"1:481764329868:ios:ea0a25445c137c2b816ea9","web":"1:481764329868:web:7e05512f6facb608816ea9"}}}}}}
+{
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "agriworks-70402",
+          "appId": "1:481764329868:android:863979b06ec23017816ea9",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "agriworks-70402",
+          "configurations": {
+            "android": "1:481764329868:android:863979b06ec23017816ea9",
+            "ios": "1:481764329868:ios:ea0a25445c137c2b816ea9",
+            "web": "1:481764329868:web:7e05512f6facb608816ea9"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  }
+}

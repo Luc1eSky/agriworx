@@ -50,11 +50,15 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     }
   }
 
-  /// for testing only
-  Future<void> deleteMemory() async {
-    print('DELETE');
-    await _localStorage.deleteValueFromMemory(key: _currentFertilizerDataKey);
+  void loadFertilizerDataFromSavedResult(FertilizerData fertilizerData) {
+    state = fertilizerData;
   }
+
+  // /// for testing only
+  // Future<void> deleteMemory() async {
+  //   print('DELETE');
+  //   await _localStorage.deleteValueFromMemory(key: _currentFertilizerDataKey);
+  // }
 
   /// deleting all data
   void deleteAllData() {

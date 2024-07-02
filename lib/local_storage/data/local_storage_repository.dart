@@ -21,6 +21,11 @@ class LocalStorageRepository {
     return _prefs.getString(key);
   }
 
+  // get a list of Strings from local memory
+  List<String>? getStringList({required String key}) {
+    return _prefs.getStringList(key);
+  }
+
   // get a double from local memory
   double? getDouble({required String key}) {
     return _prefs.getDouble(key);
@@ -49,6 +54,11 @@ class LocalStorageRepository {
   // store a String in local memory
   Future<bool> setString({required String key, required String value}) {
     return _prefs.setString(key, value);
+  }
+
+  // store a list of String in local memory
+  Future<bool> setStringList({required String key, required List<String> value}) {
+    return _prefs.setStringList(key, value);
   }
 
   // store a double in local memory

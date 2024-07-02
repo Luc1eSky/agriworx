@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../constants/constants.dart';
 import '../../fertilizer/data/fertilizer_data_repository.dart';
+import '../../result/presentation/load/load_result_button.dart';
 
 class ChartData {
   ChartData(this.x, this.y1, this.y2, this.y3);
@@ -74,17 +75,12 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                 : 50,
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 40,
                   child: Row(
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          ref.read(fertilizerDataRepositoryProvider.notifier).deleteMemory();
-                        },
-                        child: const Text('DEL'),
-                      ),
-                      const FittedBox(
+                      LoadResultButton(),
+                      FittedBox(
                         child: Text(
                           'Agriworks Test Version',
                           style: TextStyle(fontSize: 100),

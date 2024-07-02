@@ -1,4 +1,6 @@
+import 'package:agriworx/features/device_uid/presentation/login_gate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +9,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/constants.dart';
 import 'firebase_options.dart';
-import 'game_screen.dart';
 import 'local_storage/data/local_storage_repository.dart';
+import 'navigation/navigation_service.dart';
 
 Future<void> setupEmulators() async {
+  await FirebaseAuth.instance.useAuthEmulator('127.0.0.1', 9099); // host and port
   FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8080); // host and port
 }
 
@@ -53,12 +56,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Agriworks',
+      navigatorKey: NavigationService.navigatorKey,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const GameScreen(), //const SoilSelectionScreen(),
+      home: const LoginGate(), //const SoilSelectionScreen(),
     );
   }
 }

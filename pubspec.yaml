@@ -21,6 +21,7 @@ dependencies:
   syncfusion_flutter_charts: ^25.2.7 # for charts creation
   intl: ^0.19.0
   firebase_core: ^2.31.1 # required for any Firebase service
+  firebase_auth: ^4.19.6 # for identifying unique devices
   cloud_firestore: ^4.17.4 # to use firestore database
 
 dev_dependencies:

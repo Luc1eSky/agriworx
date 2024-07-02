@@ -12,6 +12,7 @@ import 'features/fertilizer/data/fertilizer_data_repository.dart';
 import 'features/fertilizer/presentation/fertilizer_selection_widget.dart';
 import 'features/nutrient/presentation/animated_app_bar.dart';
 import 'features/nutrient/presentation/nutrient_bar.dart';
+import 'features/result/presentation/save/save_result_button.dart';
 
 List<Widget> leadingWidgets = weekNames.map((name) {
   return SizedBox(
@@ -42,7 +43,6 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     controller = ScrollController();
     controller.addListener(() {
       ref.read(foldOutProvider.notifier).minimizeChart();
-      print('Scrolling');
     });
   }
 
@@ -61,6 +61,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
     return Scaffold(
       appBar: const AnimatedAppBar(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: const SaveResultButton(),
       body: Container(
         color: ColorPalette.background,
         child: Center(
