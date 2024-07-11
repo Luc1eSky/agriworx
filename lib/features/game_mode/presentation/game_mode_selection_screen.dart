@@ -8,7 +8,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/game_mode.dart';
 
 class GameModeSelectionScreen extends ConsumerWidget {
-  const GameModeSelectionScreen({super.key});
+  const GameModeSelectionScreen({super.key, required this.isClosable});
+
+  final bool isClosable;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -70,6 +72,15 @@ class GameModeSelectionScreen extends ConsumerWidget {
           ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      floatingActionButton: isClosable
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Icon(Icons.close),
+            )
+          : null,
     );
   }
 }

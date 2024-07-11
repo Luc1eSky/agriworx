@@ -14,9 +14,9 @@ class StartAppGate extends ConsumerWidget {
     // get current GameMode
     final gameMode = ref.watch(gameModeRepositoryProvider);
     return gameMode == null
-        ? const GameModeSelectionScreen()
+        ? const GameModeSelectionScreen(isClosable: false)
         : gameMode == GameMode.practice
             ? const GameScreen()
-            : const GameModeSelectionScreen();
+            : const GameModeSelectionScreen(isClosable: false);
   }
 }

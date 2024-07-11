@@ -96,7 +96,7 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const GameModeSelectionScreen(),
+                              builder: (context) => const GameModeSelectionScreen(isClosable: true),
                             ),
                           );
                         },
