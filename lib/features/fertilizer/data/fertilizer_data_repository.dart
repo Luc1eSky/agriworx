@@ -28,14 +28,15 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
   }
 
   /// save FertilizerData in local memory
-  void _saveCurrentStateLocally() {
+  Future<void> _saveCurrentStateLocally() async {
     print('save to memory');
-    _localStorage.setString(
+    await _localStorage.setString(
       key: _currentFertilizerDataKey,
       value: jsonEncode(state.toJson()),
     );
   }
 
+  /// load FertilizerData from local memory
   FertilizerData loadFertilizerDataFromMemory() {
     // look for JSON data (map) in local memory
     final loadedFertilizerDataMap = _localStorage.getMap(key: _currentFertilizerDataKey);
@@ -61,9 +62,9 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
   // }
 
   /// deleting all data
-  void deleteAllData() {
+  Future<void> deleteAllData() async {
     state = state.copyWith(listOfSelectedFertilizers: listOfEmptyLists);
-    _saveCurrentStateLocally();
+    await _saveCurrentStateLocally();
   }
 
   /// return all currently selected fertilizers of a specific week

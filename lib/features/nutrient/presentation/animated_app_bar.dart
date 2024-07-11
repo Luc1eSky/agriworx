@@ -1,4 +1,5 @@
 import 'package:agriworx/constants/week_names.dart';
+import 'package:agriworx/features/game_mode/presentation/game_mode_selection_screen.dart';
 import 'package:agriworx/features/nutrient/data/fold_out_provider.dart';
 import 'package:agriworx/features/nutrient/domain/nutrient.dart';
 import 'package:agriworx/style/color_palette.dart';
@@ -8,6 +9,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../constants/constants.dart';
 import '../../fertilizer/data/fertilizer_data_repository.dart';
+import '../../game_mode/data/game_mode_repository.dart';
+import '../../game_mode/domain/game_mode.dart';
 import '../../result/presentation/load/load_result_button.dart';
 
 class ChartData {
@@ -31,6 +34,8 @@ class AnimatedAppBar extends ConsumerStatefulWidget implements PreferredSizeWidg
 class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
   @override
   Widget build(BuildContext context) {
+    final gameMode = ref.watch(gameModeRepositoryProvider);
+
     final fertilizerData = ref.watch(fertilizerDataRepositoryProvider);
     final hasSelectedFertilizer = fertilizerData.listOfSelectedFertilizers.any((e) => e.isNotEmpty);
 
@@ -75,16 +80,27 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                 : 50,
             child: Column(
               children: [
-                const SizedBox(
+                SizedBox(
                   height: 40,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      LoadResultButton(),
-                      FittedBox(
+                      gameMode == GameMode.experiment ? const LoadResultButton() : const SizedBox(),
+                      const FittedBox(
                         child: Text(
                           'Agriworks Test Version',
                           style: TextStyle(fontSize: 100),
                         ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const GameModeSelectionScreen(),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.settings),
                       ),
                     ],
                   ),

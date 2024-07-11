@@ -1,5 +1,7 @@
 // debugging
-const bool useEmulators = true;
+const bool useEmulators = false;
+
+const unlockPin = '8008';
 
 // general structure
 const int numberOfWeeks = 10;

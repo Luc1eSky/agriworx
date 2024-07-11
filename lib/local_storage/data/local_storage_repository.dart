@@ -83,7 +83,7 @@ class LocalStorageRepository {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 LocalStorageRepository localStorageRepository(LocalStorageRepositoryRef ref) {
   // will be overwritten with SharedPrefs instance
   throw UnimplementedError();

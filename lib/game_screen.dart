@@ -1,5 +1,4 @@
-import 'package:agriworx/features/nutrient/data/fold_out_provider.dart';
-import 'package:agriworx/features/nutrient/domain/nutrient.dart';
+import 'package:agriworx/features/game_mode/data/game_mode_repository.dart';
 import 'package:agriworx/features/soil/data/soil_repository.dart';
 import 'package:agriworx/style/color_palette.dart';
 import 'package:agriworx/utils/utils.dart';
@@ -10,6 +9,9 @@ import 'constants/constants.dart';
 import 'constants/week_names.dart';
 import 'features/fertilizer/data/fertilizer_data_repository.dart';
 import 'features/fertilizer/presentation/fertilizer_selection_widget.dart';
+import 'features/game_mode/domain/game_mode.dart';
+import 'features/nutrient/data/fold_out_provider.dart';
+import 'features/nutrient/domain/nutrient.dart';
 import 'features/nutrient/presentation/animated_app_bar.dart';
 import 'features/nutrient/presentation/nutrient_bar.dart';
 import 'features/result/presentation/save/save_result_button.dart';
@@ -54,6 +56,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final gameMode = ref.watch(gameModeRepositoryProvider);
     final fertilizerData = ref.watch(fertilizerDataRepositoryProvider);
     final listOfSelectedFertilizers = fertilizerData.listOfSelectedFertilizers;
 
@@ -61,6 +64,26 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
     return Scaffold(
       appBar: const AnimatedAppBar(),
+      bottomSheet: gameMode == GameMode.practice
+          ? Container(
+              color: ColorPalette.practiceModeBottomBar,
+              height: 40,
+              child: const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: FittedBox(
+                    child: Text(
+                      'Practice Mode',
+                      style: TextStyle(
+                        fontSize: 100,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: const SaveResultButton(),
       body: Container(

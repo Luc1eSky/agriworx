@@ -12,4 +12,5 @@ class ColorPalette {
   static Color get potassiumBar => const Color.fromRGBO(223, 194, 93, 1.0);
   static Color get barBackground => const Color.fromRGBO(119, 119, 119, 1.0);
   static Color get amountButtonBackground => const Color.fromRGBO(185, 155, 251, 1.0);
+  static Color get practiceModeBottomBar => const Color.fromRGBO(255, 116, 25, 1.0);
 }
