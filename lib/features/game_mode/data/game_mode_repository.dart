@@ -42,7 +42,7 @@ class GameModeRepository extends _$GameModeRepository {
       final loadedGameMode = GameMode.values.byName(loadedGameModeString!);
       return loadedGameMode;
     } catch (error, stack) {
-      print('Could not load GameMode from memory! Starting in practice mode.');
+      print('Could not load GameMode from memory!');
       _localStorage.deleteValueFromMemory(key: _gameModeKey);
       return null;
     }

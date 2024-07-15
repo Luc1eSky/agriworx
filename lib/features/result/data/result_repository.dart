@@ -4,6 +4,7 @@ import 'package:agriworx/local_storage/data/local_storage_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../persons_involved/user/domain/user.dart';
 import '../domain/result.dart';
 
 part 'result_repository.g.dart';
@@ -20,7 +21,7 @@ class ResultRepository {
   static const String _resultsMemoryKey = 'results';
 
   // load results from memory
-  List<Result> loadResultsFromMemory() {
+  List<Result> loadResultsFromMemory(User currentUser) {
     // 1. get strings list from memory
     final stringList = localStorageRepository.getStringList(key: _resultsMemoryKey);
     if (stringList == null) {
@@ -28,7 +29,9 @@ class ResultRepository {
     }
     // 2. convert to list of results
     final resultList = stringList.map((string) => Result.fromJson(jsonDecode(string))).toList();
-    return resultList;
+
+    final filteredResultList = resultList.where((result) => result.user == currentUser).toList();
+    return filteredResultList;
   }
 
   // save result to memory

@@ -1,4 +1,7 @@
 import 'package:agriworx/features/game_mode/data/game_mode_repository.dart';
+import 'package:agriworx/features/persons_involved/enumerator/data/enumerator_repository.dart';
+import 'package:agriworx/features/persons_involved/presentation/select_user_and_enumerator_screen.dart';
+import 'package:agriworx/features/persons_involved/user/data/user_repository.dart';
 import 'package:agriworx/features/soil/data/soil_repository.dart';
 import 'package:agriworx/style/color_palette.dart';
 import 'package:agriworx/utils/utils.dart';
@@ -60,13 +63,74 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final fertilizerData = ref.watch(fertilizerDataRepositoryProvider);
     final listOfSelectedFertilizers = fertilizerData.listOfSelectedFertilizers;
 
+    final enumerator = ref.watch(enumeratorRepositoryProvider);
+    final user = ref.watch(userRepositoryProvider);
+
     final selectedSoil = ref.watch(soilRepositoryProvider);
 
     return Scaffold(
       appBar: const AnimatedAppBar(),
-      bottomSheet: gameMode == GameMode.practice
+      bottomSheet: gameMode == GameMode.experiment
           ? Container(
-              color: ColorPalette.practiceModeBottomBar,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              height: 80,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SelectUserAndEnumeratorScreen()),
+                          );
+                        },
+                        child: const Icon(
+                          Icons.people,
+                          size: 40,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: FittedBox(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Enumerator: ${enumerator?.firstName} ${enumerator?.lastName}',
+                                style: const TextStyle(
+                                  fontSize: 100,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'User: ${user?.firstName} ${user?.lastName}',
+                                style: const TextStyle(
+                                  fontSize: 100,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : Container(
+              decoration: BoxDecoration(
+                color: ColorPalette.practiceModeBottomBar,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              ),
               height: 40,
               child: const Center(
                 child: Padding(
@@ -82,10 +146,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                   ),
                 ),
               ),
-            )
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: const SaveResultButton(),
+            ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      // floatingActionButton: const SaveResultButton(),
       body: Container(
         color: ColorPalette.background,
         child: Center(
@@ -93,108 +156,121 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             padding: EdgeInsets.zero, //const EdgeInsets.only(top: cardsTopPadding),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: screenMaxWidth),
-              child: FractionallySizedBox(
-                widthFactor: cardsVerticalScreenRatio,
-                child: Center(
-                  child: ListView.builder(
-                    controller: controller,
-                    itemCount: numberOfWeeks,
-                    itemBuilder: (context, weekIndex) {
-                      final weekList = listOfSelectedFertilizers[weekIndex];
-                      return Card(
-                        color: ColorPalette.card,
-                        child: ListTile(
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: cardContentPadding),
-                          minVerticalPadding: cardContentPadding,
-                          subtitle: LayoutBuilder(
-                            builder: (context, constraints) {
-                              final maxWidth = constraints.maxWidth;
-                              final fertilizerMaxWidth = maxWidth - leadingWidgetWidth;
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  FractionallySizedBox(
+                    widthFactor: cardsVerticalScreenRatio,
+                    child: Center(
+                      child: ListView.builder(
+                        controller: controller,
+                        itemCount: numberOfWeeks,
+                        itemBuilder: (context, weekIndex) {
+                          final weekList = listOfSelectedFertilizers[weekIndex];
+                          return Card(
+                            color: ColorPalette.card,
+                            child: ListTile(
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: cardContentPadding),
+                              minVerticalPadding: cardContentPadding,
+                              subtitle: LayoutBuilder(
+                                builder: (context, constraints) {
+                                  final maxWidth = constraints.maxWidth;
+                                  final fertilizerMaxWidth = maxWidth - leadingWidgetWidth;
 
-                              final verticalGapHeight =
-                                  verticalGapRatio * getItemWidth(fertilizerMaxWidth);
+                                  final verticalGapHeight =
+                                      verticalGapRatio * getItemWidth(fertilizerMaxWidth);
 
-                              final itemList =
-                                  List.generate(maxNumberOfFertilizersPerWeek, (fertilizerIndex) {
-                                return FertilizerSelectionWidget(
-                                  maxWidth: fertilizerMaxWidth,
-                                  weekIndex: weekIndex,
-                                  fertilizerIndex: fertilizerIndex,
-                                  fertilizerSelection:
-                                      weekList.isNotEmpty && fertilizerIndex < weekList.length
-                                          ? weekList[fertilizerIndex]
-                                          : null,
-                                );
-                              });
-                              return Column(
-                                children: [
-                                  Row(
+                                  final itemList = List.generate(maxNumberOfFertilizersPerWeek,
+                                      (fertilizerIndex) {
+                                    return FertilizerSelectionWidget(
+                                      maxWidth: fertilizerMaxWidth,
+                                      weekIndex: weekIndex,
+                                      fertilizerIndex: fertilizerIndex,
+                                      fertilizerSelection:
+                                          weekList.isNotEmpty && fertilizerIndex < weekList.length
+                                              ? weekList[fertilizerIndex]
+                                              : null,
+                                    );
+                                  });
+                                  return Column(
                                     children: [
-                                      leadingWidgets[weekIndex],
-                                      Expanded(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: itemList,
+                                      Row(
+                                        children: [
+                                          leadingWidgets[weekIndex],
+                                          Expanded(
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: itemList,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 2 * verticalGapHeight),
+                                      AspectRatio(
+                                        aspectRatio: 5.0,
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              child: NutrientBar(
+                                                nutrient: Nutrient.nitrogen,
+                                                barColor: ColorPalette.nitrogenBar,
+                                                currentNutrientValue: ref
+                                                    .watch(
+                                                        fertilizerDataRepositoryProvider.notifier)
+                                                    .getNutrientInGrams(
+                                                      nutrient: Nutrient.nitrogen,
+                                                      weekNumber: weekIndex,
+                                                    ),
+                                              ),
+                                            ),
+                                            SizedBox(height: verticalGapHeight),
+                                            Expanded(
+                                              child: NutrientBar(
+                                                nutrient: Nutrient.phosphorus,
+                                                barColor: ColorPalette.phosphorusBar,
+                                                currentNutrientValue: ref
+                                                    .watch(
+                                                        fertilizerDataRepositoryProvider.notifier)
+                                                    .getNutrientInGrams(
+                                                      nutrient: Nutrient.phosphorus,
+                                                      weekNumber: weekIndex,
+                                                    ),
+                                              ),
+                                            ),
+                                            SizedBox(height: verticalGapHeight),
+                                            Expanded(
+                                              child: NutrientBar(
+                                                nutrient: Nutrient.potassium,
+                                                barColor: ColorPalette.potassiumBar,
+                                                currentNutrientValue: ref
+                                                    .watch(
+                                                        fertilizerDataRepositoryProvider.notifier)
+                                                    .getNutrientInGrams(
+                                                      nutrient: Nutrient.potassium,
+                                                      weekNumber: weekIndex,
+                                                    ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
-                                  ),
-                                  SizedBox(height: 2 * verticalGapHeight),
-                                  AspectRatio(
-                                    aspectRatio: 5.0,
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          child: NutrientBar(
-                                            nutrient: Nutrient.nitrogen,
-                                            barColor: ColorPalette.nitrogenBar,
-                                            currentNutrientValue: ref
-                                                .watch(fertilizerDataRepositoryProvider.notifier)
-                                                .getNutrientInGrams(
-                                                  nutrient: Nutrient.nitrogen,
-                                                  weekNumber: weekIndex,
-                                                ),
-                                          ),
-                                        ),
-                                        SizedBox(height: verticalGapHeight),
-                                        Expanded(
-                                          child: NutrientBar(
-                                            nutrient: Nutrient.phosphorus,
-                                            barColor: ColorPalette.phosphorusBar,
-                                            currentNutrientValue: ref
-                                                .watch(fertilizerDataRepositoryProvider.notifier)
-                                                .getNutrientInGrams(
-                                                  nutrient: Nutrient.phosphorus,
-                                                  weekNumber: weekIndex,
-                                                ),
-                                          ),
-                                        ),
-                                        SizedBox(height: verticalGapHeight),
-                                        Expanded(
-                                          child: NutrientBar(
-                                            nutrient: Nutrient.potassium,
-                                            barColor: ColorPalette.potassiumBar,
-                                            currentNutrientValue: ref
-                                                .watch(fertilizerDataRepositoryProvider.notifier)
-                                                .getNutrientInGrams(
-                                                  nutrient: Nutrient.potassium,
-                                                  weekNumber: weekIndex,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
-                ),
+                  const Positioned(
+                    bottom: 90,
+                    right: -10,
+                    child: SaveResultButton(),
+                  ),
+                ],
               ),
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:agriworx/features/persons_involved/user/data/user_repository.dart';
 import 'package:agriworx/features/result/presentation/load/loaded_results_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,8 +14,9 @@ class LoadResultButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
       onPressed: () {
-        final loadedResults = ref.read(resultRepositoryProvider).loadResultsFromMemory();
-        print(loadedResults);
+        final currentUser = ref.read(userRepositoryProvider);
+        final loadedResults =
+            ref.read(resultRepositoryProvider).loadResultsFromMemory(currentUser!);
 
         showDialog(
           context: context,

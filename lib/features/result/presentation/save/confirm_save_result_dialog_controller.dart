@@ -1,3 +1,5 @@
+import 'package:agriworx/features/persons_involved/enumerator/data/enumerator_repository.dart';
+import 'package:agriworx/features/persons_involved/user/data/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -29,7 +31,16 @@ class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogControl
       // TODO: WHAT IS THE UNIQUE ID DISPLAYED?
       final deviceCode = ref.read(deviceCodeRepositoryProvider).loadCodeFromMemory() ?? 'XXX';
       // create result
-      final result = Result(uid: deviceCode, comment: comment, fertilizerData: fertilizerData);
+
+      final currentUser = ref.read(userRepositoryProvider);
+      final currentEnumerator = ref.read(enumeratorRepositoryProvider);
+
+      final result = Result(
+        comment: comment,
+        fertilizerData: fertilizerData,
+        user: currentUser!,
+        enumerator: currentEnumerator!,
+      );
       final success = await ref.read(resultRepositoryProvider).saveResultToMemory(result);
       if (!success) {
         throw Exception('Could not write result to memory!');
