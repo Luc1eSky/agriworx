@@ -1,3 +1,6 @@
+# for files from envied package that contain API keys
+*.env
+
 # Miscellaneous
 *.class
 *.log

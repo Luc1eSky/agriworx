@@ -47,7 +47,7 @@ class UserRepository extends _$UserRepository {
       // create FertilizerData object
       final loadedUser = User.fromJson(loadedUserMap!);
       return loadedUser;
-    } catch (error, stack) {
+    } catch (error) {
       print('Could not load user from memory!');
       _localStorage.deleteValueFromMemory(key: _userKey);
       return null;

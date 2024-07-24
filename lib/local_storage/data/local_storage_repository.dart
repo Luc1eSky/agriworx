@@ -41,7 +41,7 @@ class LocalStorageRepository {
     String? loadedString = _prefs.getString(key);
     try {
       return jsonDecode(loadedString!);
-    } catch (error, stack) {
+    } catch (error) {
       return null;
     }
   }

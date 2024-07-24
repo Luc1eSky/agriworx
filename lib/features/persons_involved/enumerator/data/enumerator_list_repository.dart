@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../local_storage/data/local_storage_repository.dart';
-import '../../data/list_status.dart';
 import '../domain/enumerator.dart';
 import '../domain/enumerator_list.dart';
 
@@ -20,8 +19,8 @@ class EnumeratorListRepository extends _$EnumeratorListRepository {
   EnumeratorList? build() {
     // reference to local storage repository
     _localStorage = ref.watch(localStorageRepositoryProvider);
-    // this will be overridden once loadEnumeratorListFromMemoryAndCheckVersion() is called
-    return null;
+    // load from memory by default
+    return loadEnumeratorListFromMemory();
   }
 
   /// save EnumeratorList to local memory
@@ -37,60 +36,65 @@ class EnumeratorListRepository extends _$EnumeratorListRepository {
     }
   }
 
+  Future<void> saveNewEnumeratorList(EnumeratorList newEnumeratorList) async {
+    state = newEnumeratorList;
+    await _saveCurrentStateLocally();
+  }
+
   /// load Enumerator from local memory and check if there is a newer version
   /// available in firestore (returns true if newer version exists)
-  Future<ListStatus> loadEnumeratorListFromMemoryAndCheckVersion() async {
+  EnumeratorList? loadEnumeratorListFromMemory() {
     // try to load enumerator list from memory
     final enumeratorListMap = _localStorage.getMap(key: _enumeratorListKey);
     EnumeratorList? enumeratorListFromMemory;
     try {
       enumeratorListFromMemory = EnumeratorList.fromJson(enumeratorListMap!);
-      state = enumeratorListFromMemory;
       print('enumeratorListFromMemory: $enumeratorListFromMemory');
-    } catch (e, st) {
-      print('ERROR: $e,');
-      enumeratorListFromMemory = null;
+      return enumeratorListFromMemory;
+    } catch (e) {
+      print('ERROR: $e');
+      return null;
     }
-
-    // get updatedOn Datetime from list in memory (can be Datetime or null)
-    final updatedOnMemory = enumeratorListFromMemory?.updatedOn;
-
-    // try to get version document
-    final versionDocSnap = await _firestore.collection('enumerators').doc('version').get();
-
-    // check if version document is from firestore (not from cache!)
-    if (versionDocSnap.exists && !versionDocSnap.metadata.isFromCache) {
-      final DateTime updatedOnFirestore = versionDocSnap.get('updatedOn').toDate();
-      print('updatedOn: $updatedOnFirestore');
-
-      // if there is no version yet in memory, but one in firestore
-      if (updatedOnMemory == null) {
-        print('No enumerator list in memory, but found one online.');
-        return ListStatus.noListInMemoryButListInDatabase;
-      }
-
-      // check if version in firestore is newer than version in memory
-      if (updatedOnFirestore.isAfter(updatedOnMemory)) {
-        print('Enumerator list found in memory, but found newer one online.');
-        return ListStatus.listInMemoryButNewerListInDatabase;
-      }
-
-      // no newer version found in firestore
-      print('Enumerator list found in memory, but could not find newer one online.');
-      return ListStatus.listInMemoryNoNewerListInDatabase;
-    }
-    // handle case if no internet connection is available
-    else {
-      // no list in memory available
-      if (enumeratorListFromMemory == null) {
-        print('No enumerator list found in memory and no online connection.');
-        return ListStatus.noListInMemoryNoListInDatabase;
-      }
-
-      // no newer version available (no internet connection)
-      print('Enumerator list found in memory and no online connection.');
-      return ListStatus.listInMemoryNoNewerListInDatabase;
-    }
+    //
+    // // get updatedOn Datetime from list in memory (can be Datetime or null)
+    // final updatedOnMemory = enumeratorListFromMemory?.updatedOn;
+    //
+    // // try to get version document
+    // final versionDocSnap = await _firestore.collection('enumerators').doc('version').get();
+    //
+    // // check if version document is from firestore (not from cache!)
+    // if (versionDocSnap.exists && !versionDocSnap.metadata.isFromCache) {
+    //   final DateTime updatedOnFirestore = versionDocSnap.get('updatedOn').toDate();
+    //   print('updatedOn: $updatedOnFirestore');
+    //
+    //   // if there is no version yet in memory, but one in firestore
+    //   if (updatedOnMemory == null) {
+    //     print('No enumerator list in memory, but found one online.');
+    //     return ListStatus.noListInMemoryButListInDatabase;
+    //   }
+    //
+    //   // check if version in firestore is newer than version in memory
+    //   if (updatedOnFirestore.isAfter(updatedOnMemory)) {
+    //     print('Enumerator list found in memory, but found newer one online.');
+    //     return ListStatus.listInMemoryButNewerListInDatabase;
+    //   }
+    //
+    //   // no newer version found in firestore
+    //   print('Enumerator list found in memory, but could not find newer one online.');
+    //   return ListStatus.listInMemoryNoNewerListInDatabase;
+    // }
+    // // handle case if no internet connection is available
+    // else {
+    //   // no list in memory available
+    //   if (enumeratorListFromMemory == null) {
+    //     print('No enumerator list found in memory and no online connection.');
+    //     return ListStatus.noListInMemoryNoListInDatabase;
+    //   }
+    //
+    //   // no newer version available (no internet connection)
+    //   print('Enumerator list found in memory and no online connection.');
+    //   return ListStatus.listInMemoryNoNewerListInDatabase;
+    // }
   }
 
   /// download all enumerator documents and save EnumeratorList entry in memory
@@ -110,7 +114,7 @@ class EnumeratorListRepository extends _$EnumeratorListRepository {
     final enumerators = docSnapshots.map((docSnap) => Enumerator.fromJson(docSnap.data())).toList();
 
     // create EnumeratorList with datetime from version doc and enumerators
-    final downloadedEnumeratorList = EnumeratorList(updatedOn: updatedOn, enumerators: enumerators);
+    final downloadedEnumeratorList = EnumeratorList(enumerators: enumerators);
 
     print('downloadedEnumeratorList: $downloadedEnumeratorList');
 

@@ -7,7 +7,6 @@ part 'user_list.g.dart';
 @freezed
 class UserList with _$UserList {
   const factory UserList({
-    required DateTime updatedOn,
     required List<User> users,
   }) = _UserList;
 

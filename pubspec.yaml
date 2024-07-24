@@ -23,6 +23,9 @@ dependencies:
   firebase_core: ^2.31.1 # required for any Firebase service
   firebase_auth: ^4.19.6 # for identifying unique devices
   cloud_firestore: ^4.17.4 # to use firestore database
+  envied: ^0.5.4+1 # required to obscure API keys and other sensitive data
+  gsheets: ^0.5.0 # working with google sheets
+
 
 dev_dependencies:
   flutter_test:
@@ -40,6 +43,8 @@ dev_dependencies:
   json_serializable: ^6.7.1
   freezed: ^2.5.1
   riverpod_generator: ^2.4.0
+  envied_generator: ^0.5.4+1
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -83,3 +88,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  generate: true

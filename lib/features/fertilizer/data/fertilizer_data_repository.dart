@@ -44,15 +44,16 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
       // create FertilizerData object
       final fertilizerData = FertilizerData.fromJson(loadedFertilizerDataMap!);
       return fertilizerData;
-    } catch (error, stack) {
+    } catch (error) {
       print('Could not load data from memory!');
       _localStorage.deleteValueFromMemory(key: _currentFertilizerDataKey);
       return FertilizerData(listOfSelectedFertilizers: listOfEmptyLists);
     }
   }
 
-  void loadFertilizerDataFromSavedResult(FertilizerData fertilizerData) {
+  Future<void> loadFertilizerDataFromSavedResult(FertilizerData fertilizerData) async {
     state = fertilizerData;
+    await _saveCurrentStateLocally();
   }
 
   // /// for testing only

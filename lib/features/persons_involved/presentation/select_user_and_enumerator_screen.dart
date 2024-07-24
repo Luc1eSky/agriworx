@@ -5,7 +5,7 @@ import 'package:agriworx/features/persons_involved/user/data/user_repository.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../game_screen.dart';
+import '../../soil_and_round/repository/soil_and_round_selection_screen.dart';
 import '../enumerator/data/enumerator_list_repository.dart';
 import '../user/data/user_list_repository.dart';
 import '../user/domain/user.dart';
@@ -23,6 +23,13 @@ class SelectUserAndEnumeratorScreen extends ConsumerStatefulWidget {
 class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnumeratorScreen> {
   Enumerator? _selectedEnumerator;
   User? _selectedUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedEnumerator = ref.read(enumeratorRepositoryProvider);
+    _selectedUser = ref.read(userRepositoryProvider);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +60,7 @@ class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnu
                   style: TextStyle(fontSize: 24),
                 ),
                 DropdownButtonFormField(
+                  value: _selectedEnumerator,
                   decoration: const InputDecoration(hintText: 'please select'),
                   items: enumeratorList?.enumerators
                       .map(
@@ -81,6 +89,7 @@ class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnu
                   style: TextStyle(fontSize: 24),
                 ),
                 DropdownButtonFormField(
+                  value: _selectedUser,
                   decoration: const InputDecoration(hintText: 'please select'),
                   items: userList?.users
                       .map(
@@ -109,7 +118,7 @@ class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnu
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        // when user is switched delete data from game screen
+                        // when user is switched delete fertilizer data from game screen
                         if (_selectedUser != ref.read(userRepositoryProvider)) {
                           ref.read(fertilizerDataRepositoryProvider.notifier).deleteAllData();
                         }
@@ -123,7 +132,8 @@ class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnu
                         // move to game screen
                         if (context.mounted) {
                           Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => const GameScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => const SoilAndRoundSelectionScreen()),
                             (Route<dynamic> route) => false, // This will remove all previous routes
                           );
                         }

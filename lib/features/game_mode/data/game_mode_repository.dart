@@ -41,7 +41,7 @@ class GameModeRepository extends _$GameModeRepository {
       // create FertilizerData object
       final loadedGameMode = GameMode.values.byName(loadedGameModeString!);
       return loadedGameMode;
-    } catch (error, stack) {
+    } catch (error) {
       print('Could not load GameMode from memory!');
       _localStorage.deleteValueFromMemory(key: _gameModeKey);
       return null;

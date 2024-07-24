@@ -47,7 +47,7 @@ class EnumeratorRepository extends _$EnumeratorRepository {
       // create FertilizerData object
       final loadedEnumerator = Enumerator.fromJson(loadedEnumeratorMap!);
       return loadedEnumerator;
-    } catch (error, stack) {
+    } catch (error) {
       print('Could not load enumerator from memory!');
       _localStorage.deleteValueFromMemory(key: _enumeratorKey);
       return null;
