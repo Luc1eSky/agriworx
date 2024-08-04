@@ -25,6 +25,7 @@ class _ConfirmSaveResultDialogState extends ConsumerState<ConfirmSaveResultDialo
   Widget build(BuildContext context) {
     final asyncState = ref.watch(confirmSaveResultDialogControllerProvider);
     return DefaultDialog(
+      hasCloseButton: false,
       title: 'Confirm Save',
       child: Column(
         children: [

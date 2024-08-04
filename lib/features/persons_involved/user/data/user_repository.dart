@@ -39,6 +39,12 @@ class UserRepository extends _$UserRepository {
     await _saveCurrentStateLocally();
   }
 
+  /// deselect current user (in repo and memory)
+  Future<void> deselectUser() async {
+    state = null;
+    await _localStorage.deleteValueFromMemory(key: _userKey);
+  }
+
   /// load User from local memory
   User? loadUserFromMemory() {
     // look for String in local memory

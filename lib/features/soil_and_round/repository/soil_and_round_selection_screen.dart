@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:agriworx/features/persons_involved/user/data/user_repository.dart';
 import 'package:agriworx/features/result/data/result_repository.dart';
 import 'package:agriworx/features/soil_and_round/data/possible_soils.dart';
@@ -7,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../game_screen.dart';
 import '../../fertilizer/data/fertilizer_data_repository.dart';
-import '../../result/domain/result.dart';
+import '../../result/domain/round_result.dart';
 import '../domain/soil.dart';
 import '../domain/soil_and_round.dart';
 
@@ -23,14 +25,15 @@ class SoilAndRoundSelectionScreen extends ConsumerStatefulWidget {
 class _SoilAndRoundSelectionScreenState extends ConsumerState<SoilAndRoundSelectionScreen> {
   SoilType? _selectedSoilType;
   int? _selectedRound;
-  Result? _selectedResult;
+  RoundResult? _selectedResult;
   bool _roundFromScratchSelected = false;
 
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(userRepositoryProvider);
     final targetRounds = currentUser!.group.targetRounds;
-    final results = ref.read(resultRepositoryProvider).loadResultsFromMemory(currentUser);
+    final userResult = ref.read(resultRepositoryProvider).loadUserResultFromMemory(currentUser);
+    final roundResultsOfUser = userResult?.roundResults ?? [];
     return Scaffold(
       body: Container(
         color: Colors.yellow,
@@ -52,8 +55,9 @@ class _SoilAndRoundSelectionScreenState extends ConsumerState<SoilAndRoundSelect
                   final soilTypeString =
                       soilType.name[0].toUpperCase() + soilType.name.substring(1);
 
-                  final resultsOfSoilType =
-                      results.where((result) => result.soilAndRound.soil.type == soilType).toList();
+                  final resultsOfSoilType = roundResultsOfUser
+                      .where((result) => result.soilAndRound.soil.type == soilType)
+                      .toList();
 
                   final soilTypeResultCount = resultsOfSoilType.length;
                   final soilRoundFinished = soilTypeResultCount == targetRoundCount;
@@ -67,7 +71,7 @@ class _SoilAndRoundSelectionScreenState extends ConsumerState<SoilAndRoundSelect
                             });
                           },
                     label: Text('$soilTypeString Soil - Round '
-                        '${soilTypeResultCount + 1}/$targetRoundCount'),
+                        '${min(soilTypeResultCount + 1, targetRoundCount)}/$targetRoundCount'),
                     selected: _selectedSoilType == soilType,
                   );
                 }),
@@ -84,7 +88,7 @@ class _SoilAndRoundSelectionScreenState extends ConsumerState<SoilAndRoundSelect
                   label: const Text('new'),
                   selected: _roundFromScratchSelected,
                 ),
-                ...results.map(
+                ...roundResultsOfUser.map(
                   (result) => ChoiceChip(
                     onSelected: (bool selected) {
                       setState(() {

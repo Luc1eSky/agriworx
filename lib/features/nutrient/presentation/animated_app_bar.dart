@@ -10,8 +10,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../constants/constants.dart';
 import '../../fertilizer/data/fertilizer_data_repository.dart';
 import '../../game_mode/data/game_mode_repository.dart';
-import '../../game_mode/domain/game_mode.dart';
-import '../../result/presentation/load/load_result_button.dart';
 
 class ChartData {
   ChartData(this.x, this.y1, this.y2, this.y3);
@@ -37,7 +35,8 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
     final gameMode = ref.watch(gameModeRepositoryProvider);
 
     final fertilizerData = ref.watch(fertilizerDataRepositoryProvider);
-    final hasSelectedFertilizer = fertilizerData.listOfSelectedFertilizers.any((e) => e.isNotEmpty);
+    final hasSelectedFertilizer =
+        fertilizerData.listOfWeeklyFertilizerSelections.any((e) => e.selections.isNotEmpty);
 
     final isFoldedOut = ref.watch(foldOutProvider);
 
@@ -85,7 +84,8 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      gameMode == GameMode.experiment ? const LoadResultButton() : const SizedBox(),
+                      //gameMode == GameMode.experiment ? const LoadResultButton() : const
+                      //SizedBox(),
                       const FittedBox(
                         child: Text(
                           'Agriworks Test Version',

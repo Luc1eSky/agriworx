@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "481764329868",
+    "project_id": "agriworks-70402",
+    "storage_bucket": "agriworks-70402.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481764329868:android:863979b06ec23017816ea9",
+        "android_client_info": {
+          "package_name": "com.prosperplay.agriworx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwfsQXHZN6fN30Mmpizaq7Tst-rxIyEhI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

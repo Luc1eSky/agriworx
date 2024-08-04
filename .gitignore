@@ -1,3 +1,7 @@
+
+# for generated files
+*.freezed.dart
+*.g.dart
 # for files from envied package that contain API keys
 *.env
 

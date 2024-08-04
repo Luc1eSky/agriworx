@@ -82,6 +82,7 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
   @override
   Widget build(BuildContext context) {
     return DefaultDialog(
+      hasCloseButton: false,
       title: 'Choose Amount',
       child: LayoutBuilder(builder: (context, constraints) {
         final contentWidth = constraints.maxWidth;

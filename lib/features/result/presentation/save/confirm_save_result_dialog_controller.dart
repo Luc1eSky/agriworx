@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../navigation/navigation_service.dart';
 import '../../../fertilizer/data/fertilizer_data_repository.dart';
 import '../../data/result_repository.dart';
-import '../../domain/result.dart';
+import '../../domain/round_result.dart';
 
 part 'confirm_save_result_dialog_controller.g.dart';
 
@@ -29,24 +29,39 @@ class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogControl
       // get fertilizer data and device code
       final fertilizerData = ref.read(fertilizerDataRepositoryProvider);
 
-      // create result
-      final currentUser = ref.read(userRepositoryProvider);
+      // create round result
       final currentEnumerator = ref.read(enumeratorRepositoryProvider);
       final currentSoilAndRound = ref.read(soilAndRoundRepositoryProvider);
 
-      final result = Result(
+      final roundResult = RoundResult(
         comment: comment,
         fertilizerData: fertilizerData,
-        user: currentUser!,
         enumerator: currentEnumerator!,
         soilAndRound: currentSoilAndRound!,
+        startedOn: DateTime.now(), // TODO: UPDATE FROM MEMORY
+        finishedOn: DateTime.now(),
       );
-      final success = await ref.read(resultRepositoryProvider).saveResultToMemory(result);
+
+      // save round result to memory (add to user result)
+      final currentUser = ref.read(userRepositoryProvider);
+      final success = await ref
+          .read(resultRepositoryProvider)
+          .saveRoundResultToMemory(roundResult, currentUser!);
+
       if (!success) {
         throw Exception('Could not write result to memory!');
       }
+
       // delete current data if successful
       await ref.read(fertilizerDataRepositoryProvider.notifier).deleteAllData();
+
+      // check updated user result from memory
+      final userResult = ref.read(resultRepositoryProvider).loadUserResultFromMemory(currentUser);
+      // delete current user if all targets were met
+      if (userResult != null && userResult.isFinished) {
+        await ref.read(userRepositoryProvider.notifier).deselectUser();
+      }
+
       // pop dialog
       final context = NavigationService.navigatorKey.currentContext;
       if (context != null && context.mounted) {

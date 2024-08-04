@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:agriworx/features/fertilizer/domain/fertilizer_selection.dart';
+import 'package:agriworx/features/fertilizer/domain/weekly_fertilizer_selections.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../constants/constants.dart';
@@ -11,8 +12,9 @@ import '../domain/fertilizer_data.dart';
 
 part 'fertilizer_data_repository.g.dart';
 
-List<List<FertilizerSelection>> listOfEmptyLists =
-    List<List<FertilizerSelection>>.filled(numberOfWeeks, []);
+List<WeeklyFertilizerSelections> listWithNoFertilizerSelections =
+    List<WeeklyFertilizerSelections>.filled(
+        numberOfWeeks, const WeeklyFertilizerSelections(selections: []));
 
 @riverpod
 class FertilizerDataRepository extends _$FertilizerDataRepository {
@@ -47,7 +49,7 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     } catch (error) {
       print('Could not load data from memory!');
       _localStorage.deleteValueFromMemory(key: _currentFertilizerDataKey);
-      return FertilizerData(listOfSelectedFertilizers: listOfEmptyLists);
+      return FertilizerData(listOfWeeklyFertilizerSelections: listWithNoFertilizerSelections);
     }
   }
 
@@ -64,16 +66,16 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
 
   /// deleting all data
   Future<void> deleteAllData() async {
-    state = state.copyWith(listOfSelectedFertilizers: listOfEmptyLists);
+    state = state.copyWith(listOfWeeklyFertilizerSelections: listWithNoFertilizerSelections);
     await _saveCurrentStateLocally();
   }
 
   /// return all currently selected fertilizers of a specific week
   List<Fertilizer> getSelectedFertilizers(int weekNumber) {
     // get list of fertilizer selection of specific week
-    final fertilizerSelections = state.listOfSelectedFertilizers[weekNumber];
+    final fertilizerSelections = state.listOfWeeklyFertilizerSelections[weekNumber];
     // get only list of fertilizers (no amount)
-    final fertilizers = fertilizerSelections.map((f) {
+    final fertilizers = fertilizerSelections.selections.map((f) {
       return f.fertilizer;
     }).toList();
     return fertilizers;
@@ -84,8 +86,9 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     required int weekNumber,
     required int index,
   }) {
-    final copiedList = [...state.listOfSelectedFertilizers];
-    final weekList = [...copiedList[weekNumber]];
+    final copiedListOfWeeklyFertilizerSelections = [...state.listOfWeeklyFertilizerSelections];
+    final weeklyFertilizerSelections = copiedListOfWeeklyFertilizerSelections[weekNumber];
+    final weekList = [...weeklyFertilizerSelections.selections];
 
     if (index >= weekList.length) {
       print('Index outside of range!');
@@ -94,10 +97,13 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
 
     // remove entry at specified location
     weekList.removeAt(index);
+    // create new object
+    final newWeeklyFertilizerSelections = WeeklyFertilizerSelections(selections: weekList);
     // update copied list with modified week list
-    copiedList[weekNumber] = weekList;
+    copiedListOfWeeklyFertilizerSelections[weekNumber] = newWeeklyFertilizerSelections;
     // update state
-    state = state.copyWith(listOfSelectedFertilizers: copiedList);
+    state =
+        state.copyWith(listOfWeeklyFertilizerSelections: copiedListOfWeeklyFertilizerSelections);
     _saveCurrentStateLocally();
   }
 
@@ -107,31 +113,35 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     required int index,
     required FertilizerSelection fertilizerSelection,
   }) {
-    final copiedList = [...state.listOfSelectedFertilizers];
-    final weekList = [...copiedList[weekNumber]];
+    final copiedListOfWeeklyFertilizerSelections = [...state.listOfWeeklyFertilizerSelections];
+    final weeklyFertilizerSelections = copiedListOfWeeklyFertilizerSelections[weekNumber];
+    final weekList = [...weeklyFertilizerSelections.selections];
 
     if (weekList.length >= index + 1) {
       // change existing entry
       weekList[index] = fertilizerSelection;
-      copiedList[weekNumber] = weekList;
-      state = state.copyWith(listOfSelectedFertilizers: copiedList);
     } else {
-      // add new entry
-      if (weekList.length < maxNumberOfFertilizersPerWeek) {
-        weekList.add(fertilizerSelection);
-        copiedList[weekNumber] = weekList;
-        state = state.copyWith(listOfSelectedFertilizers: copiedList);
+      // add new entry if max number has not been reached
+      if (weekList.length == maxNumberOfFertilizersPerWeek) {
+        return;
       }
+      weekList.add(fertilizerSelection);
     }
+    // update state with modified week list
+    final updatedWeeklyFertilizerSelections = WeeklyFertilizerSelections(selections: weekList);
+    copiedListOfWeeklyFertilizerSelections[weekNumber] = updatedWeeklyFertilizerSelections;
+    state =
+        state.copyWith(listOfWeeklyFertilizerSelections: copiedListOfWeeklyFertilizerSelections);
+    // save current state locally
     _saveCurrentStateLocally();
   }
 
   // returns a specific nutrient of a weekly selection in grams
   double getNutrientInGrams({required Nutrient nutrient, required int weekNumber}) {
-    final weeklySelection = state.listOfSelectedFertilizers[weekNumber];
+    final weeklySelection = state.listOfWeeklyFertilizerSelections[weekNumber];
 
     double nutrientInGrams = 0;
-    for (var selection in weeklySelection) {
+    for (var selection in weeklySelection.selections) {
       nutrientInGrams += selection.getNutrientInGrams(nutrient);
     }
     return nutrientInGrams;

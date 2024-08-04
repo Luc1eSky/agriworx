@@ -27,15 +27,15 @@ class Group with _$Group {
 
     final listOfSoilsAndRounds = [
       SoilAndRound(
-        soil: Soil.fromJson({'type': SoilType.black.name}),
+        soil: Soil.fromGSheets(SoilType.black),
         round: blackSoilRounds,
       ),
       SoilAndRound(
-        soil: Soil.fromJson({'type': SoilType.brown.name}),
+        soil: Soil.fromGSheets(SoilType.brown),
         round: brownSoilRounds,
       ),
       SoilAndRound(
-        soil: Soil.fromJson({'type': SoilType.grey.name}),
+        soil: Soil.fromGSheets(SoilType.grey),
         round: greySoilRounds,
       ),
     ];

@@ -2,9 +2,13 @@ import 'package:agriworx/features/fertilizer/data/fertilizer_data_repository.dar
 import 'package:agriworx/features/persons_involved/enumerator/data/enumerator_repository.dart';
 import 'package:agriworx/features/persons_involved/enumerator/domain/enumerator.dart';
 import 'package:agriworx/features/persons_involved/user/data/user_repository.dart';
+import 'package:agriworx/features/result/data/result_repository.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../result/domain/user_result.dart';
+import '../../result/presentation/show/show_results_button.dart';
 import '../../soil_and_round/repository/soil_and_round_selection_screen.dart';
 import '../enumerator/data/enumerator_list_repository.dart';
 import '../user/data/user_list_repository.dart';
@@ -23,12 +27,14 @@ class SelectUserAndEnumeratorScreen extends ConsumerStatefulWidget {
 class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnumeratorScreen> {
   Enumerator? _selectedEnumerator;
   User? _selectedUser;
+  late List<UserResult> _userResultList;
 
   @override
   void initState() {
     super.initState();
     _selectedEnumerator = ref.read(enumeratorRepositoryProvider);
     _selectedUser = ref.read(userRepositoryProvider);
+    _userResultList = ref.read(resultRepositoryProvider).loadAllUserResultsFromMemory();
   }
 
   @override
@@ -92,10 +98,19 @@ class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnu
                   value: _selectedUser,
                   decoration: const InputDecoration(hintText: 'please select'),
                   items: userList?.users
+                      // only show users that have not finished yet
+                      .where((user) {
+                        final userResult =
+                            _userResultList.firstWhereOrNull((result) => result.user == user);
+                        if (userResult == null) {
+                          return true;
+                        }
+                        return !userResult.isFinished;
+                      })
                       .map(
                         (user) => DropdownMenuItem(
                           value: user,
-                          child: Text('${user.firstName} ${user.lastName} , '
+                          child: Text('${user.firstName} ${user.lastName}, '
                               'uid:${user.uid}'),
                         ),
                       )
@@ -141,6 +156,11 @@ class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnu
                     },
                     child: const Text('Start Experiment'),
                   ),
+                ),
+                const SizedBox(height: 80),
+                const Align(
+                  alignment: Alignment.center,
+                  child: ShowResultsButton(),
                 ),
               ],
             ),

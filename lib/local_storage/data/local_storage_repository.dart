@@ -81,6 +81,11 @@ class LocalStorageRepository {
   Future<bool> deleteValueFromMemory({required String key}) async {
     return _prefs.remove(key);
   }
+
+  // deletes all data in memory
+  Future<bool> deleteAll() async {
+    return _prefs.clear();
+  }
 }
 
 @Riverpod(keepAlive: true)

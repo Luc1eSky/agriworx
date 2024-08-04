@@ -63,15 +63,9 @@ class GameModeSelectionScreen extends ConsumerWidget {
                 onPressed: controllerState.isLoading || versionState == VersionState.noConnection
                     ? null
                     : () async {
-                        // final pinIsCorrect = await showDialog(
-                        //   context: context,
-                        //   builder: (context) => const PinDialog(),
-                        // );
-                        // if (pinIsCorrect) {
                         await ref
                             .read(gameModeSelectionScreenControllerProvider.notifier)
                             .checkAndDownloadListsFromSheets();
-                        //}
                       },
                 child: const Text('CHECK FOR UPDATE'),
               ),
@@ -115,6 +109,15 @@ class GameModeSelectionScreen extends ConsumerWidget {
                 const Text('Currently in Experiment Mode. You '
                     'might have unsaved data that will '
                     'be lost if switching to Practice Mode.'),
+
+              // const SizedBox(height: 40),
+              // ElevatedButton(
+              //   onPressed: () async {
+              //     await ref.read(localStorageRepositoryProvider).deleteAll();
+              //   },
+              //   child: const Text('DELETE ALL DATA'),
+              // ),
+
               const Spacer(),
             ],
           ),

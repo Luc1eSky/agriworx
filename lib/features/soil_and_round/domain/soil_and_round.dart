@@ -5,7 +5,7 @@ import 'soil.dart';
 part 'soil_and_round.freezed.dart';
 part 'soil_and_round.g.dart';
 
-/// class that holds all the info about the soil
+/// class that combines soil with a number of rounds
 @freezed
 class SoilAndRound with _$SoilAndRound {
   const factory SoilAndRound({
