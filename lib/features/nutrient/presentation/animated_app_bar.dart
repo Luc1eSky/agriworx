@@ -5,6 +5,7 @@ import 'package:agriworx/features/nutrient/domain/nutrient.dart';
 import 'package:agriworx/style/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../constants/constants.dart';
@@ -39,6 +40,8 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
         fertilizerData.listOfWeeklyFertilizerSelections.any((e) => e.selections.isNotEmpty);
 
     final isFoldedOut = ref.watch(foldOutProvider);
+
+    String formattedYield = NumberFormat('#,##0').format(fertilizerData.getYield());
 
     final List<ChartData> chartData = [
       for (int i = 0; i < weekNames.length; i += 1)
@@ -86,10 +89,10 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                     children: [
                       //gameMode == GameMode.experiment ? const LoadResultButton() : const
                       //SizedBox(),
-                      const FittedBox(
+                      FittedBox(
                         child: Text(
-                          'Agriworks Test Version',
-                          style: TextStyle(fontSize: 100),
+                          'Agriworks Test Version      YIELD: $formattedYield kg',
+                          style: const TextStyle(fontSize: 100),
                         ),
                       ),
                       IconButton(

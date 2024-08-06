@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 const availableFertilizers = [
   Fertilizer(
     name: 'CAN',
+    pricePerKilogramInUgx: 4000,
     imagePath: "assets/pictures/fertilizers/can.png",
     color: Colors.red,
     nitrogenPercentage: 0.27,
@@ -15,6 +16,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'DAP',
+    pricePerKilogramInUgx: 4200,
     imagePath: "assets/pictures/fertilizers/dap.png",
     color: Colors.blue,
     nitrogenPercentage: 0.18,
@@ -26,6 +28,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'MANURE',
+    pricePerKilogramInUgx: 0, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/manure.png",
     color: Colors.brown,
     nitrogenPercentage: 0.014,
@@ -37,6 +40,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'MOP',
+    pricePerKilogramInUgx: 4500,
     imagePath: "assets/pictures/fertilizers/mop.png",
     color: Colors.green,
     nitrogenPercentage: 0,
@@ -48,6 +52,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'NPK 17-17-17',
+    pricePerKilogramInUgx: 4000,
     imagePath: "assets/pictures/fertilizers/npk17-17-17.png",
     color: Colors.orange,
     nitrogenPercentage: 0.17,
@@ -59,6 +64,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'NPK 25-5-5',
+    pricePerKilogramInUgx: 3600,
     imagePath: "assets/pictures/fertilizers/npk25-5-5.png",
     color: Colors.purple,
     nitrogenPercentage: 0.25,
@@ -70,6 +76,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'UREA',
+    pricePerKilogramInUgx: 3800,
     imagePath: "assets/pictures/fertilizers/urea.png",
     color: Colors.yellow,
     nitrogenPercentage: 0.46,
@@ -81,6 +88,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'YaraMila Winner',
+    pricePerKilogramInUgx: 0, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
     color: Colors.yellow,
     nitrogenPercentage: 0.15,
@@ -92,6 +100,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'YaraLiva Nitrabor',
+    pricePerKilogramInUgx: 0, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
     color: Colors.yellow,
     nitrogenPercentage: 0.15,
@@ -103,6 +112,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'YaraMila Power',
+    pricePerKilogramInUgx: 0, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
     color: Colors.yellow,
     nitrogenPercentage: 0.13,
@@ -114,6 +124,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'Grainpulse Tomato',
+    pricePerKilogramInUgx: 0, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
     color: Colors.yellow,
     nitrogenPercentage: 0.24,
@@ -125,6 +136,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'Ammonium Sulphate',
+    pricePerKilogramInUgx: 0, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
     color: Colors.yellow,
     nitrogenPercentage: 0.21,

@@ -3,6 +3,7 @@ import 'package:agriworx/features/game_mode/data/game_mode_repository.dart';
 import 'package:agriworx/features/persons_involved/enumerator/data/enumerator_repository.dart';
 import 'package:agriworx/features/persons_involved/presentation/select_user_and_enumerator_screen.dart';
 import 'package:agriworx/features/persons_involved/user/data/user_repository.dart';
+import 'package:agriworx/features/yield/presentation/yield_button.dart';
 import 'package:agriworx/style/color_palette.dart';
 import 'package:agriworx/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -286,6 +287,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     bottom: 90,
                     right: -10,
                     child: SaveResultButton(),
+                  ),
+                  const Positioned(
+                    bottom: 90,
+                    left: -10,
+                    child: YieldButton(),
                   ),
                 ],
               ),

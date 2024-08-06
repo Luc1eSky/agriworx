@@ -30,6 +30,11 @@ class FertilizerSelection with _$FertilizerSelection {
     return fertilizerInGrams;
   }
 
+  double getCostsInUgx() {
+    final fertilizerInGrams = getFertilizerInGrams();
+    return fertilizerInGrams * fertilizer.pricePerGramInUgx;
+  }
+
   double getNutrientInGrams(Nutrient nutrient) {
     final nutrientPercentage = switch (nutrient) {
       Nutrient.nitrogen => fertilizer.nitrogenPercentage,

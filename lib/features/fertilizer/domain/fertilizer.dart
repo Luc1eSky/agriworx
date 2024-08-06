@@ -7,6 +7,8 @@ part 'fertilizer.g.dart';
 
 @freezed
 class Fertilizer with _$Fertilizer {
+  // needed for methods and getters
+  const Fertilizer._();
   const factory Fertilizer({
     required String name,
     required double nitrogenPercentage,
@@ -15,11 +17,14 @@ class Fertilizer with _$Fertilizer {
     required double weightTampecoInGrams,
     required double weightBlueCapInGrams,
     required double weightGlassCapInGrams,
+    required double pricePerKilogramInUgx,
     required String imagePath,
     @JsonKey(fromJson: _colorFromJson, toJson: _colorToJson) required Color color,
   }) = _Fertilizer;
 
   factory Fertilizer.fromJson(Map<String, Object?> json) => _$FertilizerFromJson(json);
+
+  double get pricePerGramInUgx => pricePerKilogramInUgx / 1000;
 }
 
 Color _colorFromJson(dynamic colorValue) {
