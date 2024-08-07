@@ -29,6 +29,8 @@ class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogControl
       // get fertilizer data and device code
       final fertilizerData = ref.read(fertilizerDataRepositoryProvider);
 
+      final yieldRevenueAndProfit = fertilizerData.getYieldRevenueAndProfit();
+
       // create round result
       final currentEnumerator = ref.read(enumeratorRepositoryProvider);
       final currentSoilAndRound = ref.read(soilAndRoundRepositoryProvider);
@@ -38,8 +40,11 @@ class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogControl
         fertilizerData: fertilizerData,
         enumerator: currentEnumerator!,
         soilAndRound: currentSoilAndRound!,
-        startedOn: DateTime.now(), // TODO: UPDATE FROM MEMORY
+        startedOn: fertilizerData.startedOn,
         finishedOn: DateTime.now(),
+        yieldInKg: yieldRevenueAndProfit.yieldInKg,
+        revenueInUgx: yieldRevenueAndProfit.revenueInUgx,
+        profitInUgx: yieldRevenueAndProfit.profitInUgx,
       );
 
       // save round result to memory (add to user result)

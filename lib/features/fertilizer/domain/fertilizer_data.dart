@@ -11,6 +11,7 @@ class FertilizerData with _$FertilizerData {
   const FertilizerData._();
   const factory FertilizerData({
     required List<WeeklyFertilizerSelections> listOfWeeklyFertilizerSelections,
+    required DateTime startedOn,
   }) = _FertilizerData;
 
   factory FertilizerData.fromJson(Map<String, Object?> json) => _$FertilizerDataFromJson(json);
@@ -37,7 +38,7 @@ class FertilizerData with _$FertilizerData {
     return totalCosts;
   }
 
-  double getYield() {
+  ({double yieldInKg, double revenueInUgx, double profitInUgx}) getYieldRevenueAndProfit() {
     double totalNitrogenInGrams = 0;
     double totalPhosphorusInGrams = 0;
     double totalPotassiumInGrams = 0;
@@ -59,7 +60,15 @@ class FertilizerData with _$FertilizerData {
         betaSumK * totalPotassiumInGrams +
         betaSplitNP * weeksWithNitrogenAndPhosphorus;
 
-    return expectedYieldInKgPerHa * numberOfHectares;
+    final expectedYieldInKg = expectedYieldInKgPerHa * numberOfHectares;
+    final expectedRevenue = expectedYieldInKg * marketPricePerKgInUgx;
+    final expectedProfit = expectedRevenue - getTotalCosts();
+
+    return (
+      yieldInKg: expectedYieldInKg,
+      revenueInUgx: expectedRevenue,
+      profitInUgx: expectedProfit
+    );
   }
 }
 

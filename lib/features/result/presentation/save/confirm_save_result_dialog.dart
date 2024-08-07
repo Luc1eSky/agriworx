@@ -1,10 +1,16 @@
+import 'package:agriworx/features/fertilizer/data/fertilizer_data_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../common_widgets/default_dialog.dart';
 import 'confirm_save_result_dialog_controller.dart';
 
 final _formKey = GlobalKey<FormState>();
+
+String getFormattedNumber(double number) {
+  return NumberFormat('#,###').format(number);
+}
 
 class ConfirmSaveResultDialog extends ConsumerStatefulWidget {
   const ConfirmSaveResultDialog({super.key});
@@ -24,11 +30,18 @@ class _ConfirmSaveResultDialogState extends ConsumerState<ConfirmSaveResultDialo
   @override
   Widget build(BuildContext context) {
     final asyncState = ref.watch(confirmSaveResultDialogControllerProvider);
+
+    final yieldData = ref.watch(fertilizerDataRepositoryProvider).getYieldRevenueAndProfit();
     return DefaultDialog(
       hasCloseButton: false,
-      title: 'Confirm Save',
+      title: 'Results',
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text('Expected Yield: ${getFormattedNumber(yieldData.yieldInKg)} kg'),
+          Text('Expected Return: ${getFormattedNumber(yieldData.revenueInUgx)} UGX'),
+          Text('Expected Profit: ${getFormattedNumber(yieldData.profitInUgx)} UGX'),
+          const SizedBox(height: 40),
           const Text(
               'Please confirm that you want to save the current selection in memory and reset.'),
           const SizedBox(height: 20),
@@ -76,7 +89,7 @@ class _ConfirmSaveResultDialogState extends ConsumerState<ConfirmSaveResultDialo
                               .saveResult(comment: comment);
                         }
                       },
-                child: const Text('OK'),
+                child: const Text('SAVE'),
               ),
             ],
           ),

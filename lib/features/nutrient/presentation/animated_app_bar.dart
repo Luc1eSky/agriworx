@@ -5,12 +5,10 @@ import 'package:agriworx/features/nutrient/domain/nutrient.dart';
 import 'package:agriworx/style/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../constants/constants.dart';
 import '../../fertilizer/data/fertilizer_data_repository.dart';
-import '../../game_mode/data/game_mode_repository.dart';
 
 class ChartData {
   ChartData(this.x, this.y1, this.y2, this.y3);
@@ -33,15 +31,11 @@ class AnimatedAppBar extends ConsumerStatefulWidget implements PreferredSizeWidg
 class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
   @override
   Widget build(BuildContext context) {
-    final gameMode = ref.watch(gameModeRepositoryProvider);
-
     final fertilizerData = ref.watch(fertilizerDataRepositoryProvider);
     final hasSelectedFertilizer =
         fertilizerData.listOfWeeklyFertilizerSelections.any((e) => e.selections.isNotEmpty);
 
     final isFoldedOut = ref.watch(foldOutProvider);
-
-    String formattedYield = NumberFormat('#,##0').format(fertilizerData.getYield());
 
     final List<ChartData> chartData = [
       for (int i = 0; i < weekNames.length; i += 1)
@@ -87,12 +81,11 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      //gameMode == GameMode.experiment ? const LoadResultButton() : const
-                      //SizedBox(),
-                      FittedBox(
+                      const SizedBox(),
+                      const FittedBox(
                         child: Text(
-                          'Agriworks Test Version      YIELD: $formattedYield kg',
-                          style: const TextStyle(fontSize: 100),
+                          'Agriworks Test Version',
+                          style: TextStyle(fontSize: 100),
                         ),
                       ),
                       IconButton(
@@ -149,7 +142,7 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                                   ),
                                   Expanded(
                                     child: FittedBox(
-                                      child: Text('$name'),
+                                      child: Text(name),
                                     ),
                                   ),
                                 ],
@@ -173,7 +166,6 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                               yValueMapper: (ChartData data, _) => data.y2,
                               color: ColorPalette.phosphorusBar,
                             ),
-
                             ColumnSeries<ChartData, String>(
                               name: 'K',
                               animationDuration: 100,
@@ -182,30 +174,6 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                               yValueMapper: (ChartData data, _) => data.y3,
                               color: ColorPalette.potassiumBar,
                             ),
-                            // StackedColumnSeries<ChartData, String>(
-                            //   name: 'N',
-                            //   animationDuration: 100,
-                            //   dataSource: chartData,
-                            //   xValueMapper: (ChartData data, _) => data.x,
-                            //   yValueMapper: (ChartData data, _) => data.y1,
-                            //   color: ColorPalette.nitrogenBar,
-                            // ),
-                            // StackedColumnSeries<ChartData, String>(
-                            //   name: 'P',
-                            //   animationDuration: 100,
-                            //   dataSource: chartData,
-                            //   xValueMapper: (ChartData data, _) => data.x,
-                            //   yValueMapper: (ChartData data, _) => data.y2,
-                            //   color: ColorPalette.phosphorusBar,
-                            // ),
-                            // StackedColumnSeries<ChartData, String>(
-                            //   name: 'K',
-                            //   animationDuration: 100,
-                            //   dataSource: chartData,
-                            //   xValueMapper: (ChartData data, _) => data.x,
-                            //   yValueMapper: (ChartData data, _) => data.y3,
-                            //   color: ColorPalette.potassiumBar,
-                            // ),
                           ],
                         ),
                       ),

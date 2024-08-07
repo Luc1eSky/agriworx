@@ -1,5 +1,4 @@
 import 'package:agriworx/features/persons_involved/enumerator/domain/enumerator.dart';
-import 'package:agriworx/features/persons_involved/user/domain/user.dart';
 import 'package:agriworx/features/soil_and_round/domain/soil_and_round.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -17,6 +16,9 @@ class RoundResult with _$RoundResult {
     required SoilAndRound soilAndRound,
     required DateTime startedOn,
     required DateTime finishedOn,
+    required double yieldInKg,
+    required double revenueInUgx,
+    required double profitInUgx,
   }) = _RoundResult;
 
   factory RoundResult.fromJson(Map<String, Object?> json) => _$RoundResultFromJson(json);

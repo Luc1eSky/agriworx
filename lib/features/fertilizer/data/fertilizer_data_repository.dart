@@ -49,12 +49,15 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     } catch (error) {
       print('Could not load data from memory!');
       _localStorage.deleteValueFromMemory(key: _currentFertilizerDataKey);
-      return FertilizerData(listOfWeeklyFertilizerSelections: listWithNoFertilizerSelections);
+      return FertilizerData(
+        listOfWeeklyFertilizerSelections: listWithNoFertilizerSelections,
+        startedOn: DateTime.now(),
+      );
     }
   }
 
   Future<void> loadFertilizerDataFromSavedResult(FertilizerData fertilizerData) async {
-    state = fertilizerData;
+    state = fertilizerData.copyWith(startedOn: DateTime.now());
     await _saveCurrentStateLocally();
   }
 
@@ -66,7 +69,10 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
 
   /// deleting all data
   Future<void> deleteAllData() async {
-    state = state.copyWith(listOfWeeklyFertilizerSelections: listWithNoFertilizerSelections);
+    state = state.copyWith(
+      listOfWeeklyFertilizerSelections: listWithNoFertilizerSelections,
+      startedOn: DateTime.now(),
+    );
     await _saveCurrentStateLocally();
   }
 
