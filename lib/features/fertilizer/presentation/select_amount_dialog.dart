@@ -55,6 +55,14 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
   }
 
   void selectNewUnit(Unit newUnit) {
+    if (newUnit == _selectedUnit) {
+      return;
+    }
+    if (newUnit == Unit.grams || _selectedUnit == Unit.grams) {
+      // reset amount to 0
+      _selectedQuantity = 0;
+    }
+
     setState(() {
       _selectedUnit = newUnit;
       _updateFertilizerSelection();
@@ -100,10 +108,12 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
                       child: Column(
                         children: [
                           Expanded(
-                            child: AmountButtonWidget(
-                              iconData: Icons.add,
-                              onTapFunction: increaseQuantity,
-                            ),
+                            child: _selectedUnit == Unit.grams
+                                ? const SizedBox()
+                                : AmountButtonWidget(
+                                    iconData: Icons.add,
+                                    onTapFunction: increaseQuantity,
+                                  ),
                           ),
                           Expanded(
                             child: FittedBox(
@@ -114,10 +124,12 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
                             ),
                           ),
                           Expanded(
-                            child: AmountButtonWidget(
-                              iconData: Icons.remove,
-                              onTapFunction: decreaseQuantity,
-                            ),
+                            child: _selectedUnit == Unit.grams
+                                ? const SizedBox()
+                                : AmountButtonWidget(
+                                    iconData: Icons.remove,
+                                    onTapFunction: decreaseQuantity,
+                                  ),
                           ),
                         ],
                       ),
@@ -167,6 +179,55 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
                 ],
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            if (_selectedUnit == Unit.grams)
+              Slider(
+                value: _selectedQuantity,
+                max: 50,
+                inactiveColor: Colors.grey,
+                divisions: (50 / 0.1).round(),
+                onChanged: (double value) {
+                  setState(() {
+                    _selectedQuantity = value;
+                    _updateFertilizerSelection();
+                  });
+                },
+              ),
+            SizedBox(
+              height: contentWidth / 3,
+              width: contentWidth,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SelectableUnitWidget(
+                      unit: Unit.glassBottlecap,
+                      onTapFunction: selectNewUnit,
+                    ),
+                  ),
+                  Expanded(
+                    child: SelectableUnitWidget(
+                      unit: Unit.blueBottlecap,
+                      onTapFunction: selectNewUnit,
+                    ),
+                  ),
+                  Expanded(
+                    child: SelectableUnitWidget(
+                      unit: Unit.grams,
+                      onTapFunction: selectNewUnit,
+                    ),
+                  ),
+                  if (widget.fertilizer.name == 'MANURE')
+                    Expanded(
+                      child: SelectableUnitWidget(
+                        unit: Unit.tampeco,
+                        onTapFunction: selectNewUnit,
+                      ),
+                    ),
+                ],
+              ),
+            ),
             const SizedBox(height: 16),
             SizedBox(
               height: 70,
@@ -203,35 +264,6 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
               ),
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              height: contentWidth / 3,
-              width: contentWidth,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SelectableUnitWidget(
-                      unit: Unit.glassBottlecap,
-                      onTapFunction: selectNewUnit,
-                    ),
-                  ),
-                  Expanded(
-                    child: SelectableUnitWidget(
-                      unit: Unit.blueBottlecap,
-                      onTapFunction: selectNewUnit,
-                    ),
-                  ),
-                  Expanded(
-                    child: widget.fertilizer.name == 'MANURE'
-                        ? SelectableUnitWidget(
-                            unit: Unit.tampeco,
-                            onTapFunction: selectNewUnit,
-                          )
-                        : Container(),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(

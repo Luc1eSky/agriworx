@@ -25,6 +25,7 @@ class FertilizerSelection with _$FertilizerSelection {
       Unit.tampeco => fertilizer.weightTampecoInGrams,
       Unit.blueBottlecap => fertilizer.weightBlueCapInGrams,
       Unit.glassBottlecap => fertilizer.weightGlassCapInGrams,
+      Unit.grams => 1.0,
     };
     final fertilizerInGrams = amount.count * specifWeightInGrams;
     return fertilizerInGrams;

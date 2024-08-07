@@ -25,14 +25,14 @@ class AmountWidget extends StatelessWidget {
           )
         : Container(
             height: amountWidgetHeightRatio * itemWidth,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.grey,
             ),
             child: Row(
               children: [
                 Expanded(
                   flex: 2,
-                  child: Center(child: Text(a.count.toString())),
+                  child: Center(child: Text(a.count.toStringAsFixed(1))),
                 ),
                 const Expanded(
                   child: Center(

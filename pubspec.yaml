@@ -25,6 +25,7 @@ dependencies:
   cloud_firestore: ^4.17.4 # to use firestore database
   envied: ^0.5.4+1 # required to obscure API keys and other sensitive data
   gsheets: ^0.5.0 # working with google sheets
+  normal: ^0.7.0
 
 
 dev_dependencies:

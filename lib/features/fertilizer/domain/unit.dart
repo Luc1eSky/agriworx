@@ -18,6 +18,7 @@ enum Unit {
   tampeco,
   blueBottlecap,
   glassBottlecap,
+  grams,
 }
 
 extension UnitExtension on Unit {
@@ -30,6 +31,8 @@ extension UnitExtension on Unit {
         return 'assets/pictures/units/blue_bottle_cap.png';
       case Unit.glassBottlecap:
         return 'assets/pictures/units/glass_bottle_cap.png';
+      case Unit.grams:
+        return 'assets/pictures/units/scale_grams.png';
     }
   }
 
@@ -42,6 +45,8 @@ extension UnitExtension on Unit {
         return 'Blue Bottlecap';
       case Unit.glassBottlecap:
         return 'Glass Bottlecap';
+      case Unit.grams:
+        return 'Grams';
     }
   }
 }

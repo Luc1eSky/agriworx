@@ -38,9 +38,20 @@ class _ConfirmSaveResultDialogState extends ConsumerState<ConfirmSaveResultDialo
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Expected Yield: ${getFormattedNumber(yieldData.yieldInKg)} kg'),
-          Text('Expected Return: ${getFormattedNumber(yieldData.revenueInUgx)} UGX'),
-          Text('Expected Profit: ${getFormattedNumber(yieldData.profitInUgx)} UGX'),
+          Text(
+            'Expected Yield: ${getFormattedNumber(yieldData.yieldInKg)} kg',
+            style: const TextStyle(fontSize: 20),
+          ),
+          Text(
+            'Expected Return: ${getFormattedNumber(yieldData.revenueInUgx)} UGX',
+            style: const TextStyle(fontSize: 20),
+          ),
+          Text(
+            'Expected Profit: ${getFormattedNumber(yieldData.profitInUgx)} UGX',
+            style: const TextStyle(fontSize: 20),
+          ),
+          const SizedBox(height: 12),
+          const Text('includes random shock'),
           const SizedBox(height: 40),
           const Text(
               'Please confirm that you want to save the current selection in memory and reset.'),

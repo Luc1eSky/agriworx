@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:agriworx/features/fertilizer/domain/weekly_fertilizer_selections.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:normal/normal.dart';
 
 import '../../nutrient/domain/nutrient.dart';
 
@@ -61,13 +64,25 @@ class FertilizerData with _$FertilizerData {
         betaSplitNP * weeksWithNitrogenAndPhosphorus;
 
     final expectedYieldInKg = expectedYieldInKgPerHa * numberOfHectares;
-    final expectedRevenue = expectedYieldInKg * marketPricePerKgInUgx;
-    final expectedProfit = expectedRevenue - getTotalCosts();
+    final expectedRevenueInUgx = expectedYieldInKg * marketPricePerKgInUgx;
+    final expectedProfitInUgx = expectedRevenueInUgx - getTotalCosts();
+
+    // Input determined by agronomic trial
+    double perHectareStandardError = 4.0;
+
+    double netStandardError = numberOfHectares * perHectareStandardError;
+
+    final yieldShockInKg = Normal(0.0, pow(netStandardError, 2)).generate(1).first.toDouble();
+    final revenueShockInUgx = yieldShockInKg * marketPricePerKgInUgx;
+
+    final randomYieldInKg = expectedYieldInKg + yieldShockInKg;
+    final randomRevenueInUgx = expectedRevenueInUgx + revenueShockInUgx;
+    final randomProfitInUgx = randomRevenueInUgx - getTotalCosts();
 
     return (
-      yieldInKg: expectedYieldInKg,
-      revenueInUgx: expectedRevenue,
-      profitInUgx: expectedProfit
+      yieldInKg: randomYieldInKg,
+      revenueInUgx: randomRevenueInUgx,
+      profitInUgx: randomProfitInUgx
     );
   }
 }
