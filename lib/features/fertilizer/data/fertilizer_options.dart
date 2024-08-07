@@ -87,62 +87,74 @@ const availableFertilizers = [
     weightGlassCapInGrams: 2.8,
   ),
   Fertilizer(
+    name: 'TSP',
+    pricePerKilogramInUgx: 4000,
+    imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
+    color: Colors.yellow,
+    nitrogenPercentage: 0,
+    phosphorusPercentage: 0.46,
+    potassiumPercentage: 0,
+    weightTampecoInGrams: 500,
+    weightBlueCapInGrams: 7,
+    weightGlassCapInGrams: 4,
+  ),
+  Fertilizer(
     name: 'YaraMila Winner',
-    pricePerKilogramInUgx: 0, // TODO: UPDATE
+    pricePerKilogramInUgx: 5000, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
     color: Colors.yellow,
     nitrogenPercentage: 0.15,
     phosphorusPercentage: 0.09,
     potassiumPercentage: 0.20,
-    weightTampecoInGrams: 0,
+    weightTampecoInGrams: 500,
     weightBlueCapInGrams: 7.0,
     weightGlassCapInGrams: 4.1,
   ),
   Fertilizer(
     name: 'YaraLiva Nitrabor',
-    pricePerKilogramInUgx: 0, // TODO: UPDATE
+    pricePerKilogramInUgx: 5000, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
     color: Colors.yellow,
     nitrogenPercentage: 0.15,
     phosphorusPercentage: 0,
     potassiumPercentage: 0,
-    weightTampecoInGrams: 0,
+    weightTampecoInGrams: 500,
     weightBlueCapInGrams: 7.5,
     weightGlassCapInGrams: 4.3,
   ),
   Fertilizer(
     name: 'YaraMila Power',
-    pricePerKilogramInUgx: 0, // TODO: UPDATE
+    pricePerKilogramInUgx: 5000, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
     color: Colors.yellow,
     nitrogenPercentage: 0.13,
     phosphorusPercentage: 0.24,
     potassiumPercentage: 0.12,
-    weightTampecoInGrams: 0,
+    weightTampecoInGrams: 500,
     weightBlueCapInGrams: 6.9,
     weightGlassCapInGrams: 3.8,
   ),
   Fertilizer(
     name: 'Grainpulse Tomato',
-    pricePerKilogramInUgx: 0, // TODO: UPDATE
+    pricePerKilogramInUgx: 5000, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
     color: Colors.yellow,
     nitrogenPercentage: 0.24,
     phosphorusPercentage: 0.16,
     potassiumPercentage: 0.14,
-    weightTampecoInGrams: 0,
+    weightTampecoInGrams: 500,
     weightBlueCapInGrams: 6.4,
     weightGlassCapInGrams: 3.8,
   ),
   Fertilizer(
     name: 'Ammonium Sulphate',
-    pricePerKilogramInUgx: 0, // TODO: UPDATE
+    pricePerKilogramInUgx: 5000, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
     color: Colors.yellow,
     nitrogenPercentage: 0.21,
     phosphorusPercentage: 0,
     potassiumPercentage: 0,
-    weightTampecoInGrams: 0,
+    weightTampecoInGrams: 500,
     weightBlueCapInGrams: 7.7,
     weightGlassCapInGrams: 4.1,
   ),
