@@ -35,8 +35,9 @@ class SelectFertilizerDialog extends ConsumerWidget {
       selectedFertilizer: fertilizerSelection?.fertilizer,
       selectedAmount: fertilizerSelection?.amount,
       context: context,
-      fertilizersInWeek:
-          ref.read(fertilizerDataRepositoryProvider.notifier).getSelectedFertilizers(weekNumber),
+      fertilizersInWeek: ref
+          .read(fertilizerDataRepositoryProvider.notifier)
+          .getSelectedFertilizers(weekNumber),
     );
 
     return Padding(
@@ -47,17 +48,20 @@ class SelectFertilizerDialog extends ConsumerWidget {
       child: LayoutBuilder(builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
         final maxHeight = constraints.maxHeight;
-        final availableWidth = min(maxWidth, dialogMaxWidth + 2 * dialogContentPadding);
-        final crossAxisCount = (availableWidth / fertilizerWidgetMaxWidth).round();
+        final availableWidth =
+            min(maxWidth, dialogMaxWidth + 2 * dialogContentPadding);
+        final crossAxisCount =
+            (availableWidth / fertilizerWidgetMaxWidth).round();
         final itemWidth = (availableWidth -
                 2 * dialogContentPadding -
                 (crossAxisCount - 1) * fertilizerWidgetSpacing) /
             crossAxisCount;
 
         final rowCount = (fertilizerWidgets.length / crossAxisCount).ceil();
-        final areaHeight = rowCount * (itemWidth / fertilizerWidgetAspectRatio) +
-            (rowCount - 1) * fertilizerWidgetSpacing +
-            2 * dialogContentPadding;
+        final areaHeight =
+            rowCount * (itemWidth / fertilizerWidgetAspectRatio) +
+                (rowCount - 1) * fertilizerWidgetSpacing +
+                2 * dialogContentPadding;
         final availableHeight = min(maxHeight, areaHeight * 1.2);
 
         return SimpleDialog(
@@ -87,7 +91,8 @@ class SelectFertilizerDialog extends ConsumerWidget {
                     width: 160,
                     height: 50,
                     child: IconButton(
-                      style: IconButton.styleFrom(backgroundColor: Colors.orangeAccent),
+                      style: IconButton.styleFrom(
+                          backgroundColor: Colors.orangeAccent),
                       hoverColor: Colors.orange,
                       highlightColor: Colors.deepOrange,
                       onPressed: () {
@@ -123,7 +128,8 @@ List<Widget> createFertilizerWidgets({
 }) {
   return availableFertilizers.map((f) {
     final isClickedFertilizer = f == selectedFertilizer;
-    final isAlreadyInWeek = !isClickedFertilizer && fertilizersInWeek.contains(f);
+    final isAlreadyInWeek =
+        !isClickedFertilizer && fertilizersInWeek.contains(f);
 
     final isNew = selectedFertilizer == null;
 
@@ -136,6 +142,7 @@ List<Widget> createFertilizerWidgets({
                 context: context,
                 builder: (context) {
                   return SelectAmountDialog(
+                    amount: selectedAmount,
                     fertilizer: f,
                     weekNumber: weekNumber,
                     index: index,

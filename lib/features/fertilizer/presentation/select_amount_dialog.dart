@@ -18,7 +18,9 @@ import '../domain/unit.dart';
 String convertNumber(double number) {
   String formattedNumber = NumberFormat('0.0').format(number);
   int spacesNeeded = 3 - formattedNumber.split('.')[0].length;
-  return spacesNeeded > 0 ? ' ' * spacesNeeded + formattedNumber : formattedNumber;
+  return spacesNeeded > 0
+      ? ' ' * spacesNeeded + formattedNumber
+      : formattedNumber;
 }
 
 class SelectAmountDialog extends ConsumerStatefulWidget {
@@ -27,20 +29,31 @@ class SelectAmountDialog extends ConsumerStatefulWidget {
     required this.fertilizer,
     required this.weekNumber,
     required this.index,
+    required this.amount,
   });
 
   final Fertilizer fertilizer;
+  final Amount? amount;
   final int weekNumber;
   final int index;
 
   @override
-  ConsumerState<SelectAmountDialog> createState() => _SelectAmountDialog2State();
+  ConsumerState<SelectAmountDialog> createState() =>
+      _SelectAmountDialog2State();
 }
 
 class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
   Unit? _selectedUnit;
-  double _selectedQuantity = 0.0;
+  late double _selectedQuantity;
   FertilizerSelection? _currentFertilizerSelection;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedQuantity = widget.amount?.count ?? 0.0;
+    _selectedUnit = widget.amount?.unit;
+    _updateFertilizerSelection();
+  }
 
   void _updateFertilizerSelection() {
     if (_selectedUnit != null) {
@@ -238,8 +251,9 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
                     child: NutrientBar(
                       nutrient: Nutrient.nitrogen,
                       barColor: ColorPalette.nitrogenBar,
-                      currentNutrientValue:
-                          _currentFertilizerSelection?.getNutrientInGrams(Nutrient.nitrogen) ?? 0,
+                      currentNutrientValue: _currentFertilizerSelection
+                              ?.getNutrientInGrams(Nutrient.nitrogen) ??
+                          0,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -247,8 +261,9 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
                     child: NutrientBar(
                       nutrient: Nutrient.phosphorus,
                       barColor: ColorPalette.phosphorusBar,
-                      currentNutrientValue:
-                          _currentFertilizerSelection?.getNutrientInGrams(Nutrient.phosphorus) ?? 0,
+                      currentNutrientValue: _currentFertilizerSelection
+                              ?.getNutrientInGrams(Nutrient.phosphorus) ??
+                          0,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -256,8 +271,9 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
                     child: NutrientBar(
                       nutrient: Nutrient.potassium,
                       barColor: ColorPalette.potassiumBar,
-                      currentNutrientValue:
-                          _currentFertilizerSelection?.getNutrientInGrams(Nutrient.potassium) ?? 0,
+                      currentNutrientValue: _currentFertilizerSelection
+                              ?.getNutrientInGrams(Nutrient.potassium) ??
+                          0,
                     ),
                   ),
                 ],
@@ -270,8 +286,9 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
                 icon: Icon(
                   Icons.check_circle,
                   size: 56,
-                  color:
-                      _selectedQuantity == 0 || _selectedUnit == null ? Colors.grey : Colors.green,
+                  color: _selectedQuantity == 0 || _selectedUnit == null
+                      ? Colors.grey
+                      : Colors.green,
                 ),
                 onPressed: _selectedQuantity == 0 || _selectedUnit == null
                     ? null
