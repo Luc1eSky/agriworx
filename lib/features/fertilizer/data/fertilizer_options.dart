@@ -27,18 +27,6 @@ const availableFertilizers = [
     weightGlassCapInGrams: 3.8,
   ),
   Fertilizer(
-    name: 'MANURE',
-    pricePerKilogramInUgx: 0, // TODO: UPDATE
-    imagePath: "assets/pictures/fertilizers/manure.png",
-    color: Colors.brown,
-    nitrogenPercentage: 0.014,
-    phosphorusPercentage: 0.006,
-    potassiumPercentage: 0.013,
-    weightTampecoInGrams: 349,
-    weightBlueCapInGrams: 5.3,
-    weightGlassCapInGrams: 4,
-  ),
-  Fertilizer(
     name: 'MOP',
     pricePerKilogramInUgx: 4500,
     imagePath: "assets/pictures/fertilizers/mop.png",
@@ -49,6 +37,18 @@ const availableFertilizers = [
     weightTampecoInGrams: 532,
     weightBlueCapInGrams: 7.5,
     weightGlassCapInGrams: 3.9,
+  ),
+  Fertilizer(
+    name: 'MANURE',
+    pricePerKilogramInUgx: 0, // TODO: UPDATE
+    imagePath: "assets/pictures/fertilizers/manure.png",
+    color: Colors.brown,
+    nitrogenPercentage: 0.014,
+    phosphorusPercentage: 0.006,
+    potassiumPercentage: 0.013,
+    weightTampecoInGrams: 349,
+    weightBlueCapInGrams: 5.3,
+    weightGlassCapInGrams: 4,
   ),
   Fertilizer(
     name: 'NPK 17-17-17',
