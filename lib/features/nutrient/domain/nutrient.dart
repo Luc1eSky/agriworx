@@ -1,3 +1,7 @@
+import 'dart:ui';
+
+import 'package:agriworx/style/color_palette.dart';
+
 enum Nutrient {
   nitrogen,
   phosphorus,
@@ -6,7 +10,6 @@ enum Nutrient {
 
 extension NutrientExtension on Nutrient {
   String get symbol {
-    // return name of asset image
     switch (this) {
       case Nutrient.nitrogen:
         return 'N';
@@ -18,7 +21,6 @@ extension NutrientExtension on Nutrient {
   }
 
   double get scalingFactor {
-    // return name of asset image
     switch (this) {
       case Nutrient.nitrogen:
         return 1.0;
@@ -26,6 +28,17 @@ extension NutrientExtension on Nutrient {
         return 0.44;
       case Nutrient.potassium:
         return 0.83;
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case Nutrient.nitrogen:
+        return ColorPalette.nitrogenBar;
+      case Nutrient.phosphorus:
+        return ColorPalette.phosphorusBar;
+      case Nutrient.potassium:
+        return ColorPalette.potassiumBar;
     }
   }
 }

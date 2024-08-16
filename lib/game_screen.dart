@@ -1,4 +1,3 @@
-import 'package:agriworx/features/fertilizer/presentation/fertilizer_calculation_dialog.dart';
 import 'package:agriworx/features/game_mode/data/game_mode_repository.dart';
 import 'package:agriworx/features/persons_involved/enumerator/data/enumerator_repository.dart';
 import 'package:agriworx/features/persons_involved/presentation/select_user_and_enumerator_screen.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'constants/constants.dart';
 import 'constants/week_names.dart';
 import 'features/fertilizer/data/fertilizer_data_repository.dart';
+import 'features/fertilizer/presentation/calculation/select_npk_levels_dialog.dart';
 import 'features/fertilizer/presentation/fertilizer_selection_widget.dart';
 import 'features/game_mode/domain/game_mode.dart';
 import 'features/nutrient/data/fold_out_provider.dart';
@@ -271,7 +271,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                     showDialog(
                                         context: context,
                                         builder: (context) {
-                                          return FertilizerCalculationDialog(weekNumber: weekIndex);
+                                          return SelectNpkLevelsDialog(weekNumber: weekIndex);
                                         });
                                   },
                                 ),

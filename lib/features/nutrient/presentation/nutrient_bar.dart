@@ -11,7 +11,7 @@ class NutrientBar extends StatelessWidget {
     required this.nutrient,
     required this.barColor,
     required this.currentNutrientValue,
-    this.maxValue = maxValueAllFertilizers,
+    this.maxValue = maxNutrientValueAllFertilizers,
     super.key,
   });
 
