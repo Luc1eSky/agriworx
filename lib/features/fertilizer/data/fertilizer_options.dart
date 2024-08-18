@@ -40,7 +40,7 @@ const availableFertilizers = [
   ),
   Fertilizer(
     name: 'MANURE',
-    pricePerKilogramInUgx: 0, // TODO: UPDATE
+    pricePerKilogramInUgx: 200,
     imagePath: "assets/pictures/fertilizers/manure.png",
     color: Colors.brown,
     nitrogenPercentage: 0.014,

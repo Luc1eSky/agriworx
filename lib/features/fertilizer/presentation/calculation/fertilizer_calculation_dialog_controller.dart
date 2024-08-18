@@ -10,7 +10,8 @@ import '../../domain/unit.dart';
 part 'fertilizer_calculation_dialog_controller.g.dart';
 
 @riverpod
-class FertilizerCalculationDialogController extends _$FertilizerCalculationDialogController {
+class FertilizerCalculationDialogController
+    extends _$FertilizerCalculationDialogController {
   @override
   Future<void> build() async {
     return;
@@ -34,7 +35,8 @@ class FertilizerCalculationDialogController extends _$FertilizerCalculationDialo
       final subsetListLength = subsetList.length;
 
       // Initialize X, B, C, and D
-      final X = List.generate(subsetListLength, (_) => List.filled(fertilizerCount, 0.0));
+      final X = List.generate(
+          subsetListLength, (_) => List.filled(fertilizerCount, 0.0));
       final B = List.generate(subsetListLength, (_) => List.filled(3, 0.0));
       List<double> C = List.filled(subsetListLength, 1e99);
       List<double> D = List.filled(subsetListLength, 1e99);
@@ -94,11 +96,13 @@ class FertilizerCalculationDialogController extends _$FertilizerCalculationDialo
             double costForSubset = 0.0;
             for (int i = 0; i < subset.length; i++) {
               final num = subset[i];
-              costForSubset += listSolution[i] * admissibleFertilizers[num].pricePerGramInUgx;
+              costForSubset += listSolution[i] *
+                  admissibleFertilizers[num].pricePerGramInUgx;
             }
             C[s] = costForSubset;
             // 4. D
-            final targetList = targetMatrix.map((array) => array.first).toList();
+            final targetList =
+                targetMatrix.map((array) => array.first).toList();
             double sum = 0;
             for (int i = 0; i < listB.length; i++) {
               sum += pow(targetList[i] - listB[i], 2);
@@ -108,8 +112,8 @@ class FertilizerCalculationDialogController extends _$FertilizerCalculationDialo
         }
       }
 
-      // TODO: NEEDED?
-      //D = round(D,7)
+      // TODO: DOUBLE CHECK
+      D = D.map((value) => double.parse(value.toStringAsFixed(7))).toList();
       double minDistanceValue = D.reduce((a, b) => a < b ? a : b);
       final minDistanceIndices = D
           .asMap()
@@ -164,8 +168,9 @@ List<List<int>> _getSubsetList(int n) {
     subsets.addAll(_combinations(List.generate(n, (index) => index), i));
   }
 
-  final filteredSubsets =
-      subsets.where((set) => set.length <= maxNumberOfFertilizersPerWeek).toList();
+  final filteredSubsets = subsets
+      .where((set) => set.length <= maxNumberOfFertilizersPerWeek)
+      .toList();
 
   return filteredSubsets;
 }
