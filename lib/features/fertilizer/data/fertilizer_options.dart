@@ -147,7 +147,7 @@ const availableFertilizers = [
     weightGlassCapInGrams: 3.8,
   ),
   Fertilizer(
-    name: 'Ammonium Sulphate',
+    name: 'AMS',
     pricePerKilogramInUgx: 5000, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
     color: Colors.yellow,

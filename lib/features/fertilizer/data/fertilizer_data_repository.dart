@@ -113,6 +113,25 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     _saveCurrentStateLocally();
   }
 
+  void changeAllFertilizerSelectionOfWeek({
+    required int weekNumber,
+    required List<FertilizerSelection> fertilizerSelectionList,
+  }) {
+    for (int i = 0; i < maxNumberOfFertilizersPerWeek; i++) {
+      removeFertilizerSelection(
+        weekNumber: weekNumber,
+        index: i,
+      );
+      if (i < fertilizerSelectionList.length) {
+        changeOrAddFertilizerSelection(
+          weekNumber: weekNumber,
+          index: i,
+          fertilizerSelection: fertilizerSelectionList[i],
+        );
+      }
+    }
+  }
+
   /// change an existing fertilizer selection (specific week and index)
   void changeOrAddFertilizerSelection({
     required int weekNumber,
@@ -123,7 +142,7 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     final weeklyFertilizerSelections = copiedListOfWeeklyFertilizerSelections[weekNumber];
     final weekList = [...weeklyFertilizerSelections.selections];
 
-    if (weekList.length >= index + 1) {
+    if (weekList.length > index) {
       // change existing entry
       weekList[index] = fertilizerSelection;
     } else {

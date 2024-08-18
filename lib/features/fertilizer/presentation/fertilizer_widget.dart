@@ -8,12 +8,12 @@ class FertilizerWidget extends StatelessWidget {
   const FertilizerWidget({
     super.key,
     required this.fertilizer,
-    this.isAlreadyInWeek = false,
+    this.isGreyedOut = false,
     this.isCurrentlySelected = false,
   });
 
   final Fertilizer? fertilizer;
-  final bool isAlreadyInWeek;
+  final bool isGreyedOut;
   final bool isCurrentlySelected;
 
   @override
@@ -38,7 +38,7 @@ class FertilizerWidget extends StatelessWidget {
             )
           : Container(
               decoration: BoxDecoration(
-                color: isAlreadyInWeek ? Colors.grey : f.color,
+                color: isGreyedOut ? Colors.grey : f.color,
                 border: isCurrentlySelected
                     ? Border.all(
                         color: ColorPalette.selectedFertilizer,
@@ -51,7 +51,7 @@ class FertilizerWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Image.asset(
-                      color: isAlreadyInWeek ? Colors.grey : Colors.transparent,
+                      color: isGreyedOut ? Colors.grey : Colors.transparent,
                       colorBlendMode: BlendMode.saturation,
                       f.imagePath,
                       fit: BoxFit.scaleDown,

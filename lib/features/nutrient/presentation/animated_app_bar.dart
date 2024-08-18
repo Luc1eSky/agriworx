@@ -38,7 +38,7 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
     final isFoldedOut = ref.watch(foldOutProvider);
 
     final List<ChartData> chartData = [
-      for (int i = 0; i < weekNames.length; i += 1)
+      for (int i = 0; i < weekNames.length; i++)
         ChartData(
           i <= 1 ? weekNames[i] : (i - 1).toString(),
           ref.read(fertilizerDataRepositoryProvider.notifier).getNutrientInGrams(
