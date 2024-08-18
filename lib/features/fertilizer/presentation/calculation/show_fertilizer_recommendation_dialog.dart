@@ -2,6 +2,7 @@ import 'package:agriworx/common_widgets/small_dialog.dart';
 import 'package:agriworx/features/fertilizer/data/fertilizer_data_repository.dart';
 import 'package:agriworx/features/fertilizer/presentation/calculation/fertilizer_calculation_dialog.dart';
 import 'package:agriworx/features/fertilizer/presentation/fertilizer_selection_widget.dart';
+import 'package:agriworx/features/nutrient/domain/nutrient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -35,18 +36,24 @@ class ShowFertilizerRecommendationDialog extends StatelessWidget {
     final List<ChartData> chartData = [
       for (int i = 0; i < 3; i++)
         ChartData(
-          i == 0
-              ? 'N'
-              : i == 1
-                  ? 'P'
-                  : 'K',
-          i == 0
-              ? nitrogenInGramsTarget
-              : i == 1
-                  ? phosphorusInGramsTarget
-                  : potassiumInGramsTarget,
-          5.3,
-        )
+            i == 0
+                ? 'N'
+                : i == 1
+                    ? 'P'
+                    : 'K',
+            i == 0
+                ? nitrogenInGramsTarget
+                : i == 1
+                    ? phosphorusInGramsTarget
+                    : potassiumInGramsTarget,
+            i == 0
+                ? fertilizerRecommendation[i]
+                    .getNutrientInGrams(Nutrient.nitrogen)
+                : i == 1
+                    ? fertilizerRecommendation[i]
+                        .getNutrientInGrams(Nutrient.phosphorus)
+                    : fertilizerRecommendation[i]
+                        .getNutrientInGrams(Nutrient.potassium))
     ];
     return SmallDialog(
       title: 'Fertilizer Recommendation',
