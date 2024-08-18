@@ -14,8 +14,10 @@ class FertilizerSelectionWidget extends StatelessWidget {
     required this.weekIndex,
     required this.fertilizerIndex,
     this.fertilizerSelection,
+    this.gestureDetectorActive = false,
   });
 
+  final bool gestureDetectorActive;
   final double maxWidth;
   final int weekIndex;
   final int fertilizerIndex;
@@ -35,18 +37,20 @@ class FertilizerSelectionWidget extends StatelessWidget {
             amountWidgetHeightRatio * itemWidth);
 
     return GestureDetector(
-      onTap: () {
-        print('weekIndex: $weekIndex, fertilizerIndex: $fertilizerIndex');
-        showDialog(
-            context: context,
-            builder: (context) {
-              return SelectFertilizerDialog(
-                weekNumber: weekIndex,
-                index: fertilizerIndex,
-                fertilizerSelection: fertilizerSelection,
-              );
-            });
-      },
+      onTap: gestureDetectorActive
+          ? () {
+              print('weekIndex: $weekIndex, fertilizerIndex: $fertilizerIndex');
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return SelectFertilizerDialog(
+                      weekNumber: weekIndex,
+                      index: fertilizerIndex,
+                      fertilizerSelection: fertilizerSelection,
+                    );
+                  });
+            }
+          : null,
       child: SizedBox(
         width: itemWidth,
         child: AspectRatio(

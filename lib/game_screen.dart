@@ -62,7 +62,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   Widget build(BuildContext context) {
     final gameMode = ref.watch(gameModeRepositoryProvider);
     final fertilizerData = ref.watch(fertilizerDataRepositoryProvider);
-    final listOfSelectedFertilizers = fertilizerData.listOfWeeklyFertilizerSelections;
+    final listOfSelectedFertilizers =
+        fertilizerData.listOfWeeklyFertilizerSelections;
 
     final enumerator = ref.watch(enumeratorRepositoryProvider);
     final user = ref.watch(userRepositoryProvider);
@@ -73,12 +74,14 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           ? Container(
               decoration: BoxDecoration(
                 color: Colors.grey.shade300,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(20)),
               ),
               height: 80,
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -87,7 +90,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const SelectUserAndEnumeratorScreen()),
+                                builder: (context) =>
+                                    const SelectUserAndEnumeratorScreen()),
                           );
                         },
                         child: const Icon(
@@ -128,7 +132,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           : Container(
               decoration: BoxDecoration(
                 color: ColorPalette.practiceModeBottomBar,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(20)),
               ),
               height: 40,
               child: const Center(
@@ -152,7 +157,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
         color: ColorPalette.background,
         child: Center(
           child: Padding(
-            padding: EdgeInsets.zero, //const EdgeInsets.only(top: cardsTopPadding),
+            padding:
+                EdgeInsets.zero, //const EdgeInsets.only(top: cardsTopPadding),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: screenMaxWidth),
               child: Stack(
@@ -165,33 +171,40 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         controller: controller,
                         itemCount: numberOfWeeks,
                         itemBuilder: (context, weekIndex) {
-                          final weekList = listOfSelectedFertilizers[weekIndex].selections;
+                          final weekList =
+                              listOfSelectedFertilizers[weekIndex].selections;
                           return Stack(
                             children: [
                               Card(
                                 color: ColorPalette.card,
                                 child: ListTile(
-                                  contentPadding:
-                                      const EdgeInsets.symmetric(horizontal: cardContentPadding),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: cardContentPadding),
                                   minVerticalPadding: cardContentPadding,
                                   subtitle: LayoutBuilder(
                                     builder: (context, constraints) {
                                       final maxWidth = constraints.maxWidth;
-                                      final fertilizerMaxWidth = maxWidth - leadingWidgetWidth;
+                                      final fertilizerMaxWidth =
+                                          maxWidth - leadingWidgetWidth;
 
                                       final verticalGapHeight =
-                                          verticalGapRatio * getItemWidth(fertilizerMaxWidth);
+                                          verticalGapRatio *
+                                              getItemWidth(fertilizerMaxWidth);
 
-                                      final itemList = List.generate(maxNumberOfFertilizersPerWeek,
+                                      final itemList = List.generate(
+                                          maxNumberOfFertilizersPerWeek,
                                           (fertilizerIndex) {
                                         return FertilizerSelectionWidget(
+                                          gestureDetectorActive: true,
                                           maxWidth: fertilizerMaxWidth,
                                           weekIndex: weekIndex,
                                           fertilizerIndex: fertilizerIndex,
-                                          fertilizerSelection: weekList.isNotEmpty &&
-                                                  fertilizerIndex < weekList.length
-                                              ? weekList[fertilizerIndex]
-                                              : null,
+                                          fertilizerSelection:
+                                              weekList.isNotEmpty &&
+                                                      fertilizerIndex <
+                                                          weekList.length
+                                                  ? weekList[fertilizerIndex]
+                                                  : null,
                                         );
                                       });
                                       return Column(
@@ -201,13 +214,16 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                               leadingWidgets[weekIndex],
                                               Expanded(
                                                 child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
                                                   children: itemList,
                                                 ),
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 2 * verticalGapHeight),
+                                          SizedBox(
+                                              height: 2 * verticalGapHeight),
                                           AspectRatio(
                                             aspectRatio: 5.0,
                                             child: Column(
@@ -215,40 +231,53 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                                 Expanded(
                                                   child: NutrientBar(
                                                     nutrient: Nutrient.nitrogen,
-                                                    barColor: ColorPalette.nitrogenBar,
+                                                    barColor: ColorPalette
+                                                        .nitrogenBar,
                                                     currentNutrientValue: ref
-                                                        .watch(fertilizerDataRepositoryProvider
-                                                            .notifier)
+                                                        .watch(
+                                                            fertilizerDataRepositoryProvider
+                                                                .notifier)
                                                         .getNutrientInGrams(
-                                                          nutrient: Nutrient.nitrogen,
+                                                          nutrient:
+                                                              Nutrient.nitrogen,
                                                           weekNumber: weekIndex,
                                                         ),
                                                   ),
                                                 ),
-                                                SizedBox(height: verticalGapHeight),
+                                                SizedBox(
+                                                    height: verticalGapHeight),
                                                 Expanded(
                                                   child: NutrientBar(
-                                                    nutrient: Nutrient.phosphorus,
-                                                    barColor: ColorPalette.phosphorusBar,
+                                                    nutrient:
+                                                        Nutrient.phosphorus,
+                                                    barColor: ColorPalette
+                                                        .phosphorusBar,
                                                     currentNutrientValue: ref
-                                                        .watch(fertilizerDataRepositoryProvider
-                                                            .notifier)
+                                                        .watch(
+                                                            fertilizerDataRepositoryProvider
+                                                                .notifier)
                                                         .getNutrientInGrams(
-                                                          nutrient: Nutrient.phosphorus,
+                                                          nutrient: Nutrient
+                                                              .phosphorus,
                                                           weekNumber: weekIndex,
                                                         ),
                                                   ),
                                                 ),
-                                                SizedBox(height: verticalGapHeight),
+                                                SizedBox(
+                                                    height: verticalGapHeight),
                                                 Expanded(
                                                   child: NutrientBar(
-                                                    nutrient: Nutrient.potassium,
-                                                    barColor: ColorPalette.potassiumBar,
+                                                    nutrient:
+                                                        Nutrient.potassium,
+                                                    barColor: ColorPalette
+                                                        .potassiumBar,
                                                     currentNutrientValue: ref
-                                                        .watch(fertilizerDataRepositoryProvider
-                                                            .notifier)
+                                                        .watch(
+                                                            fertilizerDataRepositoryProvider
+                                                                .notifier)
                                                         .getNutrientInGrams(
-                                                          nutrient: Nutrient.potassium,
+                                                          nutrient: Nutrient
+                                                              .potassium,
                                                           weekNumber: weekIndex,
                                                         ),
                                                   ),
@@ -271,7 +300,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                     showDialog(
                                         context: context,
                                         builder: (context) {
-                                          return SelectNpkLevelsDialog(weekNumber: weekIndex);
+                                          return SelectNpkLevelsDialog(
+                                              weekNumber: weekIndex);
                                         });
                                   },
                                 ),
