@@ -24,15 +24,18 @@ class FertilizerCalculationDialog extends ConsumerStatefulWidget {
   final double potassiumInGrams;
 
   @override
-  ConsumerState<FertilizerCalculationDialog> createState() => _FertilizerCalculationDialogState();
+  ConsumerState<FertilizerCalculationDialog> createState() =>
+      _FertilizerCalculationDialogState();
 }
 
-class _FertilizerCalculationDialogState extends ConsumerState<FertilizerCalculationDialog> {
+class _FertilizerCalculationDialogState
+    extends ConsumerState<FertilizerCalculationDialog> {
   List<bool> _fertilizerIsSelectedList =
       List.generate(availableFertilizers.length, (index) => false);
 
   void toggleSelection(int index) {
-    setState(() => _fertilizerIsSelectedList[index] = !_fertilizerIsSelectedList[index]);
+    setState(() =>
+        _fertilizerIsSelectedList[index] = !_fertilizerIsSelectedList[index]);
   }
 
   @override
@@ -59,7 +62,8 @@ class _FertilizerCalculationDialogState extends ConsumerState<FertilizerCalculat
                       ))
                     : GridView(
                         padding: const EdgeInsets.all(dialogContentPadding),
-                        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 180,
                           childAspectRatio: 0.8,
                           mainAxisSpacing: 10,
@@ -75,7 +79,8 @@ class _FertilizerCalculationDialogState extends ConsumerState<FertilizerCalculat
                                 },
                                 child: FertilizerWidget(
                                   fertilizer: entry.value,
-                                  isGreyedOut: !_fertilizerIsSelectedList[entry.key],
+                                  isGreyedOut:
+                                      !_fertilizerIsSelectedList[entry.key],
                                 ),
                               ),
                             )
@@ -99,8 +104,10 @@ class _FertilizerCalculationDialogState extends ConsumerState<FertilizerCalculat
                                     return SelectNpkLevelsDialog(
                                       weekNumber: widget.weekNumber,
                                       selectedNitrogen: widget.nitrogenInGrams,
-                                      selectedPhosporus: widget.phosphorusInGrams,
-                                      selectedPotassium: widget.potassiumInGrams,
+                                      selectedPhosporus:
+                                          widget.phosphorusInGrams,
+                                      selectedPotassium:
+                                          widget.potassiumInGrams,
                                     );
                                   });
                             },
@@ -116,25 +123,33 @@ class _FertilizerCalculationDialogState extends ConsumerState<FertilizerCalculat
                       onPressed: asyncState.isLoading
                           ? null
                           : () async {
-                              if (_fertilizerIsSelectedList.any((value) => value == true)) {
+                              if (_fertilizerIsSelectedList
+                                  .any((value) => value == true)) {
                                 List<Fertilizer> selectedFertilizers = [];
-                                for (var i = 0; i < _fertilizerIsSelectedList.length; i++) {
+                                for (var i = 0;
+                                    i < _fertilizerIsSelectedList.length;
+                                    i++) {
                                   if (_fertilizerIsSelectedList[i] == true) {
-                                    selectedFertilizers.add(availableFertilizers[i]);
+                                    selectedFertilizers
+                                        .add(availableFertilizers[i]);
                                   }
                                 }
 
                                 final fertilizerSelections = await ref
-                                    .read(fertilizerCalculationDialogControllerProvider.notifier)
+                                    .read(
+                                        fertilizerCalculationDialogControllerProvider
+                                            .notifier)
                                     .getSolution(
-                                      admissibleFertilizers: selectedFertilizers,
+                                      admissibleFertilizers:
+                                          selectedFertilizers,
                                       nitrogenInGrams: widget.nitrogenInGrams,
-                                      phosphorusInGrams: widget.phosphorusInGrams,
+                                      phosphorusInGrams:
+                                          widget.phosphorusInGrams,
                                       potassiumInGrams: widget.potassiumInGrams,
                                     );
 
-                                print('fertilizerSelections: $fertilizerSelections');
-                                if (fertilizerSelections == null || !context.mounted) {
+                                if (fertilizerSelections == null ||
+                                    !context.mounted) {
                                   return;
                                 }
 
@@ -144,12 +159,17 @@ class _FertilizerCalculationDialogState extends ConsumerState<FertilizerCalculat
                                 showDialog(
                                   barrierDismissible: false,
                                   context: context,
-                                  builder: (context) => ShowFertilizerRecommendationDialog(
+                                  builder: (context) =>
+                                      ShowFertilizerRecommendationDialog(
                                     weekNumber: widget.weekNumber,
-                                    fertilizerRecommendation: fertilizerSelections,
-                                    nitrogenInGramsTarget: widget.nitrogenInGrams,
-                                    phosphorusInGramsTarget: widget.phosphorusInGrams,
-                                    potassiumInGramsTarget: widget.potassiumInGrams,
+                                    fertilizerRecommendation:
+                                        fertilizerSelections,
+                                    nitrogenInGramsTarget:
+                                        widget.nitrogenInGrams,
+                                    phosphorusInGramsTarget:
+                                        widget.phosphorusInGrams,
+                                    potassiumInGramsTarget:
+                                        widget.potassiumInGrams,
                                   ),
                                 );
 

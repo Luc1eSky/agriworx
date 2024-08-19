@@ -38,7 +38,7 @@ class FertilizerWidget extends StatelessWidget {
             )
           : Container(
               decoration: BoxDecoration(
-                color: isGreyedOut ? Colors.grey : f.color,
+                color: isGreyedOut ? Colors.grey[600] : f.color,
                 border: isCurrentlySelected
                     ? Border.all(
                         color: ColorPalette.selectedFertilizer,

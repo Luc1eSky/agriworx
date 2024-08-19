@@ -63,6 +63,7 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
           count: _selectedQuantity,
           unit: _selectedUnit!,
         ),
+        selectionWasCalculated: false,
       );
     }
   }

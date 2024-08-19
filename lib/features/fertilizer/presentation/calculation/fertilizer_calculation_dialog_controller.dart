@@ -147,6 +147,8 @@ class FertilizerCalculationDialogController
             FertilizerSelection(
               fertilizer: admissibleFertilizers[i],
               amount: Amount(count: solution[i], unit: Unit.grams),
+              selectionWasCalculated: true,
+              calculationWasUsed: true,
             ),
           );
         }

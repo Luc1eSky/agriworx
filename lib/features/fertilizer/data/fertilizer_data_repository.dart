@@ -19,7 +19,8 @@ List<WeeklyFertilizerSelections> listWithNoFertilizerSelections =
 @riverpod
 class FertilizerDataRepository extends _$FertilizerDataRepository {
   late final LocalStorageRepository _localStorage;
-  static const _currentFertilizerDataKey = 'currentFertilizerData'; // key for storing data
+  static const _currentFertilizerDataKey =
+      'currentFertilizerData'; // key for storing data
 
   @override
   FertilizerData build() {
@@ -41,7 +42,8 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
   /// load FertilizerData from local memory
   FertilizerData loadFertilizerDataFromMemory() {
     // look for JSON data (map) in local memory
-    final loadedFertilizerDataMap = _localStorage.getMap(key: _currentFertilizerDataKey);
+    final loadedFertilizerDataMap =
+        _localStorage.getMap(key: _currentFertilizerDataKey);
     try {
       // create FertilizerData object
       final fertilizerData = FertilizerData.fromJson(loadedFertilizerDataMap!);
@@ -56,7 +58,8 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     }
   }
 
-  Future<void> loadFertilizerDataFromSavedResult(FertilizerData fertilizerData) async {
+  Future<void> loadFertilizerDataFromSavedResult(
+      FertilizerData fertilizerData) async {
     state = fertilizerData.copyWith(startedOn: DateTime.now());
     await _saveCurrentStateLocally();
   }
@@ -79,7 +82,8 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
   /// return all currently selected fertilizers of a specific week
   List<Fertilizer> getSelectedFertilizers(int weekNumber) {
     // get list of fertilizer selection of specific week
-    final fertilizerSelections = state.listOfWeeklyFertilizerSelections[weekNumber];
+    final fertilizerSelections =
+        state.listOfWeeklyFertilizerSelections[weekNumber];
     // get only list of fertilizers (no amount)
     final fertilizers = fertilizerSelections.selections.map((f) {
       return f.fertilizer;
@@ -92,8 +96,11 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     required int weekNumber,
     required int index,
   }) {
-    final copiedListOfWeeklyFertilizerSelections = [...state.listOfWeeklyFertilizerSelections];
-    final weeklyFertilizerSelections = copiedListOfWeeklyFertilizerSelections[weekNumber];
+    final copiedListOfWeeklyFertilizerSelections = [
+      ...state.listOfWeeklyFertilizerSelections
+    ];
+    final weeklyFertilizerSelections =
+        copiedListOfWeeklyFertilizerSelections[weekNumber];
     final weekList = [...weeklyFertilizerSelections.selections];
 
     if (index >= weekList.length) {
@@ -104,12 +111,15 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     // remove entry at specified location
     weekList.removeAt(index);
     // create new object
-    final newWeeklyFertilizerSelections = WeeklyFertilizerSelections(selections: weekList);
+    final newWeeklyFertilizerSelections =
+        WeeklyFertilizerSelections(selections: weekList);
     // update copied list with modified week list
-    copiedListOfWeeklyFertilizerSelections[weekNumber] = newWeeklyFertilizerSelections;
+    copiedListOfWeeklyFertilizerSelections[weekNumber] =
+        newWeeklyFertilizerSelections;
     // update state
-    state =
-        state.copyWith(listOfWeeklyFertilizerSelections: copiedListOfWeeklyFertilizerSelections);
+    state = state.copyWith(
+        listOfWeeklyFertilizerSelections:
+            copiedListOfWeeklyFertilizerSelections);
     _saveCurrentStateLocally();
   }
 
@@ -138,13 +148,24 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     required int index,
     required FertilizerSelection fertilizerSelection,
   }) {
-    final copiedListOfWeeklyFertilizerSelections = [...state.listOfWeeklyFertilizerSelections];
-    final weeklyFertilizerSelections = copiedListOfWeeklyFertilizerSelections[weekNumber];
+    final copiedListOfWeeklyFertilizerSelections = [
+      ...state.listOfWeeklyFertilizerSelections
+    ];
+    final weeklyFertilizerSelections =
+        copiedListOfWeeklyFertilizerSelections[weekNumber];
     final weekList = [...weeklyFertilizerSelections.selections];
 
     if (weekList.length > index) {
       // change existing entry
-      weekList[index] = fertilizerSelection;
+      final currentFertilizerSelection = weekList[index];
+      if (currentFertilizerSelection.calculationWasUsed) {
+        // Preserve the wasCalculated value when updating
+        weekList[index] =
+            fertilizerSelection.copyWith(calculationWasUsed: true);
+      } else {
+        // Otherwise, just update with the new selection
+        weekList[index] = fertilizerSelection;
+      }
     } else {
       // add new entry if max number has not been reached
       if (weekList.length == maxNumberOfFertilizersPerWeek) {
@@ -153,16 +174,21 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
       weekList.add(fertilizerSelection);
     }
     // update state with modified week list
-    final updatedWeeklyFertilizerSelections = WeeklyFertilizerSelections(selections: weekList);
-    copiedListOfWeeklyFertilizerSelections[weekNumber] = updatedWeeklyFertilizerSelections;
-    state =
-        state.copyWith(listOfWeeklyFertilizerSelections: copiedListOfWeeklyFertilizerSelections);
+    final updatedWeeklyFertilizerSelections =
+        WeeklyFertilizerSelections(selections: weekList);
+    copiedListOfWeeklyFertilizerSelections[weekNumber] =
+        updatedWeeklyFertilizerSelections;
+    state = state.copyWith(
+        listOfWeeklyFertilizerSelections:
+            copiedListOfWeeklyFertilizerSelections);
+
     // save current state locally
     _saveCurrentStateLocally();
   }
 
   // returns a specific nutrient of a weekly selection in grams
-  double getNutrientInGrams({required Nutrient nutrient, required int weekNumber}) {
+  double getNutrientInGrams(
+      {required Nutrient nutrient, required int weekNumber}) {
     final weeklySelection = state.listOfWeeklyFertilizerSelections[weekNumber];
 
     double nutrientInGrams = 0;
