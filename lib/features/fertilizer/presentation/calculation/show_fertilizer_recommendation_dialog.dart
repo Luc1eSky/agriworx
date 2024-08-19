@@ -3,6 +3,7 @@ import 'package:agriworx/features/fertilizer/data/fertilizer_data_repository.dar
 import 'package:agriworx/features/fertilizer/presentation/calculation/fertilizer_calculation_dialog.dart';
 import 'package:agriworx/features/fertilizer/presentation/fertilizer_selection_widget.dart';
 import 'package:agriworx/features/nutrient/domain/nutrient.dart';
+import 'package:agriworx/style/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -10,10 +11,11 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../domain/fertilizer_selection.dart';
 
 class ChartData {
-  ChartData(this.x, this.y1, this.y2);
+  ChartData(this.x, this.y1, this.y2, this.color);
   final String x;
   final double y1;
   final double y2;
+  final Color? color;
 }
 
 class ShowFertilizerRecommendationDialog extends StatelessWidget {
@@ -33,27 +35,39 @@ class ShowFertilizerRecommendationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<ChartData> chartData = [
+    double getNutrientsFromFertilizers(Nutrient nutrient) {
+      double nutrientAmount = 0.0;
+      for (int i = 0; i < fertilizerRecommendation.length; i++) {
+        nutrientAmount +=
+            fertilizerRecommendation[i].getNutrientInGrams(nutrient);
+      }
+      return nutrientAmount;
+    }
+
+    final List<ChartData> chartData = <ChartData>[
       for (int i = 0; i < 3; i++)
         ChartData(
-            i == 0
-                ? 'N'
-                : i == 1
-                    ? 'P'
-                    : 'K',
-            i == 0
-                ? nitrogenInGramsTarget
-                : i == 1
-                    ? phosphorusInGramsTarget
-                    : potassiumInGramsTarget,
-            i == 0
-                ? fertilizerRecommendation[i]
-                    .getNutrientInGrams(Nutrient.nitrogen)
-                : i == 1
-                    ? fertilizerRecommendation[i]
-                        .getNutrientInGrams(Nutrient.phosphorus)
-                    : fertilizerRecommendation[i]
-                        .getNutrientInGrams(Nutrient.potassium))
+          i == 0
+              ? 'N'
+              : i == 1
+                  ? 'P'
+                  : 'K',
+          i == 0
+              ? nitrogenInGramsTarget
+              : i == 1
+                  ? phosphorusInGramsTarget
+                  : potassiumInGramsTarget,
+          i == 0
+              ? getNutrientsFromFertilizers(Nutrient.nitrogen)
+              : i == 1
+                  ? getNutrientsFromFertilizers(Nutrient.phosphorus)
+                  : getNutrientsFromFertilizers(Nutrient.potassium),
+          i == 0
+              ? ColorPalette.nitrogenBar
+              : i == 1
+                  ? ColorPalette.phosphorusBar
+                  : ColorPalette.potassiumBar,
+        ),
     ];
     return SmallDialog(
       title: 'Fertilizer Recommendation',
@@ -76,36 +90,36 @@ class ShowFertilizerRecommendationDialog extends StatelessWidget {
                   : const NumericAxis(
                       rangePadding: ChartRangePadding.auto,
                     ),
-              legend: Legend(
-                isVisible: true,
-                position: LegendPosition.right,
-                textStyle: const TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-                legendItemBuilder: (name, chartSeries, __, ___) => SizedBox(
-                  width: 60,
-                  height: 30,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          color: chartSeries?.color ?? Colors.transparent,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: FittedBox(
-                          child: Text(name),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // legend: Legend(
+              //   isVisible: true,
+              //   position: LegendPosition.right,
+              //   textStyle: const TextStyle(
+              //     fontSize: 18.0,
+              //     fontWeight: FontWeight.bold,
+              //   ),
+              //   legendItemBuilder: (name, chartSeries, __, ___) => SizedBox(
+              //     width: 60,
+              //     height: 30,
+              //     child: Row(
+              //       children: [
+              //         Expanded(
+              //           child: Container(
+              //             color: chartSeries?.color ?? Colors.transparent,
+              //           ),
+              //         ),
+              //         const SizedBox(
+              //           width: 8,
+              //         ),
+              //         Expanded(
+              //           flex: 2,
+              //           child: FittedBox(
+              //             child: Text(name),
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               series: [
                 ColumnSeries<ChartData, String>(
                   name: 'Selected',
@@ -113,7 +127,33 @@ class ShowFertilizerRecommendationDialog extends StatelessWidget {
                   dataSource: chartData,
                   xValueMapper: (ChartData data, _) => data.x,
                   yValueMapper: (ChartData data, _) => data.y1,
-                  color: Colors.blueGrey,
+                  pointColorMapper: (ChartData data, _) {
+                    if (data.x == 'N') {
+                      return ColorPalette.nitrogenBar.withOpacity(0.5);
+                    } else if (data.x == 'P') {
+                      return ColorPalette.phosphorusBar.withOpacity(0.5);
+                    } else {
+                      return ColorPalette.potassiumBar.withOpacity(0.5);
+                    }
+                  },
+                  // color: Colors.grey,
+                  // borderColor: Colors.grey, // Sets the border color
+                  // borderWidth: 2,
+                  // Define the label text here
+                  dataLabelMapper: (ChartData data, _) =>
+                      'Target', // Display y1 value followed by "g"
+
+                  // Enable and style the labels
+                  dataLabelSettings: const DataLabelSettings(
+                    isVisible: true, // Show labels
+                    textStyle: TextStyle(
+                      color: Colors.black, // Text color
+                      fontSize: 12, // Text size
+                      //fontWeight: FontWeight.bold, // Text weight
+                    ),
+                    labelAlignment: ChartDataLabelAlignment
+                        .middle, // Align the label in the middle of the bar
+                  ),
                 ),
                 ColumnSeries<ChartData, String>(
                   name: 'Solution',
@@ -121,7 +161,32 @@ class ShowFertilizerRecommendationDialog extends StatelessWidget {
                   dataSource: chartData,
                   xValueMapper: (ChartData data, _) => data.x,
                   yValueMapper: (ChartData data, _) => data.y2,
-                  color: Colors.amberAccent,
+                  pointColorMapper: (ChartData data, _) {
+                    if (data.x == 'N') {
+                      return ColorPalette.nitrogenBar;
+                    } else if (data.x == 'P') {
+                      return ColorPalette.phosphorusBar;
+                    } else {
+                      return ColorPalette.potassiumBar;
+                    }
+                  },
+                  // color: Colors.green,
+                  // borderColor: Colors.green, // Sets the border color
+                  // borderWidth: 2,
+                  dataLabelMapper: (ChartData data, _) =>
+                      'Solution', // Display y1 value followed by "g"
+
+                  // Enable and style the labels
+                  dataLabelSettings: const DataLabelSettings(
+                    isVisible: true, // Show labels
+                    textStyle: TextStyle(
+                      color: Colors.black, // Text color
+                      fontSize: 12, // Text size
+                      //fontWeight: FontWeight.bold, // Text weight
+                    ),
+                    labelAlignment: ChartDataLabelAlignment
+                        .middle, // Align the label in the middle of the bar
+                  ),
                 ),
               ],
             ),
