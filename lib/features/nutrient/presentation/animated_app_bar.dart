@@ -202,6 +202,7 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                 if (hasSelectedFertilizer)
                   Text('Fertilizer Costs: '
                       '${getFormattedNumber(currentFertilizerCosts)} UGX'),
+                if (hasSelectedFertilizer) const SizedBox(height: 12),
               ],
             ),
           ),
