@@ -17,45 +17,65 @@ class FertilizerData with _$FertilizerData {
     required DateTime startedOn,
   }) = _FertilizerData;
 
-  factory FertilizerData.fromJson(Map<String, Object?> json) => _$FertilizerDataFromJson(json);
+  factory FertilizerData.fromJson(Map<String, Object?> json) =>
+      _$FertilizerDataFromJson(json);
 
-  bool get hasData => listOfWeeklyFertilizerSelections
-      .any((listOfFertilizerSelection) => listOfFertilizerSelection.selections.isNotEmpty);
+  bool get hasData =>
+      listOfWeeklyFertilizerSelections.any((listOfFertilizerSelection) =>
+          listOfFertilizerSelection.selections.isNotEmpty);
 
-  double getTotalCosts() {
-    double totalFertilizerCosts = 0;
+  double getTotalFertilizerCosts() {
+    double totalFertilizerCostsPerPlant = 0;
     int totalWeeksWithFertilizer = 0;
     for (var weeklySelection in listOfWeeklyFertilizerSelections) {
-      totalFertilizerCosts += weeklySelection.getWeeklyCosts();
+      totalFertilizerCostsPerPlant += weeklySelection.getWeeklyCosts();
       if (weeklySelection.selections.isNotEmpty) {
         totalWeeksWithFertilizer++;
       }
     }
 
-    totalFertilizerCosts +=
-        laborCostsPerSplitPerPlant * totalWeeksWithFertilizer * plantsPerHectare * numberOfHectares;
+    final totalFertilizerCosts =
+        totalFertilizerCostsPerPlant * plantsPerHectare * numberOfHectares;
 
-    const totalNonFertilizerCosts = nonFertilizerCostsPerHectare * numberOfHectares;
+    final laborCosts = laborCostsPerSplitPerPlant *
+        totalWeeksWithFertilizer *
+        plantsPerHectare *
+        numberOfHectares;
+
+    final totalFertilizerCostsIncludingLabor =
+        totalFertilizerCosts + laborCosts;
+
+    return totalFertilizerCostsIncludingLabor;
+  }
+
+  double getTotalCosts() {
+    final totalFertilizerCosts = getTotalFertilizerCosts();
+    const totalNonFertilizerCosts =
+        nonFertilizerCostsPerHectare * numberOfHectares;
     final totalCosts = totalFertilizerCosts + totalNonFertilizerCosts;
 
     return totalCosts;
   }
 
-  ({double yieldInKg, double revenueInUgx, double profitInUgx}) getYieldRevenueAndProfit() {
+  ({double yieldInKg, double revenueInUgx, double profitInUgx})
+      getYieldRevenueAndProfit() {
     double totalNitrogenInGrams = 0;
     double totalPhosphorusInGrams = 0;
     double totalPotassiumInGrams = 0;
     int weeksWithNitrogenAndPhosphorus = 0;
 
     for (var weeklySelection in listOfWeeklyFertilizerSelections) {
-      final weeklyNitrogenInGrams = weeklySelection.getNutrientInGrams(Nutrient.nitrogen);
+      final weeklyNitrogenInGrams =
+          weeklySelection.getNutrientInGrams(Nutrient.nitrogen);
       totalNitrogenInGrams += weeklyNitrogenInGrams;
-      final weeklyPhosphorusInGrams = weeklySelection.getNutrientInGrams(Nutrient.phosphorus);
+      final weeklyPhosphorusInGrams =
+          weeklySelection.getNutrientInGrams(Nutrient.phosphorus);
       totalPhosphorusInGrams += weeklyPhosphorusInGrams;
       if (weeklyNitrogenInGrams != 0 && weeklyPhosphorusInGrams != 0) {
         weeksWithNitrogenAndPhosphorus++;
       }
-      totalPotassiumInGrams += weeklySelection.getNutrientInGrams(Nutrient.potassium);
+      totalPotassiumInGrams +=
+          weeklySelection.getNutrientInGrams(Nutrient.potassium);
     }
 
     final expectedYieldInKgPerHa = betaSumN * totalNitrogenInGrams +
@@ -72,7 +92,8 @@ class FertilizerData with _$FertilizerData {
 
     double netStandardError = numberOfHectares * perHectareStandardError;
 
-    final yieldShockInKg = Normal(0.0, pow(netStandardError, 2)).generate(1).first.toDouble();
+    final yieldShockInKg =
+        Normal(0.0, pow(netStandardError, 2)).generate(1).first.toDouble();
     final revenueShockInUgx = yieldShockInKg * marketPricePerKgInUgx;
 
     final randomYieldInKg = expectedYieldInKg + yieldShockInKg;

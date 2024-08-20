@@ -5,6 +5,7 @@ import 'package:agriworx/features/nutrient/domain/nutrient.dart';
 import 'package:agriworx/style/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../constants/constants.dart';
@@ -18,7 +19,8 @@ class ChartData {
   final double y3;
 }
 
-class AnimatedAppBar extends ConsumerStatefulWidget implements PreferredSizeWidget {
+class AnimatedAppBar extends ConsumerStatefulWidget
+    implements PreferredSizeWidget {
   const AnimatedAppBar({super.key});
 
   @override
@@ -32,8 +34,9 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
   @override
   Widget build(BuildContext context) {
     final fertilizerData = ref.watch(fertilizerDataRepositoryProvider);
-    final hasSelectedFertilizer =
-        fertilizerData.listOfWeeklyFertilizerSelections.any((e) => e.selections.isNotEmpty);
+    final hasSelectedFertilizer = fertilizerData
+        .listOfWeeklyFertilizerSelections
+        .any((e) => e.selections.isNotEmpty);
 
     final isFoldedOut = ref.watch(foldOutProvider);
 
@@ -41,20 +44,33 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
       for (int i = 0; i < weekNames.length; i++)
         ChartData(
           i <= 1 ? weekNames[i] : (i - 1).toString(),
-          ref.read(fertilizerDataRepositoryProvider.notifier).getNutrientInGrams(
+          ref
+              .read(fertilizerDataRepositoryProvider.notifier)
+              .getNutrientInGrams(
                 nutrient: Nutrient.nitrogen,
                 weekNumber: i,
               ),
-          ref.read(fertilizerDataRepositoryProvider.notifier).getNutrientInGrams(
+          ref
+              .read(fertilizerDataRepositoryProvider.notifier)
+              .getNutrientInGrams(
                 nutrient: Nutrient.phosphorus,
                 weekNumber: i,
               ),
-          ref.read(fertilizerDataRepositoryProvider.notifier).getNutrientInGrams(
+          ref
+              .read(fertilizerDataRepositoryProvider.notifier)
+              .getNutrientInGrams(
                 nutrient: Nutrient.potassium,
                 weekNumber: i,
               ),
         )
     ];
+
+    double currentFertilizerCosts =
+        ref.watch(fertilizerDataRepositoryProvider).getTotalFertilizerCosts();
+
+    String getFormattedNumber(double number) {
+      return NumberFormat('#,###').format(number);
+    }
 
     return Material(
       elevation: 10.0,
@@ -92,7 +108,8 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const GameModeSelectionScreen(),
+                              builder: (context) =>
+                                  const GameModeSelectionScreen(),
                             ),
                           );
                         },
@@ -105,7 +122,8 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                 if (hasSelectedFertilizer)
                   Expanded(
                     child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: screenMaxWidth * 1.5),
+                      constraints:
+                          const BoxConstraints(maxWidth: screenMaxWidth * 1.5),
                       child: FractionallySizedBox(
                         widthFactor: cardsVerticalScreenRatio,
                         child: SfCartesianChart(
@@ -130,14 +148,16 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold,
                             ),
-                            legendItemBuilder: (name, chartSeries, __, ___) => SizedBox(
+                            legendItemBuilder: (name, chartSeries, __, ___) =>
+                                SizedBox(
                               width: 60,
                               height: 30,
                               child: Row(
                                 children: [
                                   Expanded(
                                     child: Container(
-                                      color: chartSeries?.color ?? Colors.transparent,
+                                      color: chartSeries?.color ??
+                                          Colors.transparent,
                                     ),
                                   ),
                                   Expanded(
@@ -179,6 +199,9 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                       ),
                     ),
                   ),
+                if (hasSelectedFertilizer)
+                  Text('Fertilizer Costs: '
+                      '${getFormattedNumber(currentFertilizerCosts)} UGX'),
               ],
             ),
           ),
