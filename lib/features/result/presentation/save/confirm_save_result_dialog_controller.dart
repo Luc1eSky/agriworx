@@ -26,7 +26,7 @@ class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogControl
     state = const AsyncValue.loading();
 
     try {
-      // get fertilizer data and device code
+      // get fertilizer data
       final fertilizerData = ref.read(fertilizerDataRepositoryProvider);
 
       final yieldRevenueAndProfit = fertilizerData.getYieldRevenueAndProfit();
@@ -57,8 +57,8 @@ class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogControl
         throw Exception('Could not write result to memory!');
       }
 
-      // delete current data if successful
-      await ref.read(fertilizerDataRepositoryProvider.notifier).deleteAllData();
+      // // delete current data if successful
+      // await ref.read(fertilizerDataRepositoryProvider.notifier).deleteAllData();
 
       // check updated user result from memory
       final userResult = ref.read(resultRepositoryProvider).loadUserResultFromMemory(currentUser);
@@ -72,6 +72,7 @@ class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogControl
       if (context != null && context.mounted) {
         Navigator.of(context).pop();
         showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (context) => YieldDisplayDialog(
             expectedYield: yieldRevenueAndProfit.yieldInKg,

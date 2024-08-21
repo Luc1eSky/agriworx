@@ -1,9 +1,12 @@
 import 'package:agriworx/common_widgets/default_dialog.dart';
 import 'package:agriworx/features/persons_involved/presentation/select_user_and_enumerator_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class YieldDisplayDialog extends StatelessWidget {
+import '../../../fertilizer/data/fertilizer_data_repository.dart';
+
+class YieldDisplayDialog extends ConsumerWidget {
   const YieldDisplayDialog({
     super.key,
     required this.expectedYield,
@@ -20,7 +23,7 @@ class YieldDisplayDialog extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return DefaultDialog(
       title: 'Results from Round',
       hasCloseButton: false,
@@ -54,6 +57,9 @@ class YieldDisplayDialog extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const SelectUserAndEnumeratorScreen()),
                     (Route<dynamic> route) => false, // This will remove all previous routes
                   );
+
+                  // delete current data
+                  ref.read(fertilizerDataRepositoryProvider.notifier).deleteAllData();
                 },
                 child: const Text('Continue to next Round'),
               ),

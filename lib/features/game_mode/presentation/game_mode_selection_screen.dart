@@ -81,7 +81,8 @@ class GameModeSelectionScreen extends ConsumerWidget {
               const Text('Please Select Mode:'),
               const SizedBox(height: 12),
               ElevatedButton(
-                onPressed: controllerState.isLoading || currentGameMode == GameMode.practice
+                onPressed: controllerState.isLoading ||
+                        currentGameMode == GameMode.practice && Navigator.canPop(context)
                     ? null
                     : () async {
                         await setGameModeAndDeleteDataIfSwitched(GameMode.practice);
