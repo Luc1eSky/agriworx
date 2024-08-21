@@ -24,7 +24,8 @@ class SelectUserAndEnumeratorScreen extends ConsumerStatefulWidget {
       _SelectUserAndEnumeratorScreenState();
 }
 
-class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnumeratorScreen> {
+class _SelectUserAndEnumeratorScreenState
+    extends ConsumerState<SelectUserAndEnumeratorScreen> {
   Enumerator? _selectedEnumerator;
   User? _selectedUser;
   late List<UserResult> _userResultList;
@@ -34,7 +35,8 @@ class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnu
     super.initState();
     _selectedEnumerator = ref.read(enumeratorRepositoryProvider);
     _selectedUser = ref.read(userRepositoryProvider);
-    _userResultList = ref.read(resultRepositoryProvider).loadAllUserResultsFromMemory();
+    _userResultList =
+        ref.read(resultRepositoryProvider).loadAllUserResultsFromMemory();
   }
 
   @override
@@ -72,7 +74,8 @@ class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnu
                       .map(
                         (enumerator) => DropdownMenuItem(
                           value: enumerator,
-                          child: Text('${enumerator.firstName} ${enumerator.lastName} , '
+                          child: Text(
+                              '${enumerator.firstName} ${enumerator.lastName} , '
                               'uid:${enumerator.uid}'),
                         ),
                       )
@@ -100,8 +103,8 @@ class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnu
                   items: userList?.users
                       // only show users that have not finished yet
                       .where((user) {
-                        final userResult =
-                            _userResultList.firstWhereOrNull((result) => result.user == user);
+                        final userResult = _userResultList
+                            .firstWhereOrNull((result) => result.user == user);
                         if (userResult == null) {
                           return true;
                         }
@@ -135,26 +138,32 @@ class _SelectUserAndEnumeratorScreenState extends ConsumerState<SelectUserAndEnu
                       if (_formKey.currentState!.validate()) {
                         // when user is switched delete fertilizer data from game screen
                         if (_selectedUser != ref.read(userRepositoryProvider)) {
-                          ref.read(fertilizerDataRepositoryProvider.notifier).deleteAllData();
+                          ref
+                              .read(fertilizerDataRepositoryProvider.notifier)
+                              .deleteAllData();
                         }
 
                         // update current user and enumerator
                         await ref
                             .read(enumeratorRepositoryProvider.notifier)
                             .changeEnumerator(_selectedEnumerator!);
-                        await ref.read(userRepositoryProvider.notifier).changeUser(_selectedUser!);
+                        await ref
+                            .read(userRepositoryProvider.notifier)
+                            .changeUser(_selectedUser!);
 
                         // move to game screen
                         if (context.mounted) {
                           Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                                builder: (context) => const SoilAndRoundSelectionScreen()),
-                            (Route<dynamic> route) => false, // This will remove all previous routes
+                                builder: (context) =>
+                                    const SoilAndRoundSelectionScreen()),
+                            (Route<dynamic> route) =>
+                                false, // This will remove all previous routes
                           );
                         }
                       }
                     },
-                    child: const Text('Start Experiment'),
+                    child: const Text('Start'),
                   ),
                 ),
                 const SizedBox(height: 80),

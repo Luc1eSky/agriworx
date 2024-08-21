@@ -1,6 +1,6 @@
 import 'package:agriworx/features/persons_involved/enumerator/data/enumerator_repository.dart';
-import 'package:agriworx/features/persons_involved/presentation/select_user_and_enumerator_screen.dart';
 import 'package:agriworx/features/persons_involved/user/data/user_repository.dart';
+import 'package:agriworx/features/result/presentation/save/yield_display_dialog.dart';
 import 'package:agriworx/features/soil_and_round/data/soil_and_round_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,7 +13,8 @@ import '../../domain/round_result.dart';
 part 'confirm_save_result_dialog_controller.g.dart';
 
 @riverpod
-class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogController {
+class ConfirmSaveResultDialogController
+    extends _$ConfirmSaveResultDialogController {
   @override
   Future<void> build() async {
     // nothing to do
@@ -61,7 +62,9 @@ class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogControl
       await ref.read(fertilizerDataRepositoryProvider.notifier).deleteAllData();
 
       // check updated user result from memory
-      final userResult = ref.read(resultRepositoryProvider).loadUserResultFromMemory(currentUser);
+      final userResult = ref
+          .read(resultRepositoryProvider)
+          .loadUserResultFromMemory(currentUser);
       // delete current user if all targets were met
       if (userResult != null && userResult.isFinished) {
         await ref.read(userRepositoryProvider.notifier).deselectUser();
@@ -71,8 +74,12 @@ class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogControl
       final context = NavigationService.navigatorKey.currentContext;
       if (context != null && context.mounted) {
         Navigator.of(context).pop();
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const SelectUserAndEnumeratorScreen()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => YieldDisplayDialog(
+                  expectedYield: yieldRevenueAndProfit.yieldInKg,
+                  expectedReturn: yieldRevenueAndProfit.revenueInUgx,
+                  expectedProfit: yieldRevenueAndProfit.profitInUgx,
+                )));
       }
     } catch (error, stack) {
       //TODO: HANDLE ASYNC ERRORS IN CONTROLLERS VIA AN OBSERVER
