@@ -1,4 +1,3 @@
-import 'package:agriworx/features/fertilizer/data/fertilizer_data_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,11 +27,9 @@ class _ConfirmSaveResultDialogState
   Widget build(BuildContext context) {
     final asyncState = ref.watch(confirmSaveResultDialogControllerProvider);
 
-    final yieldData =
-        ref.watch(fertilizerDataRepositoryProvider).getYieldRevenueAndProfit();
     return DefaultDialog(
       hasCloseButton: false,
-      title: 'Results',
+      title: 'Save Round Result',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

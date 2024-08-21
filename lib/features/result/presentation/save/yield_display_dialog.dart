@@ -1,10 +1,13 @@
 import 'package:agriworx/common_widgets/default_dialog.dart';
 import 'package:agriworx/features/persons_involved/presentation/select_user_and_enumerator_screen.dart';
+import 'package:agriworx/features/soil_and_round/repository/soil_and_round_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../fertilizer/data/fertilizer_data_repository.dart';
+import '../../../persons_involved/user/data/user_repository.dart';
+import '../../data/result_repository.dart';
 
 class YieldDisplayDialog extends ConsumerWidget {
   const YieldDisplayDialog({
@@ -52,16 +55,39 @@ class YieldDisplayDialog extends ConsumerWidget {
               alignment: Alignment.bottomRight,
               child: ElevatedButton(
                 onPressed: () {
-                  // move to game screen
+                  // get current user
+                  final currentUser = ref.read(userRepositoryProvider);
+                  // get currentUserResults
+                  final userResult = currentUser != null
+                      ? ref
+                          .read(resultRepositoryProvider)
+                          .loadUserResultFromMemory(currentUser)
+                      : null;
+
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => const SelectUserAndEnumeratorScreen()),
-                    (Route<dynamic> route) => false, // This will remove all previous routes
+                    MaterialPageRoute(
+                      builder: (context) {
+                        if (userResult != null && userResult.isFinished) {
+                          return const SelectUserAndEnumeratorScreen();
+                        } else {
+                          return const SoilAndRoundSelectionScreen();
+                        }
+                      },
+                    ),
+                    (Route<dynamic> route) => false,
                   );
 
+                  // delete current user if all targets were met
+                  if (userResult != null && userResult.isFinished) {
+                    ref.read(userRepositoryProvider.notifier).deselectUser();
+                  }
+
                   // delete current data
-                  ref.read(fertilizerDataRepositoryProvider.notifier).deleteAllData();
+                  ref
+                      .read(fertilizerDataRepositoryProvider.notifier)
+                      .deleteAllData();
                 },
-                child: const Text('Continue to next Round'),
+                child: const Text('Continue'),
               ),
             ),
           ],

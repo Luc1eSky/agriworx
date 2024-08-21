@@ -13,7 +13,8 @@ import '../../domain/round_result.dart';
 part 'confirm_save_result_dialog_controller.g.dart';
 
 @riverpod
-class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogController {
+class ConfirmSaveResultDialogController
+    extends _$ConfirmSaveResultDialogController {
   @override
   Future<void> build() async {
     // nothing to do
@@ -59,13 +60,6 @@ class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogControl
 
       // // delete current data if successful
       // await ref.read(fertilizerDataRepositoryProvider.notifier).deleteAllData();
-
-      // check updated user result from memory
-      final userResult = ref.read(resultRepositoryProvider).loadUserResultFromMemory(currentUser);
-      // delete current user if all targets were met
-      if (userResult != null && userResult.isFinished) {
-        await ref.read(userRepositoryProvider.notifier).deselectUser();
-      }
 
       // pop dialog
       final context = NavigationService.navigatorKey.currentContext;
