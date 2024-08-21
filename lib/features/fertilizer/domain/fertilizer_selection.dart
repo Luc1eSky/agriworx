@@ -18,6 +18,7 @@ class FertilizerSelection with _$FertilizerSelection {
     required bool selectionWasCalculated,
     @Default(false) bool calculationWasUsed,
   }) = _FertilizerSelection;
+
   factory FertilizerSelection.fromJson(Map<String, Object?> json) =>
       _$FertilizerSelectionFromJson(json);
 

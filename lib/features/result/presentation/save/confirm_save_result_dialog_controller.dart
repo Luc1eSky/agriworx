@@ -13,8 +13,7 @@ import '../../domain/round_result.dart';
 part 'confirm_save_result_dialog_controller.g.dart';
 
 @riverpod
-class ConfirmSaveResultDialogController
-    extends _$ConfirmSaveResultDialogController {
+class ConfirmSaveResultDialogController extends _$ConfirmSaveResultDialogController {
   @override
   Future<void> build() async {
     // nothing to do
@@ -62,9 +61,7 @@ class ConfirmSaveResultDialogController
       await ref.read(fertilizerDataRepositoryProvider.notifier).deleteAllData();
 
       // check updated user result from memory
-      final userResult = ref
-          .read(resultRepositoryProvider)
-          .loadUserResultFromMemory(currentUser);
+      final userResult = ref.read(resultRepositoryProvider).loadUserResultFromMemory(currentUser);
       // delete current user if all targets were met
       if (userResult != null && userResult.isFinished) {
         await ref.read(userRepositoryProvider.notifier).deselectUser();
@@ -74,12 +71,21 @@ class ConfirmSaveResultDialogController
       final context = NavigationService.navigatorKey.currentContext;
       if (context != null && context.mounted) {
         Navigator.of(context).pop();
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => YieldDisplayDialog(
-                  expectedYield: yieldRevenueAndProfit.yieldInKg,
-                  expectedReturn: yieldRevenueAndProfit.revenueInUgx,
-                  expectedProfit: yieldRevenueAndProfit.profitInUgx,
-                )));
+        showDialog(
+          context: context,
+          builder: (context) => YieldDisplayDialog(
+            expectedYield: yieldRevenueAndProfit.yieldInKg,
+            expectedReturn: yieldRevenueAndProfit.revenueInUgx,
+            expectedProfit: yieldRevenueAndProfit.profitInUgx,
+          ),
+        );
+
+        // Navigator.of(context).pushReplacement(MaterialPageRoute(
+        //     builder: (context) => YieldDisplayDialog(
+        //           expectedYield: yieldRevenueAndProfit.yieldInKg,
+        //           expectedReturn: yieldRevenueAndProfit.revenueInUgx,
+        //           expectedProfit: yieldRevenueAndProfit.profitInUgx,
+        //         ),),);
       }
     } catch (error, stack) {
       //TODO: HANDLE ASYNC ERRORS IN CONTROLLERS VIA AN OBSERVER
