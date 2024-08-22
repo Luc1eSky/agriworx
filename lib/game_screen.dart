@@ -291,21 +291,24 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                   ),
                                 ),
                               ),
-                              Positioned(
-                                left: 15,
-                                top: 15,
-                                child: ElevatedButton(
-                                  child: const Icon(Icons.science),
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return SelectNpkLevelsDialog(
-                                              weekNumber: weekIndex);
-                                        });
-                                  },
+                              if (user?.group.id != 0)
+                                Positioned(
+                                  left: 15,
+                                  top: 15,
+                                  child: ElevatedButton(
+                                    child: const Icon(
+                                      Icons.calculate,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return SelectNpkLevelsDialog(
+                                                weekNumber: weekIndex);
+                                          });
+                                    },
+                                  ),
                                 ),
-                              ),
                             ],
                           );
                         },
