@@ -76,6 +76,7 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
       listOfWeeklyFertilizerSelections: listWithNoFertilizerSelections,
       startedOn: DateTime.now(),
     );
+
     await _saveCurrentStateLocally();
   }
 
@@ -211,10 +212,9 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     final weekList = [...weeklyFertilizerSelections.selections];
 
     if (weekList.length >= maxNumberOfFertilizersPerWeek) {
-      print('Too many fertilizers!');
       return;
     }
-    print('ADDING MANURE');
+
     weekList.insert(0, fertilizerSelection);
     // update state with modified week list
     final updatedWeeklyFertilizerSelections =
@@ -241,7 +241,6 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     final weekList = [...weeklyFertilizerSelections.selections];
 
     if (weekList.isNotEmpty && weekList[0].fertilizer.name == 'MANURE') {
-      print('remove MANURE');
       removeFertilizerSelection(
         weekNumber: weekNumber,
         index: index,

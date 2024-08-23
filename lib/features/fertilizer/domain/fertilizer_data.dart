@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:agriworx/constants/constants.dart';
+import 'package:agriworx/features/fertilizer/data/fertilizer_options.dart';
 import 'package:agriworx/features/fertilizer/domain/weekly_fertilizer_selections.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:normal/normal.dart';
@@ -23,6 +25,15 @@ class FertilizerData with _$FertilizerData {
   bool get hasData =>
       listOfWeeklyFertilizerSelections.any((listOfFertilizerSelection) =>
           listOfFertilizerSelection.selections.isNotEmpty);
+
+  bool get canToggleManure {
+    final weekFertilizerList = listOfWeeklyFertilizerSelections[1].selections;
+    if (weekFertilizerList.length >= maxNumberOfFertilizersPerWeek &&
+        weekFertilizerList[0].fertilizer != justManure) {
+      return false;
+    }
+    return true;
+  }
 
   double getTotalFertilizerCosts() {
     double totalFertilizerCostsPerPlant = 0;

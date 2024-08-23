@@ -6,9 +6,6 @@ import 'package:agriworx/features/fertilizer/domain/unit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// Define a StateProvider for the switch state
-final switchProvider = StateProvider<bool>((ref) => false);
-
 class SwitchExample extends ConsumerStatefulWidget {
   const SwitchExample({super.key});
 
@@ -17,6 +14,7 @@ class SwitchExample extends ConsumerStatefulWidget {
 }
 
 class _SwitchExampleState extends ConsumerState<SwitchExample> {
+  bool _isToggled = false;
   // Function to call when the switch is turned on
   final WidgetStateProperty<Icon?> thumbIcon =
       WidgetStateProperty.resolveWith<Icon?>(
@@ -30,7 +28,6 @@ class _SwitchExampleState extends ConsumerState<SwitchExample> {
   @override
   Widget build(BuildContext context) {
     // Read the current value of the switch from the provider
-    final light = ref.watch(switchProvider);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -38,26 +35,33 @@ class _SwitchExampleState extends ConsumerState<SwitchExample> {
         const Text('Manure'),
         Switch(
           thumbIcon: thumbIcon,
-          value: light,
+          value: _isToggled,
           activeColor: Colors.green,
-          onChanged: (bool value) {
-            ref.read(switchProvider.notifier).state = value;
-            if (value) {
-              ref
-                  .read(fertilizerDataRepositoryProvider.notifier)
-                  .addOneCupManure(
-                      weekNumber: 1,
-                      index: 0,
-                      fertilizerSelection: const FertilizerSelection(
-                          fertilizer: justManure,
-                          amount: Amount(count: 1, unit: Unit.tampeco),
-                          selectionWasCalculated: false));
-            } else {
-              ref
-                  .read(fertilizerDataRepositoryProvider.notifier)
-                  .removeOneCupManure(weekNumber: 1, index: 0);
-            }
-          },
+          onChanged: !ref
+                  .watch(fertilizerDataRepositoryProvider)
+                  .canToggleManure
+              ? null
+              : (bool value) {
+                  setState(() {
+                    _isToggled = value;
+                  });
+
+                  if (value) {
+                    ref
+                        .read(fertilizerDataRepositoryProvider.notifier)
+                        .addOneCupManure(
+                            weekNumber: 1,
+                            index: 0,
+                            fertilizerSelection: const FertilizerSelection(
+                                fertilizer: justManure,
+                                amount: Amount(count: 1, unit: Unit.tampeco),
+                                selectionWasCalculated: false));
+                  } else {
+                    ref
+                        .read(fertilizerDataRepositoryProvider.notifier)
+                        .removeOneCupManure(weekNumber: 1, index: 0);
+                  }
+                },
         ),
       ],
     );
