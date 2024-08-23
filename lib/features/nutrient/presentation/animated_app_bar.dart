@@ -2,6 +2,7 @@ import 'package:agriworx/constants/week_names.dart';
 import 'package:agriworx/features/game_mode/presentation/game_mode_selection_screen.dart';
 import 'package:agriworx/features/nutrient/data/fold_out_provider.dart';
 import 'package:agriworx/features/nutrient/domain/nutrient.dart';
+import 'package:agriworx/features/persons_involved/user/data/user_repository.dart';
 import 'package:agriworx/style/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -68,6 +69,8 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
     double currentFertilizerCosts =
         ref.watch(fertilizerDataRepositoryProvider).getTotalFertilizerCosts();
 
+    final currentUser = ref.read(userRepositoryProvider);
+
     String getFormattedNumber(double number) {
       return NumberFormat('#,###').format(number);
     }
@@ -85,11 +88,11 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 500),
             onEnd: () => setState(() {}),
-            height: hasSelectedFertilizer
+            height: hasSelectedFertilizer && currentUser?.group.id != 0
                 ? isFoldedOut
                     ? 360
                     : 140
-                : 50,
+                : 80,
             child: Column(
               children: [
                 SizedBox(
@@ -119,7 +122,7 @@ class _AnimatedAppBarState extends ConsumerState<AnimatedAppBar> {
                   ),
                 ),
                 //const SizedBox(height: 10),
-                if (hasSelectedFertilizer)
+                if (hasSelectedFertilizer && currentUser?.group.id != 0)
                   Expanded(
                     child: ConstrainedBox(
                       constraints:

@@ -5,7 +5,7 @@ const unlockPin = '8008';
 
 // general structure
 const int numberOfWeeks = 10;
-const int maxNumberOfFertilizersPerWeek = 3;
+const int maxNumberOfFertilizersPerWeek = 4;
 const double screenMaxWidth = 600.0;
 const double cardsVerticalScreenRatio = 0.9;
 const double cardsTopPadding = 20;

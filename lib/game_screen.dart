@@ -1,4 +1,5 @@
 import 'package:agriworx/features/game_mode/data/game_mode_repository.dart';
+import 'package:agriworx/features/nutrient/presentation/animated_app_bar.dart';
 import 'package:agriworx/features/persons_involved/enumerator/data/enumerator_repository.dart';
 import 'package:agriworx/features/persons_involved/presentation/select_user_and_enumerator_screen.dart';
 import 'package:agriworx/features/persons_involved/user/data/user_repository.dart';
@@ -12,10 +13,10 @@ import 'constants/week_names.dart';
 import 'features/fertilizer/data/fertilizer_data_repository.dart';
 import 'features/fertilizer/presentation/calculation/select_npk_levels_dialog.dart';
 import 'features/fertilizer/presentation/fertilizer_selection_widget.dart';
+import 'features/fertilizer/presentation/manure_toggle_button.dart';
 import 'features/game_mode/domain/game_mode.dart';
 import 'features/nutrient/data/fold_out_provider.dart';
 import 'features/nutrient/domain/nutrient.dart';
-import 'features/nutrient/presentation/animated_app_bar.dart';
 import 'features/nutrient/presentation/nutrient_bar.dart';
 import 'features/result/presentation/save/save_result_button.dart';
 
@@ -67,9 +68,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
     final enumerator = ref.watch(enumeratorRepositoryProvider);
     final user = ref.watch(userRepositoryProvider);
+    final isManureSelected = ref
+        .watch(fertilizerDataRepositoryProvider.notifier)
+        .isManureSelected(weekNumber: 1);
 
     return Scaffold(
-      appBar: user?.group.id != 0 ? const AnimatedAppBar() : null,
+      appBar: const AnimatedAppBar(),
       bottomSheet: gameMode == GameMode.experiment
           ? Container(
               decoration: BoxDecoration(
@@ -195,7 +199,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                           maxNumberOfFertilizersPerWeek,
                                           (fertilizerIndex) {
                                         return FertilizerSelectionWidget(
-                                          gestureDetectorActive: true,
+                                          gestureDetectorActive:
+                                              weekIndex == 1 &&
+                                                      fertilizerIndex == 0 &&
+                                                      isManureSelected
+                                                  ? false
+                                                  : true,
                                           maxWidth: fertilizerMaxWidth,
                                           weekIndex: weekIndex,
                                           fertilizerIndex: fertilizerIndex,
@@ -226,7 +235,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                               height: 2 * verticalGapHeight),
                                           if (user?.group.id != 0)
                                             AspectRatio(
-                                              aspectRatio: 5.0,
+                                              aspectRatio: 7.0,
                                               child: Column(
                                                 children: [
                                                   Expanded(
@@ -314,6 +323,16 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                                 weekNumber: weekIndex);
                                           });
                                     },
+                                  ),
+                                ),
+                              if (weekIndex == 1)
+                                const Positioned(
+                                  left: 15,
+                                  top: 125,
+                                  child: SizedBox(
+                                    width: 80,
+                                    height: 100,
+                                    child: SwitchExample(),
                                   ),
                                 ),
                             ],

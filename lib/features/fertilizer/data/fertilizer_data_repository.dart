@@ -197,4 +197,69 @@ class FertilizerDataRepository extends _$FertilizerDataRepository {
     }
     return nutrientInGrams;
   }
+
+  void addOneCupManure({
+    required int weekNumber,
+    required int index,
+    required FertilizerSelection fertilizerSelection,
+  }) {
+    final copiedListOfWeeklyFertilizerSelections = [
+      ...state.listOfWeeklyFertilizerSelections
+    ];
+    final weeklyFertilizerSelections =
+        copiedListOfWeeklyFertilizerSelections[weekNumber];
+    final weekList = [...weeklyFertilizerSelections.selections];
+
+    if (weekList.length >= maxNumberOfFertilizersPerWeek) {
+      print('Too many fertilizers!');
+      return;
+    }
+    print('ADDING MANURE');
+    weekList.insert(0, fertilizerSelection);
+    // update state with modified week list
+    final updatedWeeklyFertilizerSelections =
+        WeeklyFertilizerSelections(selections: weekList);
+    copiedListOfWeeklyFertilizerSelections[weekNumber] =
+        updatedWeeklyFertilizerSelections;
+    state = state.copyWith(
+        listOfWeeklyFertilizerSelections:
+            copiedListOfWeeklyFertilizerSelections);
+
+    // save current state locally
+    _saveCurrentStateLocally();
+  }
+
+  void removeOneCupManure({
+    required int weekNumber,
+    required int index,
+  }) {
+    final copiedListOfWeeklyFertilizerSelections = [
+      ...state.listOfWeeklyFertilizerSelections
+    ];
+    final weeklyFertilizerSelections =
+        copiedListOfWeeklyFertilizerSelections[weekNumber];
+    final weekList = [...weeklyFertilizerSelections.selections];
+
+    if (weekList.isNotEmpty && weekList[0].fertilizer.name == 'MANURE') {
+      print('remove MANURE');
+      removeFertilizerSelection(
+        weekNumber: weekNumber,
+        index: index,
+      );
+    }
+  }
+
+  bool isManureSelected({
+    required int weekNumber,
+  }) {
+    final weeklyFertilizerSelections =
+        state.listOfWeeklyFertilizerSelections[weekNumber];
+    final weekList = [...weeklyFertilizerSelections.selections];
+
+    if (weekList.isNotEmpty && weekList[0].fertilizer.name == 'MANURE') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
