@@ -94,7 +94,6 @@ class SelectFertilizerDialog extends ConsumerWidget {
                       hoverColor: Colors.orange,
                       highlightColor: Colors.deepOrange,
                       onPressed: () {
-                        print('remove currently selected fertilizer');
                         ref
                             .read(fertilizerDataRepositoryProvider.notifier)
                             .removeFertilizerSelection(

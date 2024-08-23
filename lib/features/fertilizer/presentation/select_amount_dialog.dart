@@ -4,6 +4,7 @@ import 'package:agriworx/features/fertilizer/domain/fertilizer_selection.dart';
 import 'package:agriworx/features/fertilizer/presentation/fertilizer_widget.dart';
 import 'package:agriworx/features/fertilizer/presentation/unit_widget.dart';
 import 'package:agriworx/features/nutrient/presentation/nutrient_bar.dart';
+import 'package:agriworx/features/persons_involved/user/data/user_repository.dart';
 import 'package:agriworx/style/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -103,6 +104,7 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = ref.read(userRepositoryProvider);
     return DefaultDialog(
       hasCloseButton: false,
       title: 'Choose Amount',
@@ -243,43 +245,44 @@ class _SelectAmountDialog2State extends ConsumerState<SelectAmountDialog> {
               ),
             ),
             const SizedBox(height: 16),
-            SizedBox(
-              height: 70,
-              width: contentWidth,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: NutrientBar(
-                      nutrient: Nutrient.nitrogen,
-                      barColor: ColorPalette.nitrogenBar,
-                      currentNutrientValue: _currentFertilizerSelection
-                              ?.getNutrientInGrams(Nutrient.nitrogen) ??
-                          0,
+            if (currentUser?.group.id != 0)
+              SizedBox(
+                height: 70,
+                width: contentWidth,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: NutrientBar(
+                        nutrient: Nutrient.nitrogen,
+                        barColor: ColorPalette.nitrogenBar,
+                        currentNutrientValue: _currentFertilizerSelection
+                                ?.getNutrientInGrams(Nutrient.nitrogen) ??
+                            0,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Expanded(
-                    child: NutrientBar(
-                      nutrient: Nutrient.phosphorus,
-                      barColor: ColorPalette.phosphorusBar,
-                      currentNutrientValue: _currentFertilizerSelection
-                              ?.getNutrientInGrams(Nutrient.phosphorus) ??
-                          0,
+                    const SizedBox(height: 4),
+                    Expanded(
+                      child: NutrientBar(
+                        nutrient: Nutrient.phosphorus,
+                        barColor: ColorPalette.phosphorusBar,
+                        currentNutrientValue: _currentFertilizerSelection
+                                ?.getNutrientInGrams(Nutrient.phosphorus) ??
+                            0,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Expanded(
-                    child: NutrientBar(
-                      nutrient: Nutrient.potassium,
-                      barColor: ColorPalette.potassiumBar,
-                      currentNutrientValue: _currentFertilizerSelection
-                              ?.getNutrientInGrams(Nutrient.potassium) ??
-                          0,
+                    const SizedBox(height: 4),
+                    Expanded(
+                      child: NutrientBar(
+                        nutrient: Nutrient.potassium,
+                        barColor: ColorPalette.potassiumBar,
+                        currentNutrientValue: _currentFertilizerSelection
+                                ?.getNutrientInGrams(Nutrient.potassium) ??
+                            0,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
             const SizedBox(height: 20),
             Align(
               alignment: Alignment.centerRight,

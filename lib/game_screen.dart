@@ -69,7 +69,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final user = ref.watch(userRepositoryProvider);
 
     return Scaffold(
-      appBar: const AnimatedAppBar(),
+      appBar: user?.group.id != 0 ? const AnimatedAppBar() : null,
       bottomSheet: gameMode == GameMode.experiment
           ? Container(
               decoration: BoxDecoration(
@@ -224,67 +224,74 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                           ),
                                           SizedBox(
                                               height: 2 * verticalGapHeight),
-                                          AspectRatio(
-                                            aspectRatio: 5.0,
-                                            child: Column(
-                                              children: [
-                                                Expanded(
-                                                  child: NutrientBar(
-                                                    nutrient: Nutrient.nitrogen,
-                                                    barColor: ColorPalette
-                                                        .nitrogenBar,
-                                                    currentNutrientValue: ref
-                                                        .watch(
-                                                            fertilizerDataRepositoryProvider
-                                                                .notifier)
-                                                        .getNutrientInGrams(
-                                                          nutrient:
-                                                              Nutrient.nitrogen,
-                                                          weekNumber: weekIndex,
-                                                        ),
+                                          if (user?.group.id != 0)
+                                            AspectRatio(
+                                              aspectRatio: 5.0,
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                    child: NutrientBar(
+                                                      nutrient:
+                                                          Nutrient.nitrogen,
+                                                      barColor: ColorPalette
+                                                          .nitrogenBar,
+                                                      currentNutrientValue: ref
+                                                          .watch(
+                                                              fertilizerDataRepositoryProvider
+                                                                  .notifier)
+                                                          .getNutrientInGrams(
+                                                            nutrient: Nutrient
+                                                                .nitrogen,
+                                                            weekNumber:
+                                                                weekIndex,
+                                                          ),
+                                                    ),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                    height: verticalGapHeight),
-                                                Expanded(
-                                                  child: NutrientBar(
-                                                    nutrient:
-                                                        Nutrient.phosphorus,
-                                                    barColor: ColorPalette
-                                                        .phosphorusBar,
-                                                    currentNutrientValue: ref
-                                                        .watch(
-                                                            fertilizerDataRepositoryProvider
-                                                                .notifier)
-                                                        .getNutrientInGrams(
-                                                          nutrient: Nutrient
-                                                              .phosphorus,
-                                                          weekNumber: weekIndex,
-                                                        ),
+                                                  SizedBox(
+                                                      height:
+                                                          verticalGapHeight),
+                                                  Expanded(
+                                                    child: NutrientBar(
+                                                      nutrient:
+                                                          Nutrient.phosphorus,
+                                                      barColor: ColorPalette
+                                                          .phosphorusBar,
+                                                      currentNutrientValue: ref
+                                                          .watch(
+                                                              fertilizerDataRepositoryProvider
+                                                                  .notifier)
+                                                          .getNutrientInGrams(
+                                                            nutrient: Nutrient
+                                                                .phosphorus,
+                                                            weekNumber:
+                                                                weekIndex,
+                                                          ),
+                                                    ),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                    height: verticalGapHeight),
-                                                Expanded(
-                                                  child: NutrientBar(
-                                                    nutrient:
-                                                        Nutrient.potassium,
-                                                    barColor: ColorPalette
-                                                        .potassiumBar,
-                                                    currentNutrientValue: ref
-                                                        .watch(
-                                                            fertilizerDataRepositoryProvider
-                                                                .notifier)
-                                                        .getNutrientInGrams(
-                                                          nutrient: Nutrient
-                                                              .potassium,
-                                                          weekNumber: weekIndex,
-                                                        ),
+                                                  SizedBox(
+                                                      height:
+                                                          verticalGapHeight),
+                                                  Expanded(
+                                                    child: NutrientBar(
+                                                      nutrient:
+                                                          Nutrient.potassium,
+                                                      barColor: ColorPalette
+                                                          .potassiumBar,
+                                                      currentNutrientValue: ref
+                                                          .watch(
+                                                              fertilizerDataRepositoryProvider
+                                                                  .notifier)
+                                                          .getNutrientInGrams(
+                                                            nutrient: Nutrient
+                                                                .potassium,
+                                                            weekNumber:
+                                                                weekIndex,
+                                                          ),
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
                                         ],
                                       );
                                     },
