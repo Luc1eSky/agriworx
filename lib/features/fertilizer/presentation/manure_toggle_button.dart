@@ -1,8 +1,5 @@
 import 'package:agriworx/features/fertilizer/data/fertilizer_data_repository.dart';
 import 'package:agriworx/features/fertilizer/data/fertilizer_options.dart';
-import 'package:agriworx/features/fertilizer/domain/amount.dart';
-import 'package:agriworx/features/fertilizer/domain/fertilizer_selection.dart';
-import 'package:agriworx/features/fertilizer/domain/unit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,8 +13,7 @@ class SwitchExample extends ConsumerStatefulWidget {
 class _SwitchExampleState extends ConsumerState<SwitchExample> {
   bool _isToggled = false;
   // Function to call when the switch is turned on
-  final WidgetStateProperty<Icon?> thumbIcon =
-      WidgetStateProperty.resolveWith<Icon?>(
+  final WidgetStateProperty<Icon?> thumbIcon = WidgetStateProperty.resolveWith<Icon?>(
     (Set<WidgetState> states) {
       if (states.contains(WidgetState.selected)) {
         return const Icon(Icons.check);
@@ -37,9 +33,7 @@ class _SwitchExampleState extends ConsumerState<SwitchExample> {
           thumbIcon: thumbIcon,
           value: _isToggled,
           activeColor: Colors.green,
-          onChanged: !ref
-                  .watch(fertilizerDataRepositoryProvider)
-                  .canToggleManure
+          onChanged: !ref.watch(fertilizerDataRepositoryProvider).canToggleManure
               ? null
               : (bool value) {
                   setState(() {
@@ -47,15 +41,11 @@ class _SwitchExampleState extends ConsumerState<SwitchExample> {
                   });
 
                   if (value) {
-                    ref
-                        .read(fertilizerDataRepositoryProvider.notifier)
-                        .addOneCupManure(
-                            weekNumber: 1,
-                            index: 0,
-                            fertilizerSelection: const FertilizerSelection(
-                                fertilizer: justManure,
-                                amount: Amount(count: 1, unit: Unit.tampeco),
-                                selectionWasCalculated: false));
+                    ref.read(fertilizerDataRepositoryProvider.notifier).addOneCupManure(
+                          weekNumber: 1,
+                          index: 0,
+                          fertilizerSelection: aCupOfManure,
+                        );
                   } else {
                     ref
                         .read(fertilizerDataRepositoryProvider.notifier)

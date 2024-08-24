@@ -1,6 +1,10 @@
 import 'package:agriworx/features/fertilizer/domain/fertilizer.dart';
 import 'package:flutter/material.dart';
 
+import '../domain/amount.dart';
+import '../domain/fertilizer_selection.dart';
+import '../domain/unit.dart';
+
 const availableFertilizers = [
   Fertilizer(
     name: 'CAN',
@@ -159,4 +163,10 @@ const justManure = Fertilizer(
   weightTampecoInGrams: 349,
   weightBlueCapInGrams: 5.3,
   weightGlassCapInGrams: 4,
+);
+
+const aCupOfManure = FertilizerSelection(
+  fertilizer: justManure,
+  amount: Amount(count: 1, unit: Unit.tampeco),
+  selectionWasCalculated: false,
 );
