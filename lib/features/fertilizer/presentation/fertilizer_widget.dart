@@ -57,7 +57,12 @@ class FertilizerWidget extends StatelessWidget {
                       fit: BoxFit.scaleDown,
                     ),
                   ),
-                  Text(f.name),
+                  FittedBox(
+                      child: Padding(
+                    padding:
+                        const EdgeInsetsDirectional.symmetric(horizontal: 4.0),
+                    child: Text(f.name),
+                  )),
                 ],
               ),
             ),

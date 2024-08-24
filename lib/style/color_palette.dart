@@ -16,4 +16,6 @@ class ColorPalette {
       const Color.fromRGBO(185, 155, 251, 1.0);
   static Color get practiceModeBottomBar =>
       const Color.fromRGBO(255, 116, 25, 1.0);
+  static Color get brandedFertilizerColor =>
+      const Color.fromARGB(255, 233, 207, 252);
 }

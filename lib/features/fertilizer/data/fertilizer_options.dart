@@ -1,12 +1,13 @@
 import 'package:agriworx/features/fertilizer/domain/fertilizer.dart';
+import 'package:agriworx/style/color_palette.dart';
 import 'package:flutter/material.dart';
 
 import '../domain/amount.dart';
 import '../domain/fertilizer_selection.dart';
 import '../domain/unit.dart';
 
-const availableFertilizers = [
-  Fertilizer(
+List<Fertilizer> availableFertilizers = [
+  const Fertilizer(
     name: 'CAN',
     pricePerKilogramInUgx: 4000,
     imagePath: "assets/pictures/fertilizers/can.png",
@@ -18,7 +19,7 @@ const availableFertilizers = [
     weightBlueCapInGrams: 7.3,
     weightGlassCapInGrams: 3.7,
   ),
-  Fertilizer(
+  const Fertilizer(
     name: 'DAP',
     pricePerKilogramInUgx: 4200,
     imagePath: "assets/pictures/fertilizers/dap.png",
@@ -30,7 +31,7 @@ const availableFertilizers = [
     weightBlueCapInGrams: 6,
     weightGlassCapInGrams: 3.8,
   ),
-  Fertilizer(
+  const Fertilizer(
     name: 'MOP',
     pricePerKilogramInUgx: 4500,
     imagePath: "assets/pictures/fertilizers/mop.png",
@@ -42,7 +43,7 @@ const availableFertilizers = [
     weightBlueCapInGrams: 7.5,
     weightGlassCapInGrams: 3.9,
   ),
-  Fertilizer(
+  const Fertilizer(
     name: 'NPK 17-17-17',
     pricePerKilogramInUgx: 4000,
     imagePath: "assets/pictures/fertilizers/npk17-17-17.png",
@@ -54,7 +55,7 @@ const availableFertilizers = [
     weightBlueCapInGrams: 5.5,
     weightGlassCapInGrams: 3.0,
   ),
-  Fertilizer(
+  const Fertilizer(
     name: 'NPK 25-5-5',
     pricePerKilogramInUgx: 3600,
     imagePath: "assets/pictures/fertilizers/npk25-5-5.png",
@@ -66,7 +67,7 @@ const availableFertilizers = [
     weightBlueCapInGrams: 6.6,
     weightGlassCapInGrams: 3.2,
   ),
-  Fertilizer(
+  const Fertilizer(
     name: 'UREA',
     pricePerKilogramInUgx: 3800,
     imagePath: "assets/pictures/fertilizers/urea.png",
@@ -78,7 +79,7 @@ const availableFertilizers = [
     weightBlueCapInGrams: 5.3,
     weightGlassCapInGrams: 2.8,
   ),
-  Fertilizer(
+  const Fertilizer(
     name: 'TSP',
     pricePerKilogramInUgx: 4000,
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
@@ -94,7 +95,7 @@ const availableFertilizers = [
     name: 'YaraMila Winner',
     pricePerKilogramInUgx: 5000, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
-    color: Colors.grey,
+    color: ColorPalette.brandedFertilizerColor,
     nitrogenPercentage: 0.15,
     phosphorusPercentage: 0.09,
     potassiumPercentage: 0.20,
@@ -106,7 +107,7 @@ const availableFertilizers = [
     name: 'YaraLiva Nitrabor',
     pricePerKilogramInUgx: 5000, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
-    color: Colors.grey,
+    color: ColorPalette.brandedFertilizerColor,
     nitrogenPercentage: 0.15,
     phosphorusPercentage: 0,
     potassiumPercentage: 0,
@@ -118,7 +119,7 @@ const availableFertilizers = [
     name: 'YaraMila Power',
     pricePerKilogramInUgx: 5000, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
-    color: Colors.grey,
+    color: ColorPalette.brandedFertilizerColor,
     nitrogenPercentage: 0.13,
     phosphorusPercentage: 0.24,
     potassiumPercentage: 0.12,
@@ -130,7 +131,7 @@ const availableFertilizers = [
     name: 'Grainpulse Tomato',
     pricePerKilogramInUgx: 5000, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
-    color: Colors.grey,
+    color: ColorPalette.brandedFertilizerColor,
     nitrogenPercentage: 0.24,
     phosphorusPercentage: 0.16,
     potassiumPercentage: 0.14,
@@ -142,7 +143,7 @@ const availableFertilizers = [
     name: 'AMS',
     pricePerKilogramInUgx: 5000, // TODO: UPDATE
     imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
-    color: Colors.grey,
+    color: ColorPalette.brandedFertilizerColor,
     nitrogenPercentage: 0.21,
     phosphorusPercentage: 0,
     potassiumPercentage: 0,
