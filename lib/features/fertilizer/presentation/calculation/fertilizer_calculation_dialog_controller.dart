@@ -30,7 +30,6 @@ class FertilizerCalculationDialogController
 
     try {
       final fertilizerCount = admissibleFertilizers.length;
-
       final subsetList = _getSubsetList(fertilizerCount);
       final subsetListLength = subsetList.length;
 
@@ -43,12 +42,11 @@ class FertilizerCalculationDialogController
 
       // print('fertilizerCount: $fertilizerCount');
       // print('subsetList: $subsetList');
-
       // Iterate over subsets
       for (int s = 0; s < subsetListLength; s++) {
         // get subset (fertilizer indices)
-        final subset = subsetList[s];
 
+        final subset = subsetList[s];
         // create nutrient matrix from fertilizers
         final nitrogenValues = <double>[];
         final phosphorusValues = <double>[];
@@ -121,7 +119,6 @@ class FertilizerCalculationDialogController
           .where((entry) => entry.value == minDistanceValue)
           .map((entry) => entry.key)
           .toList();
-
       double cheapestPrice = double.infinity;
       late int indexOfCheapestSolution;
       for (var minDistanceIndex in minDistanceIndices) {
@@ -139,7 +136,6 @@ class FertilizerCalculationDialogController
       // print('D solution: ${D[indexOfCheapestSolution]}');
 
       final solution = X[indexOfCheapestSolution];
-
       List<FertilizerSelection> solutionFertilizerSelections = [];
       for (int i = 0; i < solution.length; i++) {
         if (solution[i] > 0) {

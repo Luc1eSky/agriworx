@@ -1,7 +1,6 @@
 import 'package:agriworx/common_widgets/small_dialog.dart';
 import 'package:agriworx/features/fertilizer/data/fertilizer_data_repository.dart';
 import 'package:agriworx/features/fertilizer/presentation/calculation/fertilizer_calculation_dialog.dart';
-import 'package:agriworx/features/fertilizer/presentation/fertilizer_selection_widget.dart';
 import 'package:agriworx/features/nutrient/domain/nutrient.dart';
 import 'package:agriworx/style/color_palette.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../domain/fertilizer_selection.dart';
+import '../fertilizer_selection_widget.dart';
 
 class ChartData {
   ChartData(this.x, this.y1, this.y2, this.color);
@@ -36,11 +36,14 @@ class ShowFertilizerRecommendationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double getNutrientsFromFertilizers(Nutrient nutrient) {
+      print('get nutrients from fertilizers $nutrient');
       double nutrientAmount = 0.0;
       for (int i = 0; i < fertilizerRecommendation.length; i++) {
         nutrientAmount +=
             fertilizerRecommendation[i].getNutrientInGrams(nutrient);
       }
+      print('nutrientAmount: $nutrientAmount');
+      nutrientAmount = double.parse(nutrientAmount.toStringAsFixed(2));
       return nutrientAmount;
     }
 
@@ -196,6 +199,8 @@ class ShowFertilizerRecommendationDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(fertilizerRecommendation.length,
                   (fertilizerIndex) {
+                print(
+                    'fertilizerRec: ${fertilizerRecommendation[fertilizerIndex]}');
                 return FertilizerSelectionWidget(
                   maxWidth: constraints.maxWidth,
                   weekIndex: 0,

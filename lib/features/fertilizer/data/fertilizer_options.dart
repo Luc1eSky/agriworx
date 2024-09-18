@@ -153,6 +153,7 @@ List<Fertilizer> availableFertilizers = [
   ),
 ];
 
+// manure can only be added in one week, otherwise it's not available
 const justManure = Fertilizer(
   name: 'MANURE',
   pricePerKilogramInUgx: 200,
@@ -166,6 +167,7 @@ const justManure = Fertilizer(
   weightGlassCapInGrams: 4,
 );
 
+// a cup of manure is the only fertilizer selection in week 2
 const aCupOfManure = FertilizerSelection(
   fertilizer: justManure,
   amount: Amount(count: 1, unit: Unit.tampeco),
