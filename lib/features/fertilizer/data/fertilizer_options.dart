@@ -106,7 +106,7 @@ List<Fertilizer> availableFertilizers = [
   Fertilizer(
     name: 'YaraLiva Nitrabor',
     pricePerKilogramInUgx: 5000, // TODO: UPDATE
-    imagePath: "assets/pictures/fertilizers/yaraMila_nitrabor.png",
+    imagePath: "assets/pictures/fertilizers/yaraLiva_nitrabor.png",
     color: ColorPalette.brandedFertilizerColor,
     nitrogenPercentage: 0.15,
     phosphorusPercentage: 0,
