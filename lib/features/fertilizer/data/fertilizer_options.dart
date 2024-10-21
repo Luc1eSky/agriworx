@@ -94,7 +94,7 @@ List<Fertilizer> availableFertilizers = [
   Fertilizer(
     name: 'YaraMila Winner',
     pricePerKilogramInUgx: 5000, // TODO: UPDATE
-    imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
+    imagePath: "assets/pictures/fertilizers/yaraMila_winner.png",
     color: ColorPalette.brandedFertilizerColor,
     nitrogenPercentage: 0.15,
     phosphorusPercentage: 0.09,
@@ -106,7 +106,7 @@ List<Fertilizer> availableFertilizers = [
   Fertilizer(
     name: 'YaraLiva Nitrabor',
     pricePerKilogramInUgx: 5000, // TODO: UPDATE
-    imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
+    imagePath: "assets/pictures/fertilizers/yaraMila_nitrabor.png",
     color: ColorPalette.brandedFertilizerColor,
     nitrogenPercentage: 0.15,
     phosphorusPercentage: 0,
@@ -118,7 +118,7 @@ List<Fertilizer> availableFertilizers = [
   Fertilizer(
     name: 'YaraMila Power',
     pricePerKilogramInUgx: 5000, // TODO: UPDATE
-    imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
+    imagePath: "assets/pictures/fertilizers/yaraMila_power.png",
     color: ColorPalette.brandedFertilizerColor,
     nitrogenPercentage: 0.13,
     phosphorusPercentage: 0.24,
@@ -130,7 +130,7 @@ List<Fertilizer> availableFertilizers = [
   Fertilizer(
     name: 'Grainpulse Tomato',
     pricePerKilogramInUgx: 5000, // TODO: UPDATE
-    imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
+    imagePath: "assets/pictures/fertilizers/grainpulse_tomato.png",
     color: ColorPalette.brandedFertilizerColor,
     nitrogenPercentage: 0.24,
     phosphorusPercentage: 0.16,
@@ -142,7 +142,7 @@ List<Fertilizer> availableFertilizers = [
   Fertilizer(
     name: 'AMS',
     pricePerKilogramInUgx: 5000, // TODO: UPDATE
-    imagePath: "assets/pictures/fertilizers/fertilizer_placeholder.png",
+    imagePath: "assets/pictures/fertilizers/ammonia_sulphate.png",
     color: ColorPalette.brandedFertilizerColor,
     nitrogenPercentage: 0.21,
     phosphorusPercentage: 0,
